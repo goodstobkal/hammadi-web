@@ -1,0 +1,12 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        CATALOG_API: ${CATALOG_API:-https://api.akamisushiwok.com}
+        VITE_SITE_URL: ${VITE_SITE_URL:-https://hammadi.dev}
+    container_name: hammadi-web
+    ports:
+      # Caddy on the host terminates TLS for hammadi.dev and proxies here.
+      - "127.0.0.1:8090:80"
+    restart: unless-stopped

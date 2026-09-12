@@ -1,0 +1,854 @@
+{
+  "tools": [
+    {
+      "slug": "instagram-posts",
+      "title": "Instagram Posts Viewer & Exporter",
+      "tagline": "See every post on a profile - likes, comments, views, captions - and export to CSV.",
+      "description": "Paste any public Instagram profile and get its grid as a sortable table: post URL, type, date, like and comment counts, views and caption. Export the whole thing to CSV or JSON. No login, no Instagram account needed.",
+      "category": "Profile",
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many posts",
+          "type": "number",
+          "default": 24,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "posts",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Post",
+          "type": "link"
+        },
+        {
+          "key": "type",
+          "label": "Type"
+        },
+        {
+          "key": "taken_at",
+          "label": "Posted",
+          "type": "timestamp"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "comment_count",
+          "label": "Comments",
+          "type": "number"
+        },
+        {
+          "key": "view_count",
+          "label": "Views",
+          "type": "number"
+        },
+        {
+          "key": "caption",
+          "label": "Caption",
+          "type": "text"
+        },
+        {
+          "key": "owner.username",
+          "label": "Author"
+        },
+        {
+          "key": "image_url",
+          "label": "Thumbnail",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-reels",
+      "title": "Instagram Reels Viewer - View Counts & Engagement",
+      "tagline": "Pull a creator's Reels tab with play counts, likes and comments.",
+      "description": "Every reel on a public profile with its view count, likes, comments and caption, sorted however you like and exportable to CSV. The fastest way to see which reels actually performed.",
+      "category": "Profile",
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many reels",
+          "type": "number",
+          "default": 24,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "posts",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Post",
+          "type": "link"
+        },
+        {
+          "key": "type",
+          "label": "Type"
+        },
+        {
+          "key": "taken_at",
+          "label": "Posted",
+          "type": "timestamp"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "comment_count",
+          "label": "Comments",
+          "type": "number"
+        },
+        {
+          "key": "view_count",
+          "label": "Views",
+          "type": "number"
+        },
+        {
+          "key": "caption",
+          "label": "Caption",
+          "type": "text"
+        },
+        {
+          "key": "owner.username",
+          "label": "Author"
+        },
+        {
+          "key": "image_url",
+          "label": "Thumbnail",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-tagged-posts",
+      "title": "Instagram Tagged Posts Finder (UGC)",
+      "tagline": "Find the posts other accounts tagged a brand or creator in.",
+      "description": "The Tagged tab as data: the user-generated content creators tagged an account in, with each post's author, engagement and caption. Useful for UGC discovery, ambassador tracking and repost workflows.",
+      "category": "Profile",
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many posts",
+          "type": "number",
+          "default": 24,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "posts",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Post",
+          "type": "link"
+        },
+        {
+          "key": "type",
+          "label": "Type"
+        },
+        {
+          "key": "taken_at",
+          "label": "Posted",
+          "type": "timestamp"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "comment_count",
+          "label": "Comments",
+          "type": "number"
+        },
+        {
+          "key": "view_count",
+          "label": "Views",
+          "type": "number"
+        },
+        {
+          "key": "caption",
+          "label": "Caption",
+          "type": "text"
+        },
+        {
+          "key": "owner.username",
+          "label": "Author"
+        },
+        {
+          "key": "image_url",
+          "label": "Thumbnail",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-profile-info",
+      "title": "Instagram Profile Checker - Join Date & Country",
+      "tagline": "Followers, bio, join date, country and former usernames for any public account.",
+      "description": "Everything Instagram's own 'About this account' panel shows, plus the profile's headline stats: follower and following counts, post count, bio, external link, the month the account was created, the country it's based in and any former usernames. The quickest authenticity check there is.",
+      "category": "Profile",
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        }
+      ],
+      "result_key": null,
+      "columns": []
+    },
+    {
+      "slug": "instagram-stories",
+      "title": "Instagram Story Viewer (Anonymous)",
+      "tagline": "See a public account's active stories without marking them seen.",
+      "description": "Lists the stories a public account has live right now - image or video, when it was posted, plus any mentions, hashtags, locations, music and link stickers. Viewing here doesn't appear in the account's viewer list.",
+      "category": "Profile",
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        }
+      ],
+      "result_key": "stories",
+      "columns": [
+        {
+          "key": "taken_at",
+          "label": "Posted",
+          "type": "timestamp"
+        },
+        {
+          "key": "is_video",
+          "label": "Video",
+          "type": "bool"
+        },
+        {
+          "key": "media_url",
+          "label": "Media",
+          "type": "link"
+        },
+        {
+          "key": "thumbnail_url",
+          "label": "Preview",
+          "type": "image"
+        },
+        {
+          "key": "expiring_at",
+          "label": "Expires",
+          "type": "timestamp"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-followers",
+      "title": "Instagram Followers Viewer",
+      "tagline": "A sample of an account's followers, with names and verified badges.",
+      "description": "Lists followers of a public account. Instagram itself only exposes a limited sample (about 50) to anyone who isn't the account owner - the result says so when that limit, not this tool, is what cut the list short.",
+      "category": "Profile",
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many followers",
+          "type": "number",
+          "default": 50,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "followers",
+      "columns": [
+        {
+          "key": "username",
+          "label": "Username",
+          "type": "profile"
+        },
+        {
+          "key": "full_name",
+          "label": "Name"
+        },
+        {
+          "key": "is_verified",
+          "label": "Verified",
+          "type": "bool"
+        },
+        {
+          "key": "is_private",
+          "label": "Private",
+          "type": "bool"
+        },
+        {
+          "key": "profile_pic_url",
+          "label": "Avatar",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-following",
+      "title": "Instagram Following List Viewer",
+      "tagline": "See who an account follows.",
+      "description": "Lists the accounts a public profile follows, with names and verified badges - handy for mapping a creator's network or spotting brand relationships. Exportable to CSV.",
+      "category": "Profile",
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many accounts",
+          "type": "number",
+          "default": 50,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "following",
+      "columns": [
+        {
+          "key": "username",
+          "label": "Username",
+          "type": "profile"
+        },
+        {
+          "key": "full_name",
+          "label": "Name"
+        },
+        {
+          "key": "is_verified",
+          "label": "Verified",
+          "type": "bool"
+        },
+        {
+          "key": "is_private",
+          "label": "Private",
+          "type": "bool"
+        },
+        {
+          "key": "profile_pic_url",
+          "label": "Avatar",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-similar-accounts",
+      "title": "Similar Instagram Accounts Finder",
+      "tagline": "Instagram's own list of accounts like this one.",
+      "description": "Returns the suggested/related accounts Instagram itself shows for a profile - a free lookalike finder for competitor research and influencer sourcing.",
+      "category": "Profile",
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many accounts",
+          "type": "number",
+          "default": 20,
+          "min": 1,
+          "max": 80,
+          "required": false
+        }
+      ],
+      "result_key": "profiles",
+      "columns": [
+        {
+          "key": "username",
+          "label": "Username",
+          "type": "profile"
+        },
+        {
+          "key": "full_name",
+          "label": "Name"
+        },
+        {
+          "key": "is_verified",
+          "label": "Verified",
+          "type": "bool"
+        },
+        {
+          "key": "is_private",
+          "label": "Private",
+          "type": "bool"
+        },
+        {
+          "key": "profile_pic_url",
+          "label": "Avatar",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-comments",
+      "title": "Instagram Comments Exporter",
+      "tagline": "Export a post's comments and replies to CSV for analysis.",
+      "description": "Pulls the comment thread of any public post or reel - text, author, timestamp, like count and replies - and hands it back as a table you can export. Ready for sentiment analysis, giveaway draws or feedback mining.",
+      "category": "Post",
+      "fields": [
+        {
+          "name": "post_url",
+          "label": "Post or reel URL",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/reel/C2BiLKXLJdS/",
+          "help": "Post/reel URL or bare shortcode",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many comments",
+          "type": "number",
+          "default": 50,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "comments",
+      "columns": [
+        {
+          "key": "owner.username",
+          "label": "Author",
+          "type": "profile"
+        },
+        {
+          "key": "text",
+          "label": "Comment",
+          "type": "text"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "reply_count",
+          "label": "Replies",
+          "type": "number"
+        },
+        {
+          "key": "created_at",
+          "label": "Posted",
+          "type": "timestamp"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-likers",
+      "title": "Instagram Post Likers Viewer",
+      "tagline": "See the accounts that liked a post.",
+      "description": "Lists the accounts that liked a public post or reel, with names and verified badges. Instagram exposes roughly the first hundred.",
+      "category": "Post",
+      "fields": [
+        {
+          "name": "post_url",
+          "label": "Post or reel URL",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/reel/C2BiLKXLJdS/",
+          "help": "Post/reel URL or bare shortcode",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many likers",
+          "type": "number",
+          "default": 50,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "likers",
+      "columns": [
+        {
+          "key": "username",
+          "label": "Username",
+          "type": "profile"
+        },
+        {
+          "key": "full_name",
+          "label": "Name"
+        },
+        {
+          "key": "is_verified",
+          "label": "Verified",
+          "type": "bool"
+        },
+        {
+          "key": "is_private",
+          "label": "Private",
+          "type": "bool"
+        },
+        {
+          "key": "profile_pic_url",
+          "label": "Avatar",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-media-downloader",
+      "title": "Instagram Photo & Video URL Finder",
+      "tagline": "Get the direct media URLs behind any public post or reel.",
+      "description": "Returns the direct CDN URL of every photo and video in a post - one entry per carousel slide - plus the poster's username and the caption. Use it to archive your own content or to reach out about someone else's.",
+      "category": "Post",
+      "fields": [
+        {
+          "name": "post_url",
+          "label": "Post or reel URL",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/reel/C2BiLKXLJdS/",
+          "help": "Post/reel URL or bare shortcode",
+          "required": true
+        }
+      ],
+      "result_key": "media",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Media",
+          "type": "link"
+        },
+        {
+          "key": "is_video",
+          "label": "Video",
+          "type": "bool"
+        },
+        {
+          "key": "thumb",
+          "label": "Preview",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-keyword-search",
+      "title": "Instagram Keyword Search",
+      "tagline": "Search posts and reels by keyword, as Instagram ranks them.",
+      "description": "Runs Instagram's own search for a word or phrase and returns the posts and reels it surfaces, with engagement for each - competitor monitoring and trend research without an account.",
+      "category": "Search",
+      "fields": [
+        {
+          "name": "q",
+          "label": "Search for",
+          "type": "text",
+          "placeholder": "eufy camera",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many results",
+          "type": "number",
+          "default": 24,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "posts",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Post",
+          "type": "link"
+        },
+        {
+          "key": "type",
+          "label": "Type"
+        },
+        {
+          "key": "taken_at",
+          "label": "Posted",
+          "type": "timestamp"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "comment_count",
+          "label": "Comments",
+          "type": "number"
+        },
+        {
+          "key": "view_count",
+          "label": "Views",
+          "type": "number"
+        },
+        {
+          "key": "caption",
+          "label": "Caption",
+          "type": "text"
+        },
+        {
+          "key": "owner.username",
+          "label": "Author"
+        },
+        {
+          "key": "image_url",
+          "label": "Thumbnail",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-reels-search",
+      "title": "Instagram Reels Search - Newest First",
+      "tagline": "Find the most recent reels for any keyword.",
+      "description": "Keyword search over Instagram reels sorted newest first, with each reel's title, publish date, caption snippet, author and cover image. Ideal for catching fresh brand mentions.",
+      "category": "Search",
+      "fields": [
+        {
+          "name": "q",
+          "label": "Search for",
+          "type": "text",
+          "placeholder": "eufy",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many reels",
+          "type": "number",
+          "default": 20,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "results",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Reel",
+          "type": "link"
+        },
+        {
+          "key": "published_date",
+          "label": "Published"
+        },
+        {
+          "key": "author",
+          "label": "Author"
+        },
+        {
+          "key": "title",
+          "label": "Title",
+          "type": "text"
+        },
+        {
+          "key": "snippet",
+          "label": "Snippet",
+          "type": "text"
+        },
+        {
+          "key": "thumbnail_url",
+          "label": "Cover",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-places-search",
+      "title": "Instagram Places Search",
+      "tagline": "Find Instagram location pages by name.",
+      "description": "Searches Instagram's place directory and returns matching locations with their IDs, addresses and coordinates - the starting point for location-based content research.",
+      "category": "Search",
+      "fields": [
+        {
+          "name": "q",
+          "label": "Place name",
+          "type": "text",
+          "placeholder": "Eiffel Tower",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many places",
+          "type": "number",
+          "default": 20,
+          "min": 1,
+          "max": 50,
+          "required": false
+        }
+      ],
+      "result_key": "places",
+      "columns": [
+        {
+          "key": "name",
+          "label": "Place"
+        },
+        {
+          "key": "id",
+          "label": "Location ID"
+        },
+        {
+          "key": "address",
+          "label": "Address"
+        },
+        {
+          "key": "city",
+          "label": "City"
+        },
+        {
+          "key": "url",
+          "label": "On Instagram",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-location-posts",
+      "title": "Instagram Location Posts Viewer",
+      "tagline": "Recent or top posts tagged at a place.",
+      "description": "Give a location URL or ID and get the posts tagged there - newest first, or Instagram's top ranking - with engagement for each. Great for venue, event and destination research.",
+      "category": "Search",
+      "fields": [
+        {
+          "name": "q",
+          "label": "Location URL or ID",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/explore/locations/212988663/",
+          "required": true
+        },
+        {
+          "name": "tab",
+          "label": "Sort",
+          "type": "select",
+          "options": [
+            {
+              "value": "recent",
+              "label": "Most recent"
+            },
+            {
+              "value": "top",
+              "label": "Top posts"
+            }
+          ],
+          "default": "recent"
+        },
+        {
+          "name": "count",
+          "label": "How many posts",
+          "type": "number",
+          "default": 24,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "posts",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Post",
+          "type": "link"
+        },
+        {
+          "key": "type",
+          "label": "Type"
+        },
+        {
+          "key": "taken_at",
+          "label": "Posted",
+          "type": "timestamp"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "comment_count",
+          "label": "Comments",
+          "type": "number"
+        },
+        {
+          "key": "view_count",
+          "label": "Views",
+          "type": "number"
+        },
+        {
+          "key": "caption",
+          "label": "Caption",
+          "type": "text"
+        },
+        {
+          "key": "owner.username",
+          "label": "Author"
+        },
+        {
+          "key": "image_url",
+          "label": "Thumbnail",
+          "type": "image"
+        }
+      ]
+    }
+  ],
+  "limits": {
+    "per_hour": 20,
+    "per_day": 100,
+    "max_count": 100
+  },
+  "api_url": "https://rapidapi.com/goodstobkal-goodstobkal-default/api/instagram-scraper57"
+}
