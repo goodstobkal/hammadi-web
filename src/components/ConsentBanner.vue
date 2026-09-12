@@ -6,10 +6,10 @@
  * is nothing to ask about and no banner.
  */
 import { ref } from 'vue'
-import { adsConfigured, consentState, setConsent } from '../lib/ads'
+import { setConsent, shouldAskConsent } from '../lib/ads'
 
 const show = ref(false)
-if (typeof window !== 'undefined' && adsConfigured() && consentState() === 'unset') {
+if (typeof window !== 'undefined' && shouldAskConsent()) {
   show.value = true
 }
 
