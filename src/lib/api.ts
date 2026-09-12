@@ -26,6 +26,7 @@ export type Tool = {
   tagline: string
   description: string
   category: string
+  faq?: { q: string; a: string }[]
   fields: Field[]
   result_key: string | null
   columns: Column[]

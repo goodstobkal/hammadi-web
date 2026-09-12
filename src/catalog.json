@@ -6,6 +6,7 @@
       "tagline": "See every post on a profile - likes, comments, views, captions - and export to CSV.",
       "description": "Paste any public Instagram profile and get its grid as a sortable table: post URL, type, date, like and comment counts, views and caption. Export the whole thing to CSV or JSON. No login, no Instagram account needed.",
       "category": "Profile",
+      "faq": [],
       "fields": [
         {
           "name": "channel_url",
@@ -78,6 +79,7 @@
       "tagline": "Pull a creator's Reels tab with play counts, likes and comments.",
       "description": "Every reel on a public profile with its view count, likes, comments and caption, sorted however you like and exportable to CSV. The fastest way to see which reels actually performed.",
       "category": "Profile",
+      "faq": [],
       "fields": [
         {
           "name": "channel_url",
@@ -150,6 +152,7 @@
       "tagline": "Find the posts other accounts tagged a brand or creator in.",
       "description": "The Tagged tab as data: the user-generated content creators tagged an account in, with each post's author, engagement and caption. Useful for UGC discovery, ambassador tracking and repost workflows.",
       "category": "Profile",
+      "faq": [],
       "fields": [
         {
           "name": "channel_url",
@@ -222,6 +225,7 @@
       "tagline": "Followers, bio, join date, country and former usernames for any public account.",
       "description": "Everything Instagram's own 'About this account' panel shows, plus the profile's headline stats: follower and following counts, post count, bio, external link, the month the account was created, the country it's based in and any former usernames. The quickest authenticity check there is.",
       "category": "Profile",
+      "faq": [],
       "fields": [
         {
           "name": "channel_url",
@@ -241,6 +245,7 @@
       "tagline": "See a public account's active stories without marking them seen.",
       "description": "Lists the stories a public account has live right now - image or video, when it was posted, plus any mentions, hashtags, locations, music and link stickers. Viewing here doesn't appear in the account's viewer list.",
       "category": "Profile",
+      "faq": [],
       "fields": [
         {
           "name": "channel_url",
@@ -286,6 +291,7 @@
       "tagline": "A sample of an account's followers, with names and verified badges.",
       "description": "Lists followers of a public account. Instagram itself only exposes a limited sample (about 50) to anyone who isn't the account owner - the result says so when that limit, not this tool, is what cut the list short.",
       "category": "Profile",
+      "faq": [],
       "fields": [
         {
           "name": "channel_url",
@@ -339,6 +345,7 @@
       "tagline": "See who an account follows.",
       "description": "Lists the accounts a public profile follows, with names and verified badges - handy for mapping a creator's network or spotting brand relationships. Exportable to CSV.",
       "category": "Profile",
+      "faq": [],
       "fields": [
         {
           "name": "channel_url",
@@ -392,6 +399,7 @@
       "tagline": "Instagram's own list of accounts like this one.",
       "description": "Returns the suggested/related accounts Instagram itself shows for a profile - a free lookalike finder for competitor research and influencer sourcing.",
       "category": "Profile",
+      "faq": [],
       "fields": [
         {
           "name": "channel_url",
@@ -445,6 +453,7 @@
       "tagline": "Export a post's comments and replies to CSV for analysis.",
       "description": "Pulls the comment thread of any public post or reel - text, author, timestamp, like count and replies - and hands it back as a table you can export. Ready for sentiment analysis, giveaway draws or feedback mining.",
       "category": "Post",
+      "faq": [],
       "fields": [
         {
           "name": "post_url",
@@ -499,6 +508,7 @@
       "tagline": "See the accounts that liked a post.",
       "description": "Lists the accounts that liked a public post or reel, with names and verified badges. Instagram exposes roughly the first hundred.",
       "category": "Post",
+      "faq": [],
       "fields": [
         {
           "name": "post_url",
@@ -552,6 +562,7 @@
       "tagline": "Get the direct media URLs behind any public post or reel.",
       "description": "Returns the direct CDN URL of every photo and video in a post - one entry per carousel slide - plus the poster's username and the caption. Use it to archive your own content or to reach out about someone else's.",
       "category": "Post",
+      "faq": [],
       "fields": [
         {
           "name": "post_url",
@@ -587,6 +598,7 @@
       "tagline": "Search posts and reels by keyword, as Instagram ranks them.",
       "description": "Runs Instagram's own search for a word or phrase and returns the posts and reels it surfaces, with engagement for each - competitor monitoring and trend research without an account.",
       "category": "Search",
+      "faq": [],
       "fields": [
         {
           "name": "q",
@@ -654,10 +666,28 @@
     },
     {
       "slug": "instagram-reels-search",
-      "title": "Instagram Reels Search - Newest First",
-      "tagline": "Find the most recent reels for any keyword.",
-      "description": "Keyword search over Instagram reels sorted newest first, with each reel's title, publish date, caption snippet, author and cover image. Ideal for catching fresh brand mentions.",
+      "title": "Instagram Reels Search - Reels Finder by Keyword",
+      "tagline": "Find any Instagram reel by keyword - newest first, with dates, authors and covers.",
+      "description": "A better Instagram reels search: type any word, phrase, product or creator name and get the reels that match, sorted newest first, each with its publish date, caption snippet, author and cover image. Instagram's own search won't let you search reels by what was said in them - this does, which is how you find that reel you saw but didn't save.",
       "category": "Search",
+      "faq": [
+        {
+          "q": "How do I find an Instagram reel I saw but didn't save?",
+          "a": "Type the words you remember - a phrase from the caption, the product, the creator's name - and search. Results come back newest first, so if you saw it recently it should be near the top. Two or three distinctive words work far better than one common one."
+        },
+        {
+          "q": "Can you reverse search an Instagram reel?",
+          "a": "Not by video or image - no public tool can match a clip you're holding against Instagram's library. What works is searching the words attached to it: the caption, title, hashtags or the creator's name. That's what this tool does."
+        },
+        {
+          "q": "Why is Instagram's own reels search so bad?",
+          "a": "Instagram's search is built around accounts, hashtags and places rather than what a reel actually says, and it won't sort by date. This searches the indexed text of reels and orders by recency, so new reels surface immediately."
+        },
+        {
+          "q": "Can I search reels by creator or hashtag?",
+          "a": "Yes - a creator's name or a hashtag is just another keyword. Combine them with a topic word to narrow a busy niche."
+        }
+      ],
       "fields": [
         {
           "name": "q",
@@ -714,6 +744,7 @@
       "tagline": "Find Instagram location pages by name.",
       "description": "Searches Instagram's place directory and returns matching locations with their IDs, addresses and coordinates - the starting point for location-based content research.",
       "category": "Search",
+      "faq": [],
       "fields": [
         {
           "name": "q",
@@ -763,6 +794,7 @@
       "tagline": "Recent or top posts tagged at a place.",
       "description": "Give a location URL or ID and get the posts tagged there - newest first, or Instagram's top ranking - with engagement for each. Great for venue, event and destination research.",
       "category": "Search",
+      "faq": [],
       "fields": [
         {
           "name": "q",

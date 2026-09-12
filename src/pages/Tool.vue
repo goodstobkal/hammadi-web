@@ -18,7 +18,10 @@ const related = computed(() =>
 )
 const path = computed(() => `/tools/${route.params.slug}`)
 
+// Tool-specific questions first (they carry the long-tail search intent),
+// then the ones every tool shares.
 const faq = computed(() => [
+  ...((tool.value?.faq || []) as { q: string; a: string }[]),
   {
     q: `Is the ${(tool.value?.title || 'tool').toLowerCase()} free?`,
     a: `Yes - ${limits.per_hour} lookups an hour with no account and no sign-up. For higher volume or to call it from your own code, use the API.`,
