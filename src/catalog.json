@@ -94,9 +94,9 @@
     },
     {
       "slug": "instagram-influencer-search",
-      "title": "Instagram Influencer Search - Filter 1.7M Creators by Niche & Country",
+      "title": "Instagram Influencer Search - Find Creators by Niche, Country & Size",
       "tagline": "Find nano, micro and macro influencers by niche, country and follower count.",
-      "description": "Search a database of 1.7 million creators across Instagram, TikTok and YouTube. Filter by niche, country and follower range - including the 1k-10k nano tier most influencer platforms hide behind a subscription - and export the shortlist to Excel or CSV. No account, no demo call.",
+      "description": "Search a large creator database spanning Instagram, TikTok and YouTube. Filter by niche, country and follower range - including the 1k-10k nano tier most influencer platforms hide behind a subscription - and export the shortlist to Excel or CSV. No account, no demo call.",
       "category": "Search",
       "pinned": true,
       "guide": "find-instagram-nano-influencers",
@@ -119,7 +119,7 @@
         },
         {
           "q": "Does it cover TikTok and YouTube too?",
-          "a": "Yes. Switch the platform filter - the database holds around 660k Instagram, 630k TikTok and 460k YouTube creators."
+          "a": "Yes. Switch the platform filter - Instagram, TikTok and YouTube creators are all indexed, with deep coverage on each."
         }
       ],
       "fields": [
@@ -510,13 +510,30 @@
     },
     {
       "slug": "instagram-posts",
-      "title": "Instagram Posts Viewer & Exporter",
+      "title": "Instagram Posts Viewer & Exporter - Export Any Profile's Posts",
       "tagline": "See every post on a profile - likes, comments, views, captions - and export to CSV.",
       "description": "Paste any public Instagram profile and get its grid as a sortable table: post URL, type, date, like and comment counts, views and caption. Export the whole thing to CSV or JSON. No login, no Instagram account needed.",
       "category": "Profile",
       "pinned": false,
       "guide": "export-all-instagram-posts",
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I see all of an Instagram profile's posts without an account?",
+          "a": "Paste the profile URL or @handle and raise the count. The grid comes back as a table - post URL, date, likes, comments, views and caption - with no login and nothing to install. Only public accounts are readable."
+        },
+        {
+          "q": "Can I export Instagram posts to Excel?",
+          "a": "Yes. Run the lookup and press Export Excel for an .xlsx file, or CSV for Google Sheets and JSON for code."
+        },
+        {
+          "q": "Does this include reels and carousels?",
+          "a": "Yes - the main grid is whatever the profile posted there: photos, carousels and any reels shared to it. For the Reels tab on its own, use the Instagram Reels Exporter."
+        },
+        {
+          "q": "How far back does it go?",
+          "a": "As far as you ask. The count controls how deep the grid is walked. The free tier caps it lower than the API, which walks to 1,000 posts in a single call."
+        }
+      ],
       "fields": [
         {
           "name": "channel_url",
@@ -585,13 +602,30 @@
     },
     {
       "slug": "instagram-tagged-posts",
-      "title": "Instagram Tagged Posts Finder (UGC)",
+      "title": "Instagram Tagged Posts Viewer - Every Post Tagging an Account",
       "tagline": "Find the posts other accounts tagged a brand or creator in.",
       "description": "The Tagged tab as data: the user-generated content creators tagged an account in, with each post's author, engagement and caption. Useful for UGC discovery, ambassador tracking and repost workflows.",
       "category": "Profile",
       "pinned": false,
       "guide": "instagram-ugc-tagged-posts",
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I see the photos someone is tagged in on Instagram?",
+          "a": "Paste the account's profile URL. You get its Tagged tab as a table: who posted each one, when, the engagement and the caption."
+        },
+        {
+          "q": "How do I find user-generated content that mentions my brand?",
+          "a": "This is the main use. The Tagged tab is where customers and creators put you, so exporting it gives you a repost shortlist and shows which accounts tag you repeatedly."
+        },
+        {
+          "q": "Does the account know I looked?",
+          "a": "No. Nothing here touches your Instagram account or theirs, and no notification is sent."
+        },
+        {
+          "q": "Why are some tagged posts missing?",
+          "a": "An account can hide tagged posts it hasn't approved, and posts from private accounts never appear. You see what Instagram shows a logged-out visitor."
+        }
+      ],
       "fields": [
         {
           "name": "channel_url",
@@ -660,13 +694,30 @@
     },
     {
       "slug": "instagram-profile-info",
-      "title": "Instagram Profile Checker - Join Date & Country",
+      "title": "Instagram Profile Checker - Join Date, Country & Former Usernames",
       "tagline": "Followers, bio, join date, country and former usernames for any public account.",
       "description": "Everything Instagram's own 'About this account' panel shows, plus the profile's headline stats: follower and following counts, post count, bio, external link, the month the account was created, the country it's based in and any former usernames. The quickest authenticity check there is.",
       "category": "Profile",
       "pinned": false,
       "guide": "instagram-influencer-vetting",
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I find out when an Instagram account was created?",
+          "a": "Run the profile through this tool. The join date comes from Instagram's own 'About this account' panel, usually as a month and year."
+        },
+        {
+          "q": "How can I tell if an Instagram account is fake?",
+          "a": "The strongest signals are all here at once: a recent join date, a country that doesn't match the content, former usernames, and a follower count out of step with the post count and engagement. None is proof on its own; together they're a good filter."
+        },
+        {
+          "q": "What are former usernames?",
+          "a": "Handles the account used before. Instagram keeps them on record, and a chain of unrelated ones is a common sign of an account that was bought, resold or repurposed."
+        },
+        {
+          "q": "Do I need to follow the account?",
+          "a": "No. Public profiles are readable with no login, no follow and no notification to them."
+        }
+      ],
       "fields": [
         {
           "name": "channel_url",
@@ -682,13 +733,34 @@
     },
     {
       "slug": "instagram-stories",
-      "title": "Instagram Story Viewer (Anonymous)",
+      "title": "Anonymous Instagram Story Viewer - Watch Stories Without Being Seen",
       "tagline": "See a public account's active stories without marking them seen.",
       "description": "Lists the stories a public account has live right now - image or video, when it was posted, plus any mentions, hashtags, locations, music and link stickers. Viewing here doesn't appear in the account's viewer list.",
       "category": "Profile",
       "pinned": false,
       "guide": null,
-      "faq": [],
+      "faq": [
+        {
+          "q": "Can I watch Instagram stories anonymously?",
+          "a": "Yes, for public accounts. The story is fetched without your Instagram session, so you never enter the account's viewer list."
+        },
+        {
+          "q": "Will they know I viewed their story?",
+          "a": "No. Nothing identifies you, because nothing of yours is involved - no login, no cookie, no account."
+        },
+        {
+          "q": "Can I see stories from a private account?",
+          "a": "No. Private accounts show stories only to approved followers, and no tool can change that."
+        },
+        {
+          "q": "How long do stories stay available?",
+          "a": "24 hours, exactly as on Instagram. This shows what's live right now; once a story expires it's gone here too."
+        },
+        {
+          "q": "Does it show story highlights?",
+          "a": "No - this is the active story ring only, not saved highlights."
+        }
+      ],
       "fields": [
         {
           "name": "channel_url",
@@ -730,13 +802,30 @@
     },
     {
       "slug": "instagram-followers",
-      "title": "Instagram Followers Viewer",
+      "title": "Instagram Followers Viewer - See an Account's Followers Free",
       "tagline": "A sample of an account's followers, with names and verified badges.",
       "description": "Lists followers of a public account. Instagram itself only exposes a limited sample (about 50) to anyone who isn't the account owner - the result says so when that limit, not this tool, is what cut the list short.",
       "category": "Profile",
       "pinned": false,
       "guide": null,
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I see someone's Instagram followers without an account?",
+          "a": "Paste the profile URL. You get the followers Instagram exposes to a logged-out visitor, with names and verified badges, exportable to Excel or CSV."
+        },
+        {
+          "q": "Why do I only get about 50 followers?",
+          "a": "That's Instagram, not this tool. It hands out only a limited sample of a follower list to anyone who isn't the account owner, and it marks the response when it has done so - the result tells you when that's what happened rather than leaving you guessing. No tool or API gets past it without the account's own login."
+        },
+        {
+          "q": "Can I get someone's full follower list?",
+          "a": "Only the account owner can, through Instagram's own data export. Anyone promising a complete follower list for an account they don't own is either using stolen credentials or not delivering it."
+        },
+        {
+          "q": "Is the following list capped the same way?",
+          "a": "No. Who an account follows isn't limited like this, so the Following List Viewer returns properly deep results."
+        }
+      ],
       "fields": [
         {
           "name": "channel_url",
@@ -786,13 +875,30 @@
     },
     {
       "slug": "instagram-following",
-      "title": "Instagram Following List Viewer",
+      "title": "Instagram Following List Viewer - See Who an Account Follows",
       "tagline": "See who an account follows.",
       "description": "Lists the accounts a public profile follows, with names and verified badges - handy for mapping a creator's network or spotting brand relationships. Exportable to CSV.",
       "category": "Profile",
       "pinned": false,
       "guide": null,
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I see who someone follows on Instagram?",
+          "a": "Paste their profile URL and raise the count. Unlike the follower list, the following list isn't capped by Instagram, so you can pull it properly."
+        },
+        {
+          "q": "Can I export the following list?",
+          "a": "Yes - Excel (.xlsx), CSV or JSON, with names and verified badges."
+        },
+        {
+          "q": "What is this actually useful for?",
+          "a": "Mapping a creator's network: which brands they follow, which peers they're close to, and what a competitor has started following lately."
+        },
+        {
+          "q": "Does it work on private accounts?",
+          "a": "No. Only public profiles are readable."
+        }
+      ],
       "fields": [
         {
           "name": "channel_url",
@@ -842,13 +948,30 @@
     },
     {
       "slug": "instagram-similar-accounts",
-      "title": "Similar Instagram Accounts Finder",
+      "title": "Similar Instagram Accounts Finder - Profiles Like Any Account",
       "tagline": "Instagram's own list of accounts like this one.",
       "description": "Returns the suggested/related accounts Instagram itself shows for a profile - a free lookalike finder for competitor research and influencer sourcing.",
       "category": "Profile",
       "pinned": false,
       "guide": null,
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I find Instagram accounts similar to one I like?",
+          "a": "Paste the profile. This returns Instagram's own 'suggested for you' list for that account - the same lookalikes the app shows, built from real audience overlap rather than a guess."
+        },
+        {
+          "q": "Can I use this to find influencers?",
+          "a": "Yes, and it's one of the cheapest ways. Start from one creator who fits, pull their lookalikes, then run the best of those through again. Two or three rounds gives you a niche shortlist with no subscription."
+        },
+        {
+          "q": "How many accounts come back?",
+          "a": "However many Instagram suggests for that profile - typically a few dozen."
+        },
+        {
+          "q": "Is this the same as the influencer database?",
+          "a": "No. This is Instagram's live suggestion list for one account. The Instagram Influencer Search filters the whole creator database by niche, country and follower tier instead."
+        }
+      ],
       "fields": [
         {
           "name": "channel_url",
@@ -898,13 +1021,30 @@
     },
     {
       "slug": "instagram-likers",
-      "title": "Instagram Post Likers Viewer",
+      "title": "Instagram Post Likers Viewer - See Who Liked a Post or Reel",
       "tagline": "See the accounts that liked a post.",
       "description": "Lists the accounts that liked a public post or reel, with names and verified badges. Instagram exposes roughly the first hundred.",
       "category": "Post",
       "pinned": false,
       "guide": null,
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I see who liked an Instagram post?",
+          "a": "Paste the post or reel URL. You get the accounts that liked it, with names and verified badges, exportable to Excel or CSV."
+        },
+        {
+          "q": "Why do I only get about 100 likers?",
+          "a": "Instagram exposes roughly the first hundred to anyone who isn't the post's owner, however large the like count is. That's a platform limit, not a limit of this tool."
+        },
+        {
+          "q": "Can I pick a giveaway winner from the likes?",
+          "a": "Only from that first hundred, which isn't a fair draw on a popular post. Comment-based draws work properly - the Instagram Comment Exporter pulls the whole thread."
+        },
+        {
+          "q": "Does the poster get notified?",
+          "a": "No. Nothing about the lookup is visible to them."
+        }
+      ],
       "fields": [
         {
           "name": "post_url",
@@ -954,13 +1094,30 @@
     },
     {
       "slug": "instagram-media-downloader",
-      "title": "Instagram Photo & Video URL Finder",
+      "title": "Instagram Photo & Video URL Finder - Direct CDN Links",
       "tagline": "Get the direct media URLs behind any public post or reel.",
       "description": "Returns the direct CDN URL of every photo and video in a post - one entry per carousel slide - plus the poster's username and the caption. Use it to archive your own content or to reach out about someone else's.",
       "category": "Post",
       "pinned": false,
       "guide": null,
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I get the direct video URL of an Instagram reel?",
+          "a": "Paste the reel or post URL. You get the CDN link to the actual video file, plus its cover image, and can open or save it from there."
+        },
+        {
+          "q": "Does this download the file for me?",
+          "a": "No - it gives you the direct link to it, which is what you want for archiving, feeding a script, or handing to a downloader. Carousels return one entry per slide, not just the first."
+        },
+        {
+          "q": "Do the links expire?",
+          "a": "Yes. Instagram's CDN URLs are signed and time-limited, so fetch what you need soon after the lookup rather than storing the link for later."
+        },
+        {
+          "q": "Can I download someone else's content?",
+          "a": "The link is public, but the content isn't yours. Respect the creator's rights and Instagram's terms - if you want to repost, ask first."
+        }
+      ],
       "fields": [
         {
           "name": "post_url",
@@ -992,13 +1149,30 @@
     },
     {
       "slug": "instagram-keyword-search",
-      "title": "Instagram Keyword Search",
+      "title": "Instagram Keyword Search - Find Posts & Reels by Word or Hashtag",
       "tagline": "Search posts and reels by keyword, as Instagram ranks them.",
       "description": "Runs Instagram's own search for a word or phrase and returns the posts and reels it surfaces, with engagement for each - competitor monitoring and trend research without an account.",
       "category": "Search",
       "pinned": false,
       "guide": "instagram-competitor-product-monitoring",
-      "faq": [],
+      "faq": [
+        {
+          "q": "Can I search Instagram without an account?",
+          "a": "Yes. Type a word or phrase and this runs Instagram's own search, returning the posts and reels it surfaces with the engagement for each."
+        },
+        {
+          "q": "Can I search Instagram by hashtag?",
+          "a": "Yes - a hashtag is just another keyword here. Combine it with a topic word to narrow a busy tag."
+        },
+        {
+          "q": "Why are the results ordered this way?",
+          "a": "It's Instagram's own ranking, not a date sort. If you want newest first, use the Instagram Reels Search, which orders by publish date."
+        },
+        {
+          "q": "What is it good for?",
+          "a": "Watching what's being posted about a product, a competitor or a trend, without following anyone or having an account."
+        }
+      ],
       "fields": [
         {
           "name": "q",
@@ -1066,13 +1240,30 @@
     },
     {
       "slug": "instagram-places-search",
-      "title": "Instagram Places Search",
+      "title": "Instagram Places Search - Find Location Pages, IDs & Coordinates",
       "tagline": "Find Instagram location pages by name.",
       "description": "Searches Instagram's place directory and returns matching locations with their IDs, addresses and coordinates - the starting point for location-based content research.",
       "category": "Search",
       "pinned": false,
       "guide": null,
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I find an Instagram location ID?",
+          "a": "Search the place by name here. Every result carries its Instagram location ID, address and coordinates."
+        },
+        {
+          "q": "What do I do with the location ID?",
+          "a": "Feed it to the Instagram Location Posts Viewer to see what's been posted there. Searching for the place, then reading its posts, is the usual two-step."
+        },
+        {
+          "q": "Why do several places have the same name?",
+          "a": "Instagram's place directory has duplicates, many of them user-created. The address and coordinates are how you tell them apart; the busiest one is usually the canonical page."
+        },
+        {
+          "q": "Is it free?",
+          "a": "Yes, and there's no account or sign-up."
+        }
+      ],
       "fields": [
         {
           "name": "q",
@@ -1118,13 +1309,30 @@
     },
     {
       "slug": "instagram-location-posts",
-      "title": "Instagram Location Posts Viewer",
+      "title": "Instagram Location Posts Viewer - Posts Tagged at Any Place",
       "tagline": "Recent or top posts tagged at a place.",
       "description": "Give a location URL or ID and get the posts tagged there - newest first, or Instagram's top ranking - with engagement for each. Great for venue, event and destination research.",
       "category": "Search",
       "pinned": false,
       "guide": null,
-      "faq": [],
+      "faq": [
+        {
+          "q": "How do I see Instagram posts from a specific location?",
+          "a": "Paste the location URL or ID - find it with Instagram Places Search - and choose recent or top. You get the posts tagged there with engagement for each."
+        },
+        {
+          "q": "What's the difference between recent and top?",
+          "a": "Recent is newest first, which is what you want for monitoring. Top is Instagram's own ranking, which favours engagement and shows you what performed."
+        },
+        {
+          "q": "Can I use this for event or venue research?",
+          "a": "Yes - it's the standard way to see what people actually posted at a venue, festival or destination, and which accounts posted it."
+        },
+        {
+          "q": "Does it work for any place?",
+          "a": "Any place with an Instagram location page. If a venue has no page, nothing can be tagged there."
+        }
+      ],
       "fields": [
         {
           "name": "q",

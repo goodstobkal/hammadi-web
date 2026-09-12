@@ -40,3 +40,13 @@ code {
   padding: 1px 5px;
   border-radius: 4px;
 }
+/* Inside a <pre> the block already owns the background and the text colour.
+   Without this the chip background paints over the dark block and the light
+   text sits on it invisibly. */
+pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font: inherit;
+}
