@@ -63,7 +63,9 @@ function loadPixel() {
   }
   const script = document.createElement('script')
   script.async = true
-  script.src = 'https://www.redditstatic.com/ads/pixel.js'
+  // Reddit's own snippet puts the id on the script URL as well as in
+  // init(), and marks it do-not-modify - match it exactly.
+  script.src = `https://www.redditstatic.com/ads/pixel.js?pixel_id=${encodeURIComponent(PIXEL_ID)}`
   document.head.appendChild(script)
   window.rdt!('init', PIXEL_ID)
   window.rdt!('track', 'PageVisit')
