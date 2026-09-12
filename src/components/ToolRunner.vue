@@ -8,7 +8,7 @@ import { download, stamp, toCsv, toGrid } from '../lib/export'
 import { toXlsx } from '../lib/xlsx'
 import { LISTING_URL } from '../lib/site'
 import { track } from '../lib/analytics'
-import { trackAd } from '../lib/ads'
+import { conversionId, trackAd } from '../lib/ads'
 
 const props = defineProps<{ tool: Tool; limits: { per_hour: number; per_day: number } }>()
 
@@ -41,8 +41,10 @@ async function submit() {
   const started = Date.now()
   try {
     result.value = await runTool(props.tool.slug, { ...form })
+    const convId = conversionId()
     track('tool_run', {
       tool: props.tool.slug,
+      conversionId: convId,
       meta: {
         rows: rows.value.length,
         cached: result.value.cached,
@@ -51,7 +53,7 @@ async function submit() {
     })
     // A completed lookup is the conversion worth optimising an ad campaign
     // against - it means the visitor got something, not just landed.
-    trackAd('Search', { itemCount: rows.value.length })
+    trackAd('Search', { itemCount: rows.value.length }, convId)
   } catch (err) {
     result.value = null
     error.value =

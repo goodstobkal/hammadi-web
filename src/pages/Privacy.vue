@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { setConsent } from '../lib/ads'
 import { LISTING_URL, SITE_NAME, breadcrumbs, useSeo } from '../lib/site'
 
 const path = '/privacy'
 const updated = '12 September 2026'
+
+const optedOut = ref(false)
+function optOut() {
+  setConsent('denied')
+  optedOut.value = true
+}
 
 useSeo({
   title: `Privacy & Terms | ${SITE_NAME}`,
@@ -45,10 +53,24 @@ useSeo({
 
     <h3>Advertising</h3>
     <p>
-      If we're running an ad campaign, we may set one advertising cookie so the ad platform can tell
-      which ads brought people here. That one <strong>does</strong> involve a third party and it is
-      never set unless you explicitly allow it — you'll be asked, and declining changes nothing
-      about how the site works. If you see no banner, no ad tracking is running at all.
+      When we're running an ad campaign we set one advertising cookie, via Reddit's conversion
+      pixel, so we can tell which ads actually brought people here. That one
+      <strong>does</strong> involve a third party.
+    </p>
+    <p>
+      In the EU, the UK and the rest of the EEA we ask first: you'll see a banner, nothing loads
+      until you choose, and declining changes nothing about how the site works. Elsewhere it loads
+      on arrival, which is the normal practice in those regions. Either way you can turn it off
+      below, on any visit.
+    </p>
+    <p>
+      <button class="optout" type="button" @click="optOut">Turn off ad tracking on this device</button>
+      <span v-if="optedOut" class="done">Done — no ad cookie will be set here.</span>
+    </p>
+    <p>
+      We do not send Reddit your email address, phone number or any other identifier — Reddit's
+      "advanced matching" is deliberately switched off. If no campaign is running, no ad tracking
+      loads at all.
     </p>
 
     <h3>Messages you send us</h3>
@@ -63,7 +85,11 @@ useSeo({
       <li>No account, so no password and no profile.</li>
       <li>No Instagram login. We never ask for one, and you should never give one to a site that does.</li>
       <li>No cookies for analytics, and no fingerprinting.</li>
-      <li>No selling or sharing of personal data with anyone.</li>
+      <li>
+        No selling of personal data, ever. The only third party that receives anything is
+        Reddit's ad pixel, and only when a campaign is running and you haven't opted out —
+        described under Advertising above.
+      </li>
     </ul>
 
     <h2>About the Instagram data</h2>
@@ -142,6 +168,24 @@ h3 {
 }
 ul {
   padding-left: 20px;
+}
+.optout {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--fg);
+  cursor: pointer;
+}
+.optout:hover {
+  border-color: var(--accent);
+}
+.done {
+  margin-left: 10px;
+  color: var(--muted);
+  font-size: 14px;
 }
 li {
   margin: 8px 0;

@@ -13,6 +13,7 @@
  * Events are fire-and-forget. A blocked or failing beacon must never
  * interfere with the page.
  */
+import { adsAllowed } from './ads'
 import { API_BASE } from './site'
 
 export type EventName = 'pageview' | 'tool_run' | 'tool_error' | 'export' | 'api_click' | 'recommend'
@@ -21,6 +22,8 @@ type Payload = {
   path?: string
   tool?: string
   meta?: Record<string, unknown>
+  /** Set on conversions so Reddit can match the server copy to the pixel's. */
+  conversionId?: string
 }
 
 /** utm_* from the landing URL, kept for the session so a conversion three
@@ -31,6 +34,9 @@ const campaign = {
   utm_campaign: '',
 }
 let landingReferrer = ''
+// Reddit appends rdt_cid to the landing URL; it is what ties a conversion
+// back to the exact click that paid for it.
+let clickId = ''
 let started = false
 
 export function initAnalytics() {
@@ -41,6 +47,7 @@ export function initAnalytics() {
     campaign.utm_source = params.get('utm_source') || ''
     campaign.utm_medium = params.get('utm_medium') || ''
     campaign.utm_campaign = params.get('utm_campaign') || ''
+    clickId = params.get('rdt_cid') || ''
     // Only an external referrer is interesting; our own pages are noise.
     const ref = document.referrer || ''
     landingReferrer = ref && !ref.includes(window.location.host) ? ref : ''
@@ -58,8 +65,11 @@ export function initAnalytics() {
       if (!link) return
       const href = link.getAttribute('href') || ''
       if (!href.includes('rapidapi.com')) return
-      track('api_click', { meta: { href, from: window.location.pathname } })
-      void import('./ads').then((ads) => ads.trackAd('Lead', { itemCount: 1 }))
+      void import('./ads').then((ads) => {
+        const id = ads.conversionId()
+        track('api_click', { meta: { href, from: window.location.pathname }, conversionId: id })
+        ads.trackAd('Lead', { itemCount: 1 }, id)
+      })
     },
     { capture: true },
   )
@@ -74,6 +84,13 @@ export function track(name: EventName, payload: Payload = {}) {
     ...campaign,
     tool: payload.tool ?? '',
     meta: payload.meta ?? {},
+    conversion_id: payload.conversionId ?? '',
+    // The server only reports to Reddit when this is true, so an opt-out is
+    // honoured on both sides rather than only in the browser.
+    ads_ok: adsAllowed(),
+    screen_w: window.screen?.width ?? 0,
+    screen_h: window.screen?.height ?? 0,
+    click_id: clickId,
   })
   const url = `${API_BASE}/public/v1/event`
   try {
