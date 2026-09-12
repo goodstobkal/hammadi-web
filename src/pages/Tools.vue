@@ -33,7 +33,7 @@ useSeo({
     <h1>Free Instagram tools</h1>
     <p class="lede">
       {{ tools.length }} browser tools for public Instagram data — each one runs live, shows a
-      sortable table and exports to CSV or JSON. No login and no sign-up.
+      sortable table and exports to Excel, CSV or JSON. No login and no sign-up.
     </p>
 
     <section v-for="category in categories" :key="category">

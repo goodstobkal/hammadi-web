@@ -4,7 +4,8 @@
  * still says something useful before any JavaScript runs. */
 import { computed, reactive, ref } from 'vue'
 import { ApiError, pick, rowsOf, runTool, type RunResult, type Tool } from '../lib/api'
-import { download, stamp, toCsv } from '../lib/export'
+import { download, stamp, toCsv, toGrid } from '../lib/export'
+import { toXlsx } from '../lib/xlsx'
 import { LISTING_URL } from '../lib/site'
 
 const props = defineProps<{ tool: Tool; limits: { per_hour: number; per_day: number } }>()
@@ -50,6 +51,13 @@ async function submit() {
 
 function exportCsv() {
   download(stamp(props.tool.slug, subject.value, 'csv'), toCsv(props.tool.columns, rows.value), 'text/csv')
+}
+
+function exportExcel() {
+  download(
+    stamp(props.tool.slug, subject.value, 'xlsx'),
+    toXlsx(toGrid(props.tool.columns, rows.value), props.tool.category),
+  )
 }
 
 function exportJson() {
@@ -130,6 +138,7 @@ function shortText(value: unknown) {
           <span v-if="result.cached" class="tag">cached</span>
         </h2>
         <div class="exports" v-if="rows.length || detail.length">
+          <button type="button" @click="exportExcel" v-if="rows.length">Export Excel</button>
           <button type="button" @click="exportCsv" v-if="rows.length">Export CSV</button>
           <button type="button" @click="exportJson">Export JSON</button>
         </div>

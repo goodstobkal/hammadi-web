@@ -4,8 +4,8 @@ The marketing site for the [Instagram Scraper API][listing]: free, keyless web
 tools for public Instagram data, built to be found in search and to hand the
 visitor the API when they outgrow them.
 
-Each tool is a page (`/tools/<slug>`) with a form, a live result table and CSV
-/ JSON export. The data comes from the API's free endpoints
+Each tool is a page (`/tools/<slug>`) with a form, a live result table and
+Excel / CSV / JSON export. The data comes from the API's free endpoints
 (`/public/v1/run/<slug>`), which are rate limited per IP and capped well below
 the paid routes.
 
@@ -57,5 +57,5 @@ src/
   main.ts             vite-ssg entry + which routes get prerendered
   pages/              Home, Tools index, Tool page, 404
   components/         header, footer, ToolRunner (form + table + export)
-  lib/                api client, CSV/JSON export, SEO helpers
+  lib/                api client, Excel/CSV/JSON export, SEO helpers
 ```

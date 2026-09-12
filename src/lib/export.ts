@@ -14,8 +14,16 @@ export function toCsv(columns: Column[], rows: Record<string, unknown>[]): strin
   return [header, ...body].join('\n')
 }
 
-export function download(filename: string, content: string, mime: string) {
-  const blob = new Blob([content], { type: `${mime};charset=utf-8` })
+/** Rows as a plain grid (header + values), for the spreadsheet exports. */
+export function toGrid(columns: Column[], rows: Record<string, unknown>[]) {
+  const cell = (value: unknown) =>
+    value == null || typeof value === 'object' ? '' : (value as string | number | boolean)
+  return [columns.map((c) => c.label), ...rows.map((row) => columns.map((c) => cell(pick(row, c.key))))]
+}
+
+export function download(filename: string, content: string | Blob, mime?: string) {
+  const blob =
+    content instanceof Blob ? content : new Blob([content], { type: `${mime};charset=utf-8` })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url

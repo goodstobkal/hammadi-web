@@ -10,7 +10,7 @@ const categories = [...new Set(tools.map((t) => t.category))]
 useSeo({
   title: `Free Instagram Data Tools - Posts, Reels, Comments & Followers | ${SITE_NAME}`,
   description:
-    'Free browser tools to view and export public Instagram data: profile posts, reels with view counts, comments, tagged posts, followers, stories and keyword search. No login, CSV export, instant results.',
+    'Free browser tools to view and export public Instagram data: profile posts, reels with view counts, comments, tagged posts, followers, stories and keyword search. No login, instant results, Excel and CSV export.',
   path: '/',
   jsonld: [
     {
@@ -83,7 +83,7 @@ useSeo({
       <h3>Do I need an Instagram account?</h3>
       <p>No. Nothing here asks you to log in, and the account you look up is never notified.</p>
       <h3>Can I export what I find?</h3>
-      <p>Yes — every result table exports to CSV for spreadsheets, or JSON for code.</p>
+      <p>Yes — every result table exports to Excel (.xlsx), CSV or JSON.</p>
       <h3>Does it work on private accounts?</h3>
       <p>No. Only public profiles and posts are readable; private accounts return an error.</p>
       <h3>Is there a limit?</h3>

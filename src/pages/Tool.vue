@@ -29,7 +29,7 @@ const faq = computed(() => [
   },
   {
     q: 'Can I export the results?',
-    a: 'Yes. Every result table exports to CSV for Excel or Google Sheets, or to JSON for code.',
+    a: 'Yes. Every result table exports to Excel (.xlsx), CSV for Google Sheets, or JSON for code.',
   },
   {
     q: 'Does it work on private accounts?',
@@ -94,7 +94,7 @@ useSeo({
         Enter the {{ field.label.toLowerCase() }}<span v-if="field.help"> — {{ field.help.toLowerCase() }}</span>.
       </li>
       <li>Press <strong>Run it</strong> and wait a few seconds while the data is fetched live.</li>
-      <li>Sort through the table, then export it to CSV or JSON.</li>
+      <li>Sort through the table, then export it to Excel, CSV or JSON.</li>
     </ol>
 
     <h2>Frequently asked questions</h2>
