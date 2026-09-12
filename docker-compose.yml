@@ -5,6 +5,8 @@ services:
       args:
         CATALOG_API: ${CATALOG_API:-https://api.akamisushiwok.com}
         VITE_SITE_URL: ${VITE_SITE_URL:-https://hammadi.dev}
+        # Set in .env next to this file to switch ad tracking on.
+        VITE_REDDIT_PIXEL_ID: ${VITE_REDDIT_PIXEL_ID:-}
     container_name: hammadi-web
     ports:
       # Caddy on the host terminates TLS for hammadi.dev and proxies here.

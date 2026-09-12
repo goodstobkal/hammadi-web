@@ -12,9 +12,14 @@ COPY . .
 # falls back to the committed src/catalog.json when it isn't.
 ARG CATALOG_API=https://api.akamisushiwok.com
 ARG VITE_SITE_URL=https://hammadi.dev
+# Reddit conversion pixel. Empty by default, and when it is empty Vite can
+# prove the loader unreachable and strips it, so a build with no campaign
+# ships no ad code and shows no cookie banner at all.
+ARG VITE_REDDIT_PIXEL_ID=
 # VITE_API_BASE stays empty: in production Caddy serves /public/v1 on the same
 # domain as the site, so the browser calls it same-origin.
-ENV CATALOG_API=$CATALOG_API VITE_SITE_URL=$VITE_SITE_URL VITE_API_BASE=
+ENV CATALOG_API=$CATALOG_API VITE_SITE_URL=$VITE_SITE_URL VITE_API_BASE= \
+    VITE_REDDIT_PIXEL_ID=$VITE_REDDIT_PIXEL_ID
 RUN npm run build
 
 FROM nginx:1.27-alpine
