@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SiteFooter from './components/SiteFooter.vue'
 import SiteHeader from './components/SiteHeader.vue'
+import ConsentBanner from './components/ConsentBanner.vue'
 import SupportBox from './components/SupportBox.vue'
 </script>
 
@@ -11,6 +12,7 @@ import SupportBox from './components/SupportBox.vue'
   </main>
   <SiteFooter />
   <SupportBox />
+  <ConsentBanner />
 </template>
 
 <style scoped>

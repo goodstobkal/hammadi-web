@@ -7,11 +7,14 @@ import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
 import catalog from './catalog.json'
 import './style.css'
+import { initAnalytics, track } from './lib/analytics'
+import { initAds } from './lib/ads'
 
 const routes = [
   { path: '/', name: 'home', component: () => import('./pages/Home.vue') },
   { path: '/tools', name: 'tools', component: () => import('./pages/Tools.vue') },
   { path: '/tools/:slug', name: 'tool', component: () => import('./pages/Tool.vue') },
+  { path: '/privacy', name: 'privacy', component: () => import('./pages/Privacy.vue') },
   {
     path: '/ai-agents-for-instagram',
     name: 'ai-agents',
@@ -21,14 +24,18 @@ const routes = [
 ]
 
 export const createApp = ViteSSG(App, { routes }, ({ router, isClient }) => {
-  if (isClient) {
-    router.afterEach(() => window.scrollTo(0, 0))
-  }
+  if (!isClient) return
+  initAnalytics()
+  initAds()
+  router.afterEach((to) => {
+    window.scrollTo(0, 0)
+    track('pageview', { path: to.path })
+  })
 })
 
 /** Which paths vite-ssg prerenders - every tool gets its own HTML file. */
 export function includedRoutes(): string[] {
   const slugs = (catalog.tools as { slug: string }[]).map((t) => `/tools/${t.slug}`)
   // '/404' becomes dist/404.html, which nginx serves with a 404 status.
-  return ['/', '/tools', '/ai-agents-for-instagram', '/404', ...slugs]
+  return ['/', '/tools', '/ai-agents-for-instagram', '/privacy', '/404', ...slugs]
 }

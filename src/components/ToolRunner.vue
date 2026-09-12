@@ -7,6 +7,8 @@ import { ApiError, pick, rowsOf, runTool, type RunResult, type Tool } from '../l
 import { download, stamp, toCsv, toGrid } from '../lib/export'
 import { toXlsx } from '../lib/xlsx'
 import { LISTING_URL } from '../lib/site'
+import { track } from '../lib/analytics'
+import { trackAd } from '../lib/ads'
 
 const props = defineProps<{ tool: Tool; limits: { per_hour: number; per_day: number } }>()
 
@@ -36,24 +38,39 @@ const notice = computed(() => {
 async function submit() {
   loading.value = true
   error.value = null
+  const started = Date.now()
   try {
     result.value = await runTool(props.tool.slug, { ...form })
+    track('tool_run', {
+      tool: props.tool.slug,
+      meta: {
+        rows: rows.value.length,
+        cached: result.value.cached,
+        seconds: Math.round((Date.now() - started) / 1000),
+      },
+    })
+    // A completed lookup is the conversion worth optimising an ad campaign
+    // against - it means the visitor got something, not just landed.
+    trackAd('Search', { itemCount: rows.value.length })
   } catch (err) {
     result.value = null
     error.value =
       err instanceof ApiError
         ? { message: err.message, code: err.code }
         : { message: 'Network error - please try again.', code: 'network' }
+    track('tool_error', { tool: props.tool.slug, meta: { code: error.value.code } })
   } finally {
     loading.value = false
   }
 }
 
 function exportCsv() {
+  track('export', { tool: props.tool.slug, meta: { format: 'csv', rows: rows.value.length } })
   download(stamp(props.tool.slug, subject.value, 'csv'), toCsv(props.tool.columns, rows.value), 'text/csv')
 }
 
 function exportExcel() {
+  track('export', { tool: props.tool.slug, meta: { format: 'xlsx', rows: rows.value.length } })
   download(
     stamp(props.tool.slug, subject.value, 'xlsx'),
     toXlsx(toGrid(props.tool.columns, rows.value), props.tool.category),
@@ -61,6 +78,7 @@ function exportExcel() {
 }
 
 function exportJson() {
+  track('export', { tool: props.tool.slug, meta: { format: 'json', rows: rows.value.length } })
   download(
     stamp(props.tool.slug, subject.value, 'json'),
     JSON.stringify(result.value?.data ?? {}, null, 2),

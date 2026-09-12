@@ -22,6 +22,7 @@ const tools = (catalog.tools as { slug: string; title: string }[]).slice(0, 8)
           <h3>Build with it</h3>
           <ul>
             <li><a :href="GUIDES_URL">Tutorials &amp; guides</a></li>
+            <li><RouterLink to="/privacy">Privacy &amp; terms</RouterLink></li>
             <li><a :href="LISTING_URL" rel="noopener">Instagram Scraper API on RapidAPI</a></li>
           </ul>
         </div>
