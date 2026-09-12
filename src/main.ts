@@ -12,6 +12,11 @@ const routes = [
   { path: '/', name: 'home', component: () => import('./pages/Home.vue') },
   { path: '/tools', name: 'tools', component: () => import('./pages/Tools.vue') },
   { path: '/tools/:slug', name: 'tool', component: () => import('./pages/Tool.vue') },
+  {
+    path: '/ai-agents-for-instagram',
+    name: 'ai-agents',
+    component: () => import('./pages/AiAgents.vue'),
+  },
   { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('./pages/NotFound.vue') },
 ]
 
@@ -25,5 +30,5 @@ export const createApp = ViteSSG(App, { routes }, ({ router, isClient }) => {
 export function includedRoutes(): string[] {
   const slugs = (catalog.tools as { slug: string }[]).map((t) => `/tools/${t.slug}`)
   // '/404' becomes dist/404.html, which nginx serves with a 404 status.
-  return ['/', '/tools', '/404', ...slugs]
+  return ['/', '/tools', '/ai-agents-for-instagram', '/404', ...slugs]
 }

@@ -110,8 +110,14 @@ useSeo({
     <p>
       Every tool here is one call to the
       <a :href="LISTING_URL" rel="noopener">Instagram Scraper API</a> — the same data as JSON, with
-      no hourly limit, higher counts and a response you can pipe straight into your code. The
-      <a :href="GUIDES_URL">guides</a> have copy-paste Python for the common jobs.
+      no hourly limit, higher counts and a response you can pipe straight into your code.
+      <template v-if="tool.guide">
+        <a :href="`${GUIDES_URL}/${tool.guide}`">This job has its own guide</a> with copy-paste
+        Python.
+      </template>
+      <template v-else>
+        The <a :href="GUIDES_URL">guides</a> have copy-paste Python for the common jobs.
+      </template>
     </p>
 
     <template v-if="related.length">

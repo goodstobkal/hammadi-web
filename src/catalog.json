@@ -1,11 +1,521 @@
 {
   "tools": [
     {
+      "slug": "export-instagram-reels",
+      "title": "Instagram Reels Exporter - All Reels From a Profile",
+      "tagline": "Get every reel a profile has posted, with play counts, and export to Excel.",
+      "description": "Paste any public Instagram profile and get its whole Reels tab as one table: reel URL, date, view count, likes, comments and caption. The app makes you scroll and loses your place; this pulls the full list in one go and exports it to Excel, CSV or JSON. The fastest way to see which reels actually performed.",
+      "category": "Profile",
+      "pinned": true,
+      "guide": "get-all-instagram-reels",
+      "faq": [
+        {
+          "q": "How do I download all reels from an Instagram profile?",
+          "a": "Paste the profile URL or @handle above and raise the count. You get every reel on the account's Reels tab with its metadata, exportable to Excel or CSV in one click."
+        },
+        {
+          "q": "Does this download the reel videos themselves?",
+          "a": "This returns the reel links and their stats. To get the video files, run a reel URL through the Instagram Photo & Video URL Finder, which returns direct CDN links."
+        },
+        {
+          "q": "Can I export a competitor's reels?",
+          "a": "Yes, as long as their account is public. No login, no follow, and they are never notified that you looked."
+        },
+        {
+          "q": "Do I get view counts?",
+          "a": "Yes - Instagram's play count for each reel, alongside likes and comments, so you can sort the profile's whole catalogue by what performed."
+        }
+      ],
+      "fields": [
+        {
+          "name": "channel_url",
+          "label": "Instagram profile",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
+          "help": "Profile URL, @handle or bare username",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many reels",
+          "type": "number",
+          "default": 24,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "posts",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Post",
+          "type": "link"
+        },
+        {
+          "key": "type",
+          "label": "Type"
+        },
+        {
+          "key": "taken_at",
+          "label": "Posted",
+          "type": "timestamp"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "comment_count",
+          "label": "Comments",
+          "type": "number"
+        },
+        {
+          "key": "view_count",
+          "label": "Views",
+          "type": "number"
+        },
+        {
+          "key": "caption",
+          "label": "Caption",
+          "type": "text"
+        },
+        {
+          "key": "owner.username",
+          "label": "Author"
+        },
+        {
+          "key": "image_url",
+          "label": "Thumbnail",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-influencer-search",
+      "title": "Instagram Influencer Search - Filter 1.7M Creators by Niche & Country",
+      "tagline": "Find nano, micro and macro influencers by niche, country and follower count.",
+      "description": "Search a database of 1.7 million creators across Instagram, TikTok and YouTube. Filter by niche, country and follower range - including the 1k-10k nano tier most influencer platforms hide behind a subscription - and export the shortlist to Excel or CSV. No account, no demo call.",
+      "category": "Search",
+      "pinned": true,
+      "guide": "find-instagram-nano-influencers",
+      "faq": [
+        {
+          "q": "How do I find nano-influencers on Instagram?",
+          "a": "Set the follower range to 1k+ with an upper limit of under 10k, pick your niche and country, and run it. Nano creators are the hardest tier to find by hand because Instagram's own search surfaces big accounts first."
+        },
+        {
+          "q": "Is this a free influencer database?",
+          "a": "Yes, for search. You get the same rows the paid API returns, just fewer per run and without paging. There's no account and no trial to cancel."
+        },
+        {
+          "q": "What counts as a nano, micro or macro influencer?",
+          "a": "Roughly: nano 1k-10k followers, micro 10k-100k, macro 100k-1M and mega above 1M. The follower filters here line up with those tiers."
+        },
+        {
+          "q": "Can I export the shortlist?",
+          "a": "Yes - every result table exports to Excel (.xlsx), CSV or JSON, so it drops straight into an outreach sheet."
+        },
+        {
+          "q": "Does it cover TikTok and YouTube too?",
+          "a": "Yes. Switch the platform filter - the database holds around 660k Instagram, 630k TikTok and 460k YouTube creators."
+        }
+      ],
+      "fields": [
+        {
+          "name": "q",
+          "label": "Niche or topic",
+          "type": "text",
+          "placeholder": "skincare",
+          "help": "One or more tags, comma-separated. Leave blank to browse by filters alone.",
+          "required": false
+        },
+        {
+          "name": "platform",
+          "label": "Platform",
+          "type": "select",
+          "default": "instagram",
+          "options": [
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            }
+          ]
+        },
+        {
+          "name": "country",
+          "label": "Country",
+          "type": "select",
+          "default": "",
+          "options": [
+            {
+              "value": "",
+              "label": "Any country"
+            },
+            {
+              "value": "US",
+              "label": "United States"
+            },
+            {
+              "value": "UK",
+              "label": "United Kingdom"
+            },
+            {
+              "value": "CA",
+              "label": "Canada"
+            },
+            {
+              "value": "AU",
+              "label": "Australia"
+            },
+            {
+              "value": "DE",
+              "label": "Germany"
+            },
+            {
+              "value": "FR",
+              "label": "France"
+            },
+            {
+              "value": "IT",
+              "label": "Italy"
+            },
+            {
+              "value": "ES",
+              "label": "Spain"
+            },
+            {
+              "value": "NL",
+              "label": "Netherlands"
+            },
+            {
+              "value": "PL",
+              "label": "Poland"
+            },
+            {
+              "value": "SE",
+              "label": "Sweden"
+            },
+            {
+              "value": "BR",
+              "label": "Brazil"
+            },
+            {
+              "value": "MX",
+              "label": "Mexico"
+            },
+            {
+              "value": "IN",
+              "label": "India"
+            },
+            {
+              "value": "ID",
+              "label": "Indonesia"
+            },
+            {
+              "value": "JP",
+              "label": "Japan"
+            },
+            {
+              "value": "KR",
+              "label": "South Korea"
+            },
+            {
+              "value": "TR",
+              "label": "Turkey"
+            },
+            {
+              "value": "TH",
+              "label": "Thailand"
+            },
+            {
+              "value": "RU",
+              "label": "Russia"
+            },
+            {
+              "value": "OTHERS",
+              "label": "Elsewhere"
+            }
+          ]
+        },
+        {
+          "name": "min_followers",
+          "label": "Minimum followers",
+          "type": "select",
+          "default": "1000",
+          "options": [
+            {
+              "value": "",
+              "label": "Any size"
+            },
+            {
+              "value": "1000",
+              "label": "1k+ (nano and up)"
+            },
+            {
+              "value": "10000",
+              "label": "10k+ (micro and up)"
+            },
+            {
+              "value": "100000",
+              "label": "100k+ (macro and up)"
+            },
+            {
+              "value": "1000000",
+              "label": "1M+ (mega)"
+            }
+          ]
+        },
+        {
+          "name": "max_followers",
+          "label": "Maximum followers",
+          "type": "select",
+          "default": "",
+          "options": [
+            {
+              "value": "",
+              "label": "No upper limit"
+            },
+            {
+              "value": "10000",
+              "label": "Under 10k (nano only)"
+            },
+            {
+              "value": "100000",
+              "label": "Under 100k (micro and below)"
+            },
+            {
+              "value": "1000000",
+              "label": "Under 1M"
+            }
+          ]
+        },
+        {
+          "name": "count",
+          "label": "How many creators",
+          "type": "number",
+          "default": 25,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "results",
+      "columns": [
+        {
+          "key": "username",
+          "label": "Username",
+          "type": "profile"
+        },
+        {
+          "key": "name",
+          "label": "Name"
+        },
+        {
+          "key": "platform",
+          "label": "Platform"
+        },
+        {
+          "key": "country",
+          "label": "Country"
+        },
+        {
+          "key": "followers",
+          "label": "Followers",
+          "type": "number"
+        },
+        {
+          "key": "avg_views",
+          "label": "Avg views",
+          "type": "number"
+        },
+        {
+          "key": "engagement_rate",
+          "label": "Engagement",
+          "type": "number"
+        },
+        {
+          "key": "channel_url",
+          "label": "Profile",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "slug": "export-instagram-comments",
+      "title": "Instagram Comment Exporter - Get All Comments From a Post or Reel",
+      "tagline": "Export every comment and reply on a post or reel to Excel or CSV.",
+      "description": "Pulls the full comment thread of any public post or reel - text, author, timestamp, like count and replies - and hands it back as a table you can export. Most tools stop at the first 20-25 comments because Instagram's comment pane only loads when you scroll the pane itself; this one keeps going. Ready for sentiment analysis, giveaway draws or feedback mining.",
+      "category": "Post",
+      "pinned": true,
+      "guide": "export-instagram-comments-for-analysis",
+      "faq": [
+        {
+          "q": "How do I see all comments on an Instagram post?",
+          "a": "Paste the post or reel URL above and raise the count. The tool scrolls the comment thread for you and returns every comment it can reach, replies included, as one table."
+        },
+        {
+          "q": "How do I get all the comments on an Instagram reel?",
+          "a": "The same way as a post - paste the reel's URL. Reels and posts share one comment system, so a reel link works here exactly like a photo or carousel link, replies included."
+        },
+        {
+          "q": "Can I read the comments on a competitor's post?",
+          "a": "Yes, on any public account. Nothing is asked of your Instagram login and the account you look up is never notified."
+        },
+        {
+          "q": "Why do other tools only show 20 or 50 comments?",
+          "a": "Instagram's comment box is a virtualised scroller - it only loads more when that specific element is scrolled. Scrapers that scroll the page instead see it stop growing and assume the thread ended, which typically cuts off around 20-25 comments."
+        },
+        {
+          "q": "Can I export Instagram comments to Excel?",
+          "a": "Yes. Run the lookup and hit Export Excel for an .xlsx file, or CSV/JSON if you prefer. Nothing is installed and there's no sign-up."
+        },
+        {
+          "q": "Can I use this to pick a giveaway winner?",
+          "a": "Yes - export the comments and pick a row at random. De-duplicate by username first if your rules allow one entry per person."
+        }
+      ],
+      "fields": [
+        {
+          "name": "post_url",
+          "label": "Post or reel URL",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/reel/C2BiLKXLJdS/",
+          "help": "Post/reel URL or bare shortcode",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many comments",
+          "type": "number",
+          "default": 50,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "comments",
+      "columns": [
+        {
+          "key": "owner.username",
+          "label": "Author",
+          "type": "profile"
+        },
+        {
+          "key": "text",
+          "label": "Comment",
+          "type": "text"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "reply_count",
+          "label": "Replies",
+          "type": "number"
+        },
+        {
+          "key": "created_at",
+          "label": "Posted",
+          "type": "timestamp"
+        }
+      ]
+    },
+    {
+      "slug": "instagram-reels-search",
+      "title": "Better Instagram Reels Search - Reels Finder by Keyword",
+      "tagline": "Instagram reel search that works: any keyword, newest first, with dates, authors and covers.",
+      "description": "A better Instagram reels search: type any word, phrase, product or creator name and get the reels that match, sorted newest first, each with its publish date, caption snippet, author and cover image. Instagram's own reel search won't let you search by what was said in a reel, and it won't sort by date - this reels finder does both, which is how you find that reel you saw but didn't save.",
+      "category": "Search",
+      "pinned": true,
+      "guide": null,
+      "faq": [
+        {
+          "q": "How do I find an Instagram reel I saw but didn't save?",
+          "a": "Type the words you remember - a phrase from the caption, the product, the creator's name - and search. Results come back newest first, so if you saw it recently it should be near the top. Two or three distinctive words work far better than one common one."
+        },
+        {
+          "q": "Can you reverse search an Instagram reel?",
+          "a": "Not by video or image - no public tool can match a clip you're holding against Instagram's library. What works is searching the words attached to it: the caption, title, hashtags or the creator's name. That's what this tool does."
+        },
+        {
+          "q": "Why is Instagram's own reels search so bad?",
+          "a": "Instagram's search is built around accounts, hashtags and places rather than what a reel actually says, and it won't sort by date. This searches the indexed text of reels and orders by recency, so new reels surface immediately."
+        },
+        {
+          "q": "Can I search reels by creator or hashtag?",
+          "a": "Yes - a creator's name or a hashtag is just another keyword. Combine them with a topic word to narrow a busy niche."
+        }
+      ],
+      "fields": [
+        {
+          "name": "q",
+          "label": "Search for",
+          "type": "text",
+          "placeholder": "eufy",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many reels",
+          "type": "number",
+          "default": 20,
+          "min": 1,
+          "max": 100,
+          "required": false
+        }
+      ],
+      "result_key": "results",
+      "columns": [
+        {
+          "key": "url",
+          "label": "Reel",
+          "type": "link"
+        },
+        {
+          "key": "published_date",
+          "label": "Published"
+        },
+        {
+          "key": "author",
+          "label": "Author"
+        },
+        {
+          "key": "title",
+          "label": "Title",
+          "type": "text"
+        },
+        {
+          "key": "snippet",
+          "label": "Snippet",
+          "type": "text"
+        },
+        {
+          "key": "thumbnail_url",
+          "label": "Cover",
+          "type": "image"
+        }
+      ]
+    },
+    {
       "slug": "instagram-posts",
       "title": "Instagram Posts Viewer & Exporter",
       "tagline": "See every post on a profile - likes, comments, views, captions - and export to CSV.",
       "description": "Paste any public Instagram profile and get its grid as a sortable table: post URL, type, date, like and comment counts, views and caption. Export the whole thing to CSV or JSON. No login, no Instagram account needed.",
       "category": "Profile",
+      "pinned": false,
+      "guide": "export-all-instagram-posts",
       "faq": [],
       "fields": [
         {
@@ -74,84 +584,13 @@
       ]
     },
     {
-      "slug": "instagram-reels",
-      "title": "Instagram Reels Viewer - View Counts & Engagement",
-      "tagline": "Pull a creator's Reels tab with play counts, likes and comments.",
-      "description": "Every reel on a public profile with its view count, likes, comments and caption, sorted however you like and exportable to CSV. The fastest way to see which reels actually performed.",
-      "category": "Profile",
-      "faq": [],
-      "fields": [
-        {
-          "name": "channel_url",
-          "label": "Instagram profile",
-          "type": "text",
-          "placeholder": "https://www.instagram.com/nasa/ or @nasa",
-          "help": "Profile URL, @handle or bare username",
-          "required": true
-        },
-        {
-          "name": "count",
-          "label": "How many reels",
-          "type": "number",
-          "default": 24,
-          "min": 1,
-          "max": 100,
-          "required": false
-        }
-      ],
-      "result_key": "posts",
-      "columns": [
-        {
-          "key": "url",
-          "label": "Post",
-          "type": "link"
-        },
-        {
-          "key": "type",
-          "label": "Type"
-        },
-        {
-          "key": "taken_at",
-          "label": "Posted",
-          "type": "timestamp"
-        },
-        {
-          "key": "like_count",
-          "label": "Likes",
-          "type": "number"
-        },
-        {
-          "key": "comment_count",
-          "label": "Comments",
-          "type": "number"
-        },
-        {
-          "key": "view_count",
-          "label": "Views",
-          "type": "number"
-        },
-        {
-          "key": "caption",
-          "label": "Caption",
-          "type": "text"
-        },
-        {
-          "key": "owner.username",
-          "label": "Author"
-        },
-        {
-          "key": "image_url",
-          "label": "Thumbnail",
-          "type": "image"
-        }
-      ]
-    },
-    {
       "slug": "instagram-tagged-posts",
       "title": "Instagram Tagged Posts Finder (UGC)",
       "tagline": "Find the posts other accounts tagged a brand or creator in.",
       "description": "The Tagged tab as data: the user-generated content creators tagged an account in, with each post's author, engagement and caption. Useful for UGC discovery, ambassador tracking and repost workflows.",
       "category": "Profile",
+      "pinned": false,
+      "guide": "instagram-ugc-tagged-posts",
       "faq": [],
       "fields": [
         {
@@ -225,6 +664,8 @@
       "tagline": "Followers, bio, join date, country and former usernames for any public account.",
       "description": "Everything Instagram's own 'About this account' panel shows, plus the profile's headline stats: follower and following counts, post count, bio, external link, the month the account was created, the country it's based in and any former usernames. The quickest authenticity check there is.",
       "category": "Profile",
+      "pinned": false,
+      "guide": "instagram-influencer-vetting",
       "faq": [],
       "fields": [
         {
@@ -245,6 +686,8 @@
       "tagline": "See a public account's active stories without marking them seen.",
       "description": "Lists the stories a public account has live right now - image or video, when it was posted, plus any mentions, hashtags, locations, music and link stickers. Viewing here doesn't appear in the account's viewer list.",
       "category": "Profile",
+      "pinned": false,
+      "guide": null,
       "faq": [],
       "fields": [
         {
@@ -291,6 +734,8 @@
       "tagline": "A sample of an account's followers, with names and verified badges.",
       "description": "Lists followers of a public account. Instagram itself only exposes a limited sample (about 50) to anyone who isn't the account owner - the result says so when that limit, not this tool, is what cut the list short.",
       "category": "Profile",
+      "pinned": false,
+      "guide": null,
       "faq": [],
       "fields": [
         {
@@ -345,6 +790,8 @@
       "tagline": "See who an account follows.",
       "description": "Lists the accounts a public profile follows, with names and verified badges - handy for mapping a creator's network or spotting brand relationships. Exportable to CSV.",
       "category": "Profile",
+      "pinned": false,
+      "guide": null,
       "faq": [],
       "fields": [
         {
@@ -399,6 +846,8 @@
       "tagline": "Instagram's own list of accounts like this one.",
       "description": "Returns the suggested/related accounts Instagram itself shows for a profile - a free lookalike finder for competitor research and influencer sourcing.",
       "category": "Profile",
+      "pinned": false,
+      "guide": null,
       "faq": [],
       "fields": [
         {
@@ -448,66 +897,13 @@
       ]
     },
     {
-      "slug": "instagram-comments",
-      "title": "Instagram Comments Exporter",
-      "tagline": "Export a post's comments and replies to CSV for analysis.",
-      "description": "Pulls the comment thread of any public post or reel - text, author, timestamp, like count and replies - and hands it back as a table you can export. Ready for sentiment analysis, giveaway draws or feedback mining.",
-      "category": "Post",
-      "faq": [],
-      "fields": [
-        {
-          "name": "post_url",
-          "label": "Post or reel URL",
-          "type": "text",
-          "placeholder": "https://www.instagram.com/reel/C2BiLKXLJdS/",
-          "help": "Post/reel URL or bare shortcode",
-          "required": true
-        },
-        {
-          "name": "count",
-          "label": "How many comments",
-          "type": "number",
-          "default": 50,
-          "min": 1,
-          "max": 100,
-          "required": false
-        }
-      ],
-      "result_key": "comments",
-      "columns": [
-        {
-          "key": "owner.username",
-          "label": "Author",
-          "type": "profile"
-        },
-        {
-          "key": "text",
-          "label": "Comment",
-          "type": "text"
-        },
-        {
-          "key": "like_count",
-          "label": "Likes",
-          "type": "number"
-        },
-        {
-          "key": "reply_count",
-          "label": "Replies",
-          "type": "number"
-        },
-        {
-          "key": "created_at",
-          "label": "Posted",
-          "type": "timestamp"
-        }
-      ]
-    },
-    {
       "slug": "instagram-likers",
       "title": "Instagram Post Likers Viewer",
       "tagline": "See the accounts that liked a post.",
       "description": "Lists the accounts that liked a public post or reel, with names and verified badges. Instagram exposes roughly the first hundred.",
       "category": "Post",
+      "pinned": false,
+      "guide": null,
       "faq": [],
       "fields": [
         {
@@ -562,6 +958,8 @@
       "tagline": "Get the direct media URLs behind any public post or reel.",
       "description": "Returns the direct CDN URL of every photo and video in a post - one entry per carousel slide - plus the poster's username and the caption. Use it to archive your own content or to reach out about someone else's.",
       "category": "Post",
+      "pinned": false,
+      "guide": null,
       "faq": [],
       "fields": [
         {
@@ -598,6 +996,8 @@
       "tagline": "Search posts and reels by keyword, as Instagram ranks them.",
       "description": "Runs Instagram's own search for a word or phrase and returns the posts and reels it surfaces, with engagement for each - competitor monitoring and trend research without an account.",
       "category": "Search",
+      "pinned": false,
+      "guide": "instagram-competitor-product-monitoring",
       "faq": [],
       "fields": [
         {
@@ -665,85 +1065,13 @@
       ]
     },
     {
-      "slug": "instagram-reels-search",
-      "title": "Instagram Reels Search - Reels Finder by Keyword",
-      "tagline": "Find any Instagram reel by keyword - newest first, with dates, authors and covers.",
-      "description": "A better Instagram reels search: type any word, phrase, product or creator name and get the reels that match, sorted newest first, each with its publish date, caption snippet, author and cover image. Instagram's own search won't let you search reels by what was said in them - this does, which is how you find that reel you saw but didn't save.",
-      "category": "Search",
-      "faq": [
-        {
-          "q": "How do I find an Instagram reel I saw but didn't save?",
-          "a": "Type the words you remember - a phrase from the caption, the product, the creator's name - and search. Results come back newest first, so if you saw it recently it should be near the top. Two or three distinctive words work far better than one common one."
-        },
-        {
-          "q": "Can you reverse search an Instagram reel?",
-          "a": "Not by video or image - no public tool can match a clip you're holding against Instagram's library. What works is searching the words attached to it: the caption, title, hashtags or the creator's name. That's what this tool does."
-        },
-        {
-          "q": "Why is Instagram's own reels search so bad?",
-          "a": "Instagram's search is built around accounts, hashtags and places rather than what a reel actually says, and it won't sort by date. This searches the indexed text of reels and orders by recency, so new reels surface immediately."
-        },
-        {
-          "q": "Can I search reels by creator or hashtag?",
-          "a": "Yes - a creator's name or a hashtag is just another keyword. Combine them with a topic word to narrow a busy niche."
-        }
-      ],
-      "fields": [
-        {
-          "name": "q",
-          "label": "Search for",
-          "type": "text",
-          "placeholder": "eufy",
-          "required": true
-        },
-        {
-          "name": "count",
-          "label": "How many reels",
-          "type": "number",
-          "default": 20,
-          "min": 1,
-          "max": 100,
-          "required": false
-        }
-      ],
-      "result_key": "results",
-      "columns": [
-        {
-          "key": "url",
-          "label": "Reel",
-          "type": "link"
-        },
-        {
-          "key": "published_date",
-          "label": "Published"
-        },
-        {
-          "key": "author",
-          "label": "Author"
-        },
-        {
-          "key": "title",
-          "label": "Title",
-          "type": "text"
-        },
-        {
-          "key": "snippet",
-          "label": "Snippet",
-          "type": "text"
-        },
-        {
-          "key": "thumbnail_url",
-          "label": "Cover",
-          "type": "image"
-        }
-      ]
-    },
-    {
       "slug": "instagram-places-search",
       "title": "Instagram Places Search",
       "tagline": "Find Instagram location pages by name.",
       "description": "Searches Instagram's place directory and returns matching locations with their IDs, addresses and coordinates - the starting point for location-based content research.",
       "category": "Search",
+      "pinned": false,
+      "guide": null,
       "faq": [],
       "fields": [
         {
@@ -794,6 +1122,8 @@
       "tagline": "Recent or top posts tagged at a place.",
       "description": "Give a location URL or ID and get the posts tagged there - newest first, or Instagram's top ranking - with engagement for each. Great for venue, event and destination research.",
       "category": "Search",
+      "pinned": false,
+      "guide": null,
       "faq": [],
       "fields": [
         {

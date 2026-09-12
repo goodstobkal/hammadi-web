@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import UseCaseBox from '../components/UseCaseBox.vue'
 import catalog from '../catalog.json'
 import type { Tool } from '../lib/api'
 import { GUIDES_URL, LISTING_URL, SITE_NAME, SITE_URL, useSeo } from '../lib/site'
 
 const tools = catalog.tools as Tool[]
 const limits = catalog.limits as { per_hour: number }
+const pinned = tools.filter((t) => t.pinned)
 const categories = [...new Set(tools.map((t) => t.category))]
 
 useSeo({
@@ -49,6 +51,20 @@ useSeo({
         <a class="ghost" :href="LISTING_URL" rel="noopener">Or get the API →</a>
       </p>
     </section>
+
+    <section v-if="pinned.length" class="pinned">
+      <h2>Most used</h2>
+      <ul class="cards">
+        <li v-for="tool in pinned" :key="tool.slug">
+          <RouterLink :to="`/tools/${tool.slug}`">
+            <h3>{{ tool.title }}</h3>
+            <p>{{ tool.tagline }}</p>
+          </RouterLink>
+        </li>
+      </ul>
+    </section>
+
+    <UseCaseBox />
 
     <section v-for="category in categories" :key="category">
       <h2>{{ category }} tools</h2>
@@ -156,6 +172,10 @@ h3 {
 }
 .cards a:hover {
   border-color: var(--accent);
+}
+.pinned .cards a {
+  border-color: var(--accent);
+  border-width: 2px;
 }
 .cards h3 {
   margin: 0 0 6px;

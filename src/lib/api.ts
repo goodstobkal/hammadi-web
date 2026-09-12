@@ -26,6 +26,10 @@ export type Tool = {
   tagline: string
   description: string
   category: string
+  /** Leads the home page and the index - the jobs people arrive for. */
+  pinned?: boolean
+  /** Slug of the guide that covers the same job in code, if there is one. */
+  guide?: string | null
   faq?: { q: string; a: string }[]
   fields: Field[]
   result_key: string | null
@@ -74,6 +78,46 @@ export async function runTool(
     )
   }
   return body as RunResult
+}
+
+export type Match = { slug: string; score: number; title: string; tagline: string }
+
+/** Ask the API which tool fits a described use case (embedding similarity). */
+export async function recommendTools(q: string): Promise<Match[]> {
+  const res = await fetch(`${API_BASE}/public/v1/recommend?q=${encodeURIComponent(q)}`)
+  if (!res.ok) throw new ApiError('Could not match that right now.', 'recommend_failed', res.status)
+  return ((await res.json()).matches || []) as Match[]
+}
+
+export type SupportPayload = {
+  name: string
+  email: string
+  message?: string
+  /** Labels the Telegram message: '' for support, e.g. 'Tool request' otherwise. */
+  topic?: string
+  page?: string
+  /** Honeypot - hidden in the form, so anything here means a bot filled it. */
+  website?: string
+}
+
+/** Deliver a message to the site owner. Resolves only once it's actually sent. */
+export async function sendSupport(payload: SupportPayload): Promise<void> {
+  const res = await fetch(`${API_BASE}/public/v1/support`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ page: location.pathname, ...payload }),
+  })
+  if (res.ok) return
+  const body = await res.json().catch(() => ({}))
+  const err = (body.detail && typeof body.detail === 'object' ? body.detail : body) as {
+    error?: string
+    code?: string
+  }
+  throw new ApiError(
+    err.error || "That didn't send. Try again in a moment.",
+    err.code || 'error',
+    res.status,
+  )
 }
 
 /** Pull `a.b.c` out of a nested result row. */

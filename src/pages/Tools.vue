@@ -4,6 +4,7 @@ import type { Tool } from '../lib/api'
 import { LISTING_URL, SITE_NAME, SITE_URL, breadcrumbs, useSeo } from '../lib/site'
 
 const tools = catalog.tools as Tool[]
+const pinned = tools.filter((t) => t.pinned)
 const categories = [...new Set(tools.map((t) => t.category))]
 
 useSeo({
@@ -35,6 +36,16 @@ useSeo({
       {{ tools.length }} browser tools for public Instagram data — each one runs live, shows a
       sortable table and exports to Excel, CSV or JSON. No login and no sign-up.
     </p>
+
+    <section v-if="pinned.length">
+      <h2>Most used</h2>
+      <ul class="list">
+        <li v-for="tool in pinned" :key="tool.slug">
+          <RouterLink :to="`/tools/${tool.slug}`">{{ tool.title }}</RouterLink>
+          <span> — {{ tool.tagline }}</span>
+        </li>
+      </ul>
+    </section>
 
     <section v-for="category in categories" :key="category">
       <h2>{{ category }}</h2>

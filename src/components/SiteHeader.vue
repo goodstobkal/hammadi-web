@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import BrandLogo from './BrandLogo.vue'
 import { GUIDES_URL, LISTING_URL, SITE_NAME } from '../lib/site'
 
 const open = ref(false)
@@ -8,11 +9,12 @@ const open = ref(false)
 <template>
   <header class="site-header">
     <div class="wrap">
-      <RouterLink to="/" class="brand">{{ SITE_NAME }}</RouterLink>
+      <RouterLink to="/" class="brand"><BrandLogo /> {{ SITE_NAME }}</RouterLink>
       <button class="burger" type="button" aria-label="Menu" @click="open = !open">☰</button>
       <nav :class="{ open }" @click="open = false">
         <RouterLink to="/tools">Free tools</RouterLink>
         <a :href="GUIDES_URL">Guides</a>
+        <RouterLink to="/ai-agents-for-instagram">AI agents</RouterLink>
         <a class="cta" :href="LISTING_URL" rel="noopener">Get the API</a>
       </nav>
     </div>
@@ -36,6 +38,9 @@ const open = ref(false)
   gap: 16px;
 }
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 700;
   font-size: 18px;
   text-decoration: none;

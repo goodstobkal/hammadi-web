@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SiteFooter from './components/SiteFooter.vue'
 import SiteHeader from './components/SiteHeader.vue'
+import SupportBox from './components/SupportBox.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import SiteHeader from './components/SiteHeader.vue'
     <RouterView />
   </main>
   <SiteFooter />
+  <SupportBox />
 </template>
 
 <style scoped>
