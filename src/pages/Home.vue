@@ -98,6 +98,18 @@ useSeo({
           </a>
         </li>
         <li>
+          <a href="/instagram-email-finder">
+            <h3>📧 Email finder</h3>
+            <p>Get a creator's public contact email from their profile URL.</p>
+          </a>
+        </li>
+        <li>
+          <a href="/instagram-audience-checker">
+            <h3>👥 Audience checker</h3>
+            <p>Sample an account's followers — verified/private breakdown and notable followers.</p>
+          </a>
+        </li>
+        <li>
           <a href="/deep-search/influencers">
             <h3>🔎 Deep influencer search</h3>
             <p>Search millions of creators by niche, country, size and engagement. Request early access.</p>
