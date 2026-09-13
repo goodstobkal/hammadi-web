@@ -122,6 +122,12 @@ useSeo({
           </a>
         </li>
         <li>
+          <a href="/instagram-influencers">
+            <h3>🌐 Influencers by category</h3>
+            <p>The top Instagram creators in thousands of niches — fashion, fitness, gaming and more — ranked by followers.</p>
+          </a>
+        </li>
+        <li>
           <a href="/chrome-extension">
             <h3>🧩 Chrome extension</h3>
             <p>Export all comments from a post/reel, or all posts from a profile, to CSV — right in your browser.</p>
