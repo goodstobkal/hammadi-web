@@ -122,6 +122,12 @@ useSeo({
           </a>
         </li>
         <li>
+          <a href="/chrome-extension">
+            <h3>🧩 Chrome extension</h3>
+            <p>Export all comments from a post/reel, or all posts from a profile, to CSV — right in your browser.</p>
+          </a>
+        </li>
+        <li>
           <a href="/deep-search/influencers">
             <h3>🔎 Deep influencer search</h3>
             <p>Search millions of creators by niche, country, size and engagement. Request early access.</p>
