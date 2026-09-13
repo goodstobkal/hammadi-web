@@ -53,12 +53,48 @@ useSeo({
     </section>
 
     <section class="featured">
-      <h2>New</h2>
+      <h2>New tools</h2>
       <ul class="cards">
+        <li>
+          <a href="/engagement-rate-calculator">
+            <h3>📊 Engagement rate calculator</h3>
+            <p>Any account's real engagement rate from recent posts, plus a sponsored-post price estimate.</p>
+          </a>
+        </li>
+        <li>
+          <a href="/profile-analyzer">
+            <h3>🔬 Profile analyzer</h3>
+            <p>Average likes, comments and views, posting cadence, best day &amp; hour, and content mix.</p>
+          </a>
+        </li>
+        <li>
+          <a href="/reels-finder">
+            <h3>🎬 Reels finder + player</h3>
+            <p>Search reels by keyword, then play and download any result in Instagram's own player.</p>
+          </a>
+        </li>
         <li>
           <a href="/giveaway-winner-picker">
             <h3>🎁 Giveaway winner picker</h3>
             <p>Paste a post or reel and draw a fair, random comment winner — dedupe, keyword and tag rules.</p>
+          </a>
+        </li>
+        <li>
+          <a href="/fake-follower-check">
+            <h3>🕵️ Fake follower check</h3>
+            <p>Sample an account's followers for a quick audience-quality score.</p>
+          </a>
+        </li>
+        <li>
+          <a href="/hashtag-generator">
+            <h3># Hashtag generator</h3>
+            <p>The hashtags creators actually use on reels for your topic, ranked by frequency.</p>
+          </a>
+        </li>
+        <li>
+          <a href="/instagram-video-downloader">
+            <h3>⬇ Video downloader</h3>
+            <p>Play any public reel or post in Instagram's player and download the video.</p>
           </a>
         </li>
         <li>
@@ -69,7 +105,7 @@ useSeo({
         </li>
         <li>
           <a href="/deep-search/videos">
-            <h3>🎬 Deep video search</h3>
+            <h3>🎥 Deep video search</h3>
             <p>Find top reels by keyword, newest-first, ranked by views. Request early access.</p>
           </a>
         </li>
