@@ -52,6 +52,30 @@ useSeo({
       </p>
     </section>
 
+    <section class="featured">
+      <h2>New</h2>
+      <ul class="cards">
+        <li>
+          <a href="/giveaway-winner-picker">
+            <h3>🎁 Giveaway winner picker</h3>
+            <p>Paste a post or reel and draw a fair, random comment winner — dedupe, keyword and tag rules.</p>
+          </a>
+        </li>
+        <li>
+          <a href="/deep-search/influencers">
+            <h3>🔎 Deep influencer search</h3>
+            <p>Search millions of creators by niche, country, size and engagement. Request early access.</p>
+          </a>
+        </li>
+        <li>
+          <a href="/deep-search/videos">
+            <h3>🎬 Deep video search</h3>
+            <p>Find top reels by keyword, newest-first, ranked by views. Request early access.</p>
+          </a>
+        </li>
+      </ul>
+    </section>
+
     <section v-if="pinned.length" class="pinned">
       <h2>Most used</h2>
       <ul class="cards">

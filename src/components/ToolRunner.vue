@@ -51,9 +51,11 @@ async function submit() {
         seconds: Math.round((Date.now() - started) / 1000),
       },
     })
-    // A completed lookup is the conversion worth optimising an ad campaign
-    // against - it means the visitor got something, not just landed.
-    trackAd('Search', { itemCount: rows.value.length }, convId)
+    // A completed lookup is the conversion worth optimising against - the
+    // visitor got something rather than merely landing. Reddit names it
+    // `Lead`: it rejects SEARCH as a campaign optimisation goal, and the
+    // optimiser can only learn from the event it is optimising for.
+    trackAd('Lead', { itemCount: rows.value.length }, convId)
   } catch (err) {
     result.value = null
     error.value =

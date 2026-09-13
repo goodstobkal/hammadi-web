@@ -13,6 +13,7 @@ const open = ref(false)
       <button class="burger" type="button" aria-label="Menu" @click="open = !open">☰</button>
       <nav :class="{ open }" @click="open = false">
         <RouterLink to="/tools">Free tools</RouterLink>
+        <a href="/giveaway-winner-picker">Giveaway picker</a>
         <a :href="GUIDES_URL">Guides</a>
         <RouterLink to="/ai-agents-for-instagram">AI agents</RouterLink>
         <a class="cta" :href="LISTING_URL" rel="noopener">Get the API</a>

@@ -68,7 +68,7 @@ export function initAnalytics() {
       void import('./ads').then((ads) => {
         const id = ads.conversionId()
         track('api_click', { meta: { href, from: window.location.pathname }, conversionId: id })
-        ads.trackAd('Lead', { itemCount: 1 }, id)
+        ads.trackAd('SignUp', { itemCount: 1 }, id)
       })
     },
     { capture: true },
