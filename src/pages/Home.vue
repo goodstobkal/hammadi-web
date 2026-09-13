@@ -110,6 +110,12 @@ useSeo({
           </a>
         </li>
         <li>
+          <a href="/instagram-profile-viewer">
+            <h3>🖼️ Profile viewer</h3>
+            <p>Open any public profile full-screen — bio, stats and a grid of recent posts.</p>
+          </a>
+        </li>
+        <li>
           <a href="/deep-search/influencers">
             <h3>🔎 Deep influencer search</h3>
             <p>Search millions of creators by niche, country, size and engagement. Request early access.</p>
