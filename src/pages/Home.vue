@@ -116,6 +116,12 @@ useSeo({
           </a>
         </li>
         <li>
+          <a href="/lookalike-audience-finder">
+            <h3>🎯 Lookalike audience finder</h3>
+            <p>Find the accounts that share a profile's audience — your best targets for outreach and collabs.</p>
+          </a>
+        </li>
+        <li>
           <a href="/deep-search/influencers">
             <h3>🔎 Deep influencer search</h3>
             <p>Search millions of creators by niche, country, size and engagement. Request early access.</p>
