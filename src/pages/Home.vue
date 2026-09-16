@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import UseCaseBox from '../components/UseCaseBox.vue'
+import SupportBox from '../components/SupportBox.vue'
 import catalog from '../catalog.json'
 import type { Tool } from '../lib/api'
 import { GUIDES_URL, LISTING_URL, SITE_NAME, SITE_URL, useSeo } from '../lib/site'
@@ -162,6 +163,27 @@ useSeo({
 
     <UseCaseBox />
 
+    <section class="custom" id="custom-solution">
+      <div class="custom-inner">
+        <span class="badge">Custom work</span>
+        <h2>Need a custom Instagram solution?</h2>
+        <p class="custom-lede">
+          Beyond the free tools and the API — bespoke scraping, automation, dashboards and data
+          pipelines built around your exact use case, at the scale you need. Tell us about your
+          project and we'll come back with how we can help and a quote.
+        </p>
+        <SupportBox
+          inline
+          ask-phone
+          topic="Custom Instagram solution"
+          title="Tell us about your project"
+          blurb="Share your name, email, phone and a short description of what you need. We'll reply by email, usually within a day."
+          message-label="Describe your project — what data, how much, how often, and where it needs to go"
+          :message-required="true"
+        />
+      </div>
+    </section>
+
     <section v-for="category in categories" :key="category">
       <h2>{{ category }} tools</h2>
       <ul class="cards">
@@ -281,5 +303,34 @@ h3 {
   margin: 0;
   color: var(--muted);
   font-size: 15px;
+}
+.custom {
+  margin: 48px 0;
+  border: 1px solid var(--accent);
+  border-radius: 18px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, var(--card)), var(--card));
+  padding: 8px;
+}
+.custom-inner {
+  padding: 20px;
+}
+.custom .badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+.custom h2 {
+  margin: 14px 0 8px;
+}
+.custom-lede {
+  color: var(--muted);
+  font-size: 16px;
+  max-width: 48em;
+  margin: 0 0 8px;
 }
 </style>

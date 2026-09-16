@@ -54,6 +54,24 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Read an error out of a failed response body. Our ScrapeError handler returns
+ * `{ error, code, detail }` at the TOP level (where `detail` is the exception's
+ * extra data, e.g. `{ username }` - a truthy object that must NOT be mistaken
+ * for the payload). A raw FastAPI HTTPException instead returns only `detail`
+ * (a string, or an object). Prefer the top-level fields, then fall back.
+ */
+function errorFrom(body: unknown, status: number, fallback: string): ApiError {
+  const b = (body || {}) as { error?: string; code?: string; detail?: unknown }
+  const nested = (b.detail && typeof b.detail === 'object' ? b.detail : {}) as {
+    error?: string
+    code?: string
+  }
+  const message =
+    b.error || nested.error || (typeof b.detail === 'string' ? b.detail : '') || fallback
+  return new ApiError(message, b.code || nested.code || 'error', status)
+}
+
 export async function runTool(
   slug: string,
   params: Record<string, string | number>,
@@ -65,17 +83,7 @@ export async function runTool(
   const res = await fetch(`${API_BASE}/public/v1/run/${slug}?${query}`)
   const body = await res.json().catch(() => ({}))
   if (!res.ok) {
-    // FastAPI wraps HTTPException payloads in `detail`; our ScrapeError
-    // handler returns the same fields at the top level.
-    const err = (body.detail && typeof body.detail === 'object' ? body.detail : body) as {
-      error?: string
-      code?: string
-    }
-    throw new ApiError(
-      err.error || 'That lookup failed. Try again in a moment.',
-      err.code || 'error',
-      res.status,
-    )
+    throw errorFrom(body, res.status, 'That lookup failed. Try again in a moment.')
   }
   return body as RunResult
 }
@@ -109,15 +117,7 @@ export async function sendSupport(payload: SupportPayload): Promise<void> {
   })
   if (res.ok) return
   const body = await res.json().catch(() => ({}))
-  const err = (body.detail && typeof body.detail === 'object' ? body.detail : body) as {
-    error?: string
-    code?: string
-  }
-  throw new ApiError(
-    err.error || "That didn't send. Try again in a moment.",
-    err.code || 'error',
-    res.status,
-  )
+  throw errorFrom(body, res.status, "That didn't send. Try again in a moment.")
 }
 
 /** Pull `a.b.c` out of a nested result row. */

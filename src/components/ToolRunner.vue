@@ -90,6 +90,18 @@ function exportJson() {
   )
 }
 
+/** Private / restricted accounts aren't publicly scrapable - open the support
+ *  box, prefilled, so the visitor can ask us to handle it for them. */
+function askAboutPrivate() {
+  window.dispatchEvent(
+    new CustomEvent('open-support', {
+      detail: {
+        message: `I'd like to scrape a private/restricted Instagram account (${subject.value}). Can you help?`,
+      },
+    }),
+  )
+}
+
 function cell(row: Record<string, unknown>, key: string) {
   return pick(row, key)
 }
@@ -150,6 +162,13 @@ function shortText(value: unknown) {
       {{ error.message }}
       <a v-if="error.code === 'free_limit_reached'" :href="LISTING_URL" rel="noopener">
         Get unlimited access →
+      </a>
+      <a
+        v-else-if="error.code === 'private_account' || error.code === 'instagram_restricted'"
+        href="#"
+        @click.prevent="askAboutPrivate"
+      >
+        Contact us for private-account scraping →
       </a>
     </p>
 

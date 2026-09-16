@@ -5,7 +5,7 @@
  * button is a reply by email, and the form only reports success once the
  * server confirms it actually delivered.
  */
-import { nextTick, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { ApiError, sendSupport } from '../lib/api'
 
 const props = withDefaults(
@@ -17,6 +17,8 @@ const props = withDefaults(
     inline?: boolean
     messageLabel?: string
     messageRequired?: boolean
+    /** Also ask for a phone number (required) - for higher-touch enquiries. */
+    askPhone?: boolean
   }>(),
   {
     topic: '',
@@ -25,12 +27,14 @@ const props = withDefaults(
     inline: false,
     messageLabel: 'Your question or issue',
     messageRequired: true,
+    askPhone: false,
   },
 )
 
 const open = ref(props.inline)
 const name = ref('')
 const email = ref('')
+const phone = ref('')
 const message = ref('')
 const website = ref('')
 const sending = ref(false)
@@ -46,6 +50,23 @@ async function toggle() {
   }
 }
 
+/**
+ * Let anywhere on the site open the box (and optionally prefill the message)
+ * with `window.dispatchEvent(new CustomEvent('open-support', { detail: {...} }))`.
+ * The floating bubble is the one that responds; inline copies stay put.
+ */
+async function onOpenRequest(event: Event) {
+  if (props.inline) return
+  const detail = (event as CustomEvent).detail as { message?: string } | undefined
+  if (detail?.message && !message.value.trim()) message.value = detail.message
+  open.value = true
+  await nextTick()
+  messageEl.value?.focus()
+}
+
+onMounted(() => window.addEventListener('open-support', onOpenRequest))
+onUnmounted(() => window.removeEventListener('open-support', onOpenRequest))
+
 async function submit() {
   error.value = ''
   if (!name.value.trim() || !email.value.trim()) {
@@ -56,12 +77,21 @@ async function submit() {
     error.value = 'Add a sentence or two about what you need.'
     return
   }
+  if (props.askPhone && !phone.value.trim()) {
+    error.value = 'A phone number, please — it helps us reach you quickly.'
+    return
+  }
+  // The backend message is free text; fold the phone in rather than widen the
+  // API's support schema for one form.
+  const body = phone.value.trim()
+    ? `Phone: ${phone.value.trim()}\n\n${message.value}`
+    : message.value
   sending.value = true
   try {
     await sendSupport({
       name: name.value,
       email: email.value,
-      message: message.value,
+      message: body,
       topic: props.topic,
       website: website.value,
     })
@@ -103,6 +133,10 @@ async function submit() {
           <label>
             <span>Email</span>
             <input v-model="email" type="email" autocomplete="email" maxlength="160" />
+          </label>
+          <label v-if="askPhone">
+            <span>Phone / WhatsApp</span>
+            <input v-model="phone" type="tel" autocomplete="tel" maxlength="40" />
           </label>
           <label>
             <span>{{ messageLabel }}</span>
