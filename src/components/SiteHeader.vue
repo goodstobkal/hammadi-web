@@ -30,6 +30,7 @@ onMounted(async () => {
         <RouterLink to="/services/profile-pack">Profile pack</RouterLink>
         <RouterLink to="/services/reel-analysis">Reel analysis</RouterLink>
         <RouterLink to="/tools">Cheap tools</RouterLink>
+        <RouterLink to="/orders">My orders</RouterLink>
         <RouterLink class="cta" to="/#services">Order a report</RouterLink>
         <!-- Auth-aware: username when signed in, else Log in. -->
         <a v-if="me" href="/account" class="account">
