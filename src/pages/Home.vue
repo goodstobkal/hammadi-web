@@ -17,6 +17,7 @@ const EXPORTS = [
   { name: 'Full posts export', desc: 'Every post of a profile (up to 500) with likes, comments, views, captions and links.', to: 'https://buy.stripe.com/9B6cMY7sM9a7fTtex1cbC0c' },
   { name: 'Full reels export', desc: 'Every reel of a profile (up to 500) with play counts, likes, comments and captions.', to: 'https://buy.stripe.com/00wcMYaEY5XVgXxex1cbC0d' },
   { name: 'Full likers export', desc: 'The accounts that liked a post (up to 1,000), with names and profile links.', to: 'https://buy.stripe.com/4gM00cbJ20DB7mX74zcbC0e' },
+  { name: '5 exports bundle', desc: 'Any 5 of the exports above (mix comments, posts, reels and likers) in one payment.', to: '/services/bundle', go: 'Bundle · $4', price: '$4' },
   { name: 'Account country check', desc: 'The country any public account is based in, from Instagram\'s "About this account". 100 accounts for $9.', to: '/services/country-check', go: 'Check · from $1' },
 ]
 
@@ -88,7 +89,7 @@ useSeo({
       </div>
       <div class="one-grid">
         <a v-for="e in EXPORTS" :key="e.to" :href="e.to" class="one-card" rel="noopener">
-          <span class="one-price">$1</span>
+          <span class="one-price">{{ e.price || '$1' }}</span>
           <b>{{ e.name }}</b>
           <p>{{ e.desc }}</p>
           <span class="one-go">{{ e.go || 'Buy · $1' }} →</span>

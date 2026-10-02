@@ -163,7 +163,7 @@ useSeo({
         </div>
         <a class="buy-btn" :href="pay.url" rel="noopener">{{ pay.btn || 'Buy now · $1' }} →</a>
       </div>
-      <p v-if="tool.slug !== 'instagram-influencer-search'" class="secure">🔒 Secure checkout by Stripe · Full refund if we can't deliver</p>
+      <p v-if="tool.slug !== 'instagram-influencer-search'" class="secure">🔒 Secure checkout by Stripe · Full refund if we can't deliver · Need several? <RouterLink to="/services/bundle">5 exports for $4 →</RouterLink></p>
       <p v-else class="secure">25 for $1 · 100 for $3 · 500 for $9 · 1,000 for $15 · 5,000 for $39. Need their emails? <a href="/services/influencer-lists">Lists with emails →</a></p>
 
       <h2>What you get</h2>
