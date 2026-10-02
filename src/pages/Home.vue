@@ -17,6 +17,7 @@ const EXPORTS = [
   { name: 'Full posts export', desc: 'Every post of a profile (up to 500) with likes, comments, views, captions and links.', to: 'https://buy.stripe.com/9B6cMY7sM9a7fTtex1cbC0c' },
   { name: 'Full reels export', desc: 'Every reel of a profile (up to 500) with play counts, likes, comments and captions.', to: 'https://buy.stripe.com/00wcMYaEY5XVgXxex1cbC0d' },
   { name: 'Full likers export', desc: 'The accounts that liked a post (up to 1,000), with names and profile links.', to: 'https://buy.stripe.com/4gM00cbJ20DB7mX74zcbC0e' },
+  { name: 'Account country check', desc: 'The country any public account is based in, from Instagram\'s "About this account". 100 accounts for $9.', to: '/services/country-check', go: 'Check · from $1' },
 ]
 
 const FAQ: [string, string][] = [
@@ -90,7 +91,7 @@ useSeo({
           <span class="one-price">$1</span>
           <b>{{ e.name }}</b>
           <p>{{ e.desc }}</p>
-          <span class="one-go">Buy · $1 →</span>
+          <span class="one-go">{{ e.go || 'Buy · $1' }} →</span>
         </a>
       </div>
     </section>
