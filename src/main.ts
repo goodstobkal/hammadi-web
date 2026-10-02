@@ -8,7 +8,7 @@ import App from './App.vue'
 import { KEPT_TOOLS } from './lib/site'
 import catalog from './catalog.json'
 import './style.css'
-import { initAnalytics, track } from './lib/analytics'
+import { initAnalytics, track , initEngagement, startPage} from './lib/analytics'
 import { initAds } from './lib/ads'
 
 const routes = [
@@ -36,9 +36,11 @@ const routes = [
 export const createApp = ViteSSG(App, { routes }, ({ router, isClient }) => {
   if (!isClient) return
   initAnalytics()
+  initEngagement()
   initAds()
   router.afterEach((to) => {
     window.scrollTo(0, 0)
+    startPage(to.path)
     track('pageview', { path: to.path })
   })
 })

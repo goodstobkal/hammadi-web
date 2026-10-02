@@ -16,7 +16,7 @@
 import { adsAllowed } from './ads'
 import { API_BASE } from './site'
 
-export type EventName = 'pageview' | 'tool_run' | 'tool_error' | 'export' | 'api_click' | 'recommend' | 'feedback' | 'chat_launcher' | 'extension_click'
+export type EventName = 'pageview' | 'tool_run' | 'tool_error' | 'export' | 'api_click' | 'recommend' | 'feedback' | 'chat_launcher' | 'extension_click' | 'buy_click' | 'page_time'
 
 type Payload = {
   path?: string
@@ -108,4 +108,47 @@ export function track(name: EventName, payload: Payload = {}) {
   } catch {
     /* ignore */
   }
+}
+
+// --- Time on page + buy clicks -------------------------------------------------
+// Active seconds per page (tab visible only), sent when the visitor leaves the
+// page (route change, tab hidden, or close). Buy-link clicks are their own event.
+let pagePath = ''
+let activeMs = 0
+let visibleSince = 0
+function flushPageTime() {
+  if (!pagePath) return
+  if (visibleSince) activeMs += Date.now() - visibleSince
+  visibleSince = document.visibilityState === 'visible' ? Date.now() : 0
+  const seconds = Math.round(activeMs / 1000)
+  activeMs = 0
+  if (seconds >= 1) track('page_time', { path: pagePath, meta: { seconds: Math.min(seconds, 3600) } })
+}
+export function startPage(path: string) {
+  flushPageTime()
+  pagePath = path
+  activeMs = 0
+  visibleSince = document.visibilityState === 'visible' ? Date.now() : 0
+}
+function ping() {
+  if (document.visibilityState !== 'visible') return
+  try {
+    void fetch(`${API_BASE}/public/v1/ping`, { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ path: window.location.pathname }), keepalive: true, credentials: 'include' }).catch(() => {})
+  } catch { /* ignore */ }
+}
+export function initEngagement() {
+  ping()
+  setInterval(ping, 30000)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') flushPageTime()
+    else visibleSince = Date.now()
+  })
+  window.addEventListener('pagehide', flushPageTime)
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement | null)?.closest?.('a[href*="buy.stripe.com"], a[href*="checkout.stripe.com"], button.pay, .buy-btn, .paybtn') as HTMLElement | null
+    if (!a) return
+    const href = a.getAttribute('href') || ''
+    track('buy_click', { meta: { label: (a.textContent || '').trim().slice(0, 60), href: href.slice(0, 120) } })
+  }, true)
 }
