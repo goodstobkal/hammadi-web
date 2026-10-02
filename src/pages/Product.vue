@@ -57,7 +57,7 @@ useSeo({
         <div class="ctas">
           <a class="cta" href="#packs">See prices from ${{ Math.min(...p.packs.map((k) => k.price)) }} →</a>
           <a v-if="p.slug === 'reel-analysis'" class="sample-dl" href="/report/examples">📊 See real example reports</a>
-          <a class="sample-dl" :href="p.sampleFile" download>⬇ Download a sample report</a>
+          <a v-if="p.sampleFile" class="sample-dl" :href="p.sampleFile" download>⬇ Download a sample report</a>
         </div>
       </div>
       <div class="sample" aria-label="Sample of what you receive">
@@ -65,7 +65,7 @@ useSeo({
         <dl>
           <div v-for="r in p.sample" :key="r.label"><dt>{{ r.label }}</dt><dd>{{ r.value }}</dd></div>
         </dl>
-        <p class="sample-f">Illustrative example. <a :href="p.sampleFile" download>Download a real sample (Excel)</a>, made from a public brand account.</p>
+        <p v-if="p.sampleFile" class="sample-f">Illustrative example. <a :href="p.sampleFile" download>Download a real sample (Excel)</a>, made from a public brand account.</p>
       </div>
     </header>
 

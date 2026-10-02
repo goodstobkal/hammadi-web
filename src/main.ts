@@ -51,5 +51,5 @@ export const createApp = ViteSSG(App, { routes }, ({ router, isClient }) => {
 export function includedRoutes(): string[] {
   const slugs = (catalog.tools as { slug: string }[]).filter((t) => KEPT_TOOLS.has(t.slug)).map((t) => `/tools/${t.slug}`)
   // '/404' becomes dist/404.html, which nginx serves with a 404 status.
-  return ['/', '/services/influencer-lists', '/services/profile-pack', '/services/reel-analysis', '/services/country-check', '/services/bundle', '/orders', '/reel-comment-checker', '/extension', '/tools', '/ai-agents-for-instagram', '/privacy', '/drop', '/404', ...slugs]
+  return ['/', '/services/influencer-lists', '/services/profile-pack', '/services/reel-analysis', '/services/youtube-tiktok', '/services/country-check', '/services/bundle', '/orders', '/reel-comment-checker', '/extension', '/tools', '/ai-agents-for-instagram', '/privacy', '/drop', '/404', ...slugs]
 }

@@ -23,7 +23,7 @@ const left = (exp: number) => {
   const d = Math.ceil((exp * 1000 - Date.now()) / 86400000)
   return d <= 0 ? 'expired' : d === 1 ? 'available 1 more day' : `available ${d} more days`
 }
-const label: Record<string, string> = { done: 'Delivered', running: 'In progress', queued: 'Queued', error: 'Needs attention' }
+const label: Record<string, string> = { manual: 'In progress (within 24h)', done: 'Delivered', running: 'In progress', queued: 'Queued', error: 'Needs attention' }
 
 async function load() {
   try {

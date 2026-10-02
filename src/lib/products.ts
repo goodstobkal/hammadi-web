@@ -11,7 +11,7 @@ export type Product = {
   seoDescription: string
   intro: string
   delivery: string
-  sampleFile: string
+  sampleFile?: string
   youGet: string[]
   steps: string[]
   sample: { label: string; value: string }[]
@@ -152,6 +152,48 @@ export const PRODUCTS: Product[] = [
       ['What languages are supported?', 'Transcription and sentiment work in most major languages, including English, Spanish, French, Arabic and Hindi.'],
       ['What if comments are turned off?', 'You still get the transcript and the AI read on the content. The comment sections will be empty.'],
       ['How do I send 5 reels?', 'Paste all 5 links in the box at checkout, separated by spaces.'],
+    ],
+  },
+  {
+    slug: 'youtube-tiktok',
+    icon: '▶',
+    name: 'YouTube & TikTok data',
+    tagline: 'Every comment of a video or every video of a channel, as Excel.',
+    seoTitle: 'Export YouTube & TikTok Comments and Videos to Excel - $1',
+    seoDescription:
+      'Export all comments of a YouTube or TikTok video, or every video of a YouTube channel or TikTok profile, to Excel. $1 per export, delivered by email.',
+    intro:
+      'Send us a video or a channel. We collect every comment (or every video with its views, likes and comments) and email you a clean Excel file.',
+    delivery: 'Within 24 hours',
+    youGet: [
+      'YouTube: every comment of a video, with author, likes, replies and date',
+      'YouTube: every video of a channel, with views, likes, comments and publish date',
+      'TikTok: every comment of a video, with author, likes and date',
+      'TikTok: every video of a profile, with views, likes, comments and shares',
+    ],
+    steps: [
+      'Pick what you need and pay $1 with Stripe',
+      'Paste the video or channel link at checkout',
+      'Get the Excel file by email within 24 hours',
+    ],
+    sample: [
+      { label: 'Video', value: 'youtube.com/watch?v=…' },
+      { label: 'Comments', value: '4,812' },
+      { label: 'Top comment', value: '"This changed my routine"' },
+      { label: 'Likes', value: '2,304' },
+      { label: 'Format', value: 'Excel (.xlsx)' },
+    ],
+    packs: [
+      { name: 'YouTube comments', note: 'All comments of one video', price: 1, url: 'https://buy.stripe.com/fZufZa7sMgCz22D88DcbC0h', best: true },
+      { name: 'YouTube channel videos', note: 'All videos of one channel', price: 1, url: 'https://buy.stripe.com/4gMaEQ3cw0DBePp88DcbC0i' },
+      { name: 'TikTok comments', note: 'All comments of one video', price: 1, url: 'https://buy.stripe.com/7sY14g4gAaebgXx88DcbC0j' },
+      { name: 'TikTok profile videos', note: 'All videos of one profile', price: 1, url: 'https://buy.stripe.com/3cIcMYcN63PN22D3SncbC0k' },
+    ],
+    faq: [
+      ['How long does it take?', 'Usually within 24 hours. You get the Excel file by email.'],
+      ['Can I export a competitor\'s videos?', 'Yes, any public video, channel or profile.'],
+      ['Need many videos or channels?', 'Use the chat (bottom right) for a quote on bigger volumes.'],
+      ['Prefer to do it yourself?', 'Our free Chrome extension exports YouTube comments right from your browser: hammadi.dev/extension.'],
     ],
   },
 ]
