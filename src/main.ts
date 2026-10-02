@@ -17,6 +17,7 @@ const routes = [
   { path: '/tools/bulk-profile-lookup', name: 'bulk', component: () => import('./pages/Bulk.vue') },
   { path: '/tools/download-instagram-profile', name: 'profile-zip', component: () => import('./pages/ProfileZip.vue') },
   { path: '/tools/:slug', name: 'tool', component: () => import('./pages/Tool.vue') },
+  { path: '/extension', name: 'extension', component: () => import('./pages/Extension.vue') },
   { path: '/reel-comment-checker', name: 'reel-check', component: () => import('./pages/ReelCheck.vue') },
   { path: '/orders', name: 'orders', component: () => import('./pages/Orders.vue') },
   { path: '/services/bundle', name: 'bundle', component: () => import('./pages/Bundle.vue') },
@@ -50,5 +51,5 @@ export const createApp = ViteSSG(App, { routes }, ({ router, isClient }) => {
 export function includedRoutes(): string[] {
   const slugs = (catalog.tools as { slug: string }[]).filter((t) => KEPT_TOOLS.has(t.slug)).map((t) => `/tools/${t.slug}`)
   // '/404' becomes dist/404.html, which nginx serves with a 404 status.
-  return ['/', '/services/influencer-lists', '/services/profile-pack', '/services/reel-analysis', '/services/country-check', '/services/bundle', '/orders', '/reel-comment-checker', '/tools', '/ai-agents-for-instagram', '/privacy', '/drop', '/404', ...slugs]
+  return ['/', '/services/influencer-lists', '/services/profile-pack', '/services/reel-analysis', '/services/country-check', '/services/bundle', '/orders', '/reel-comment-checker', '/extension', '/tools', '/ai-agents-for-instagram', '/privacy', '/drop', '/404', ...slugs]
 }
