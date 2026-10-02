@@ -122,6 +122,8 @@ export const PRODUCTS: Product[] = [
     youGet: [
       'Full transcript of what is said in the reel',
       'Every comment (up to 5,000) with AI sentiment',
+      '🛒 Everyone who asked the price, the link or where to buy: your lead list',
+      'An interactive web report with charts you can share',
       'The hook: the first words viewers hear',
       'What viewers love, their complaints and their top questions',
       'The words and emoji viewers use most',
@@ -141,8 +143,10 @@ export const PRODUCTS: Product[] = [
     packs: [
       { name: '1 reel', note: 'Transcript + comments + AI report', price: 19, url: 'https://buy.stripe.com/bJe6oA00k0DB22DagLcbC08', best: true },
       { name: '5 reels', note: 'Compare what works across reels', price: 69, url: 'https://buy.stripe.com/28EfZadRafyv22Dex1cbC09' },
+      { name: 'Buyers only', note: 'Just the list of people who want to buy', price: 5, url: 'https://buy.stripe.com/5kQbIU4gA9a7bDd3SncbC0g' },
     ],
     faq: [
+      ['Is there a free version?', 'Yes: the free reel comment checker at hammadi.dev/reel-comment-checker shows how many people want to buy and the comment sentiment for any reel.'],
       ['Can I analyse someone else’s reel?', 'Yes, any public reel. It works for competitor research as well as your own content.'],
       ['What languages are supported?', 'Transcription and sentiment work in most major languages, including English, Spanish, French, Arabic and Hindi.'],
       ['What if comments are turned off?', 'You still get the transcript and the AI read on the content. The comment sections will be empty.'],
