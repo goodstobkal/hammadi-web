@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import catalog from '../catalog.json'
 import type { Tool } from '../lib/api'
-import { LISTING_URL, SITE_NAME, SITE_URL, breadcrumbs, useSeo } from '../lib/site'
+import { LISTING_URL, SITE_NAME, SITE_URL, breadcrumbs, useSeo, KEPT_TOOLS } from '../lib/site'
 
-const tools = catalog.tools as Tool[]
+const tools = (catalog.tools as Tool[]).filter((t) => KEPT_TOOLS.has(t.slug))
 const pinned = tools.filter((t) => t.pinned)
 const categories = [...new Set(tools.map((t) => t.category))]
 
@@ -47,19 +47,6 @@ useSeo({
       </ul>
     </section>
 
-    <section>
-      <h2>Bulk</h2>
-      <ul class="list">
-        <li>
-          <RouterLink to="/tools/bulk-profile-lookup">Bulk Instagram profile lookup</RouterLink>
-          <span> — upload a list of profiles, get followers, bio, category and country for each as Excel</span>
-        </li>
-        <li>
-          <RouterLink to="/tools/download-instagram-profile">Download a full Instagram profile as ZIP</RouterLink>
-          <span> — every photo and video from a profile, plus captions and likes, emailed as a ZIP</span>
-        </li>
-      </ul>
-    </section>
 
     <section v-for="category in categories" :key="category">
       <h2>{{ category }}</h2>

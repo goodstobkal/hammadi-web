@@ -52,3 +52,6 @@ export function breadcrumbs(trail: { name: string; path: string }[]) {
     })),
   }
 }
+
+/** Tools still offered (each sells a $1 export or leads to a product); the rest 301 to products. */
+export const KEPT_TOOLS = new Set(['export-instagram-comments', 'instagram-posts', 'export-instagram-reels', 'instagram-likers', 'instagram-influencer-search'])

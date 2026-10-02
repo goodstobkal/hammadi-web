@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { GUIDES_URL, SITE_NAME } from '../lib/site'
+import { GUIDES_URL, SITE_NAME, KEPT_TOOLS } from '../lib/site'
 import catalog from '../catalog.json'
 
-const tools = (catalog.tools as { slug: string; title: string }[]).slice(0, 8)
+const tools = (catalog.tools as { slug: string; title: string }[]).filter((t) => KEPT_TOOLS.has(t.slug))
 </script>
 
 <template>

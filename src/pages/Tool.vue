@@ -73,11 +73,27 @@ useSeo({
 })
 
 // Paid one-off exports: Stripe Payment Link, link entered at checkout, Excel by email.
-const PAY: Record<string, { title: string; sub: string; url: string }> = {
+const PAY: Record<string, { title: string; sub: string; url: string; btn?: string }> = {
   'export-instagram-comments': {
     title: 'Get every comment by email · $1',
     sub: 'All comments and replies (up to 5,000) with usernames, likes, dates and sentiment, as Excel. Paste the post link at checkout.',
     url: 'https://buy.stripe.com/00w5kwcN6aebgXx9cHcbC0b',
+  },
+  'export-instagram-reels': {
+    title: 'Get every reel by email · $1',
+    sub: 'All reels of a profile (up to 500) with play counts, likes, comments and captions, as Excel. Enter the profile at checkout.',
+    url: 'https://buy.stripe.com/00wcMYaEY5XVgXxex1cbC0d',
+  },
+  'instagram-likers': {
+    title: 'Get every liker by email · $1',
+    sub: 'The accounts that liked a post (up to 1,000) with names and profile links, as Excel. Paste the post link at checkout.',
+    url: 'https://buy.stripe.com/4gM00cbJ20DB7mX74zcbC0e',
+  },
+  'instagram-influencer-search': {
+    title: 'Get 100 matching influencers + emails · $29',
+    sub: 'Describe the influencers you want at checkout (niche, country, size) and get an Excel list with public emails, usually within the hour.',
+    url: 'https://buy.stripe.com/28EdR24gAeurbDdgF9cbC02',
+    btn: 'Buy · $29',
   },
   'instagram-posts': {
     title: 'Get every post by email · $1',
@@ -102,7 +118,7 @@ const PAY: Record<string, { title: string; sub: string; url: string }> = {
 
     <a v-if="PAY[tool.slug]" class="paybox" :href="PAY[tool.slug].url" rel="noopener">
       <span><b>{{ PAY[tool.slug].title }}</b>{{ PAY[tool.slug].sub }}</span>
-      <span class="paybtn">Buy · $1 →</span>
+      <span class="paybtn">{{ PAY[tool.slug].btn || 'Buy · $1' }} →</span>
     </a>
     <p v-if="PAY[tool.slug]" class="paynote">Or try a quick preview below.</p>
     <ToolRunner :tool="tool" :limits="limits" />

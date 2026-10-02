@@ -11,6 +11,7 @@ export type Product = {
   seoDescription: string
   intro: string
   delivery: string
+  sampleFile: string
   youGet: string[]
   steps: string[]
   sample: { label: string; value: string }[]
@@ -21,6 +22,7 @@ export type Product = {
 export const PRODUCTS: Product[] = [
   {
     slug: 'influencer-lists',
+    sampleFile: '/samples/sample-influencer-list.xlsx',
     icon: '🎯',
     name: 'Influencer lists',
     tagline: 'A ready-to-use list of influencers in your niche, with their public emails.',
@@ -65,6 +67,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     slug: 'profile-pack',
+    sampleFile: '/samples/sample-profile-pack.xlsx',
     icon: '📦',
     name: 'Full profile pack',
     tagline: 'Every post, photo and video of a profile, plus all its comments analysed by AI.',
@@ -106,6 +109,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     slug: 'reel-analysis',
+    sampleFile: '/samples/sample-reel-analysis.xlsx',
     icon: '🎬',
     name: 'Reel analysis',
     tagline: 'Transcript, every comment and a clear report on how your reel landed.',

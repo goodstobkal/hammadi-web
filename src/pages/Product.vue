@@ -54,14 +54,17 @@ useSeo({
         <p class="tag">{{ p.tagline }}</p>
         <p class="intro">{{ p.intro }}</p>
         <div class="meta"><span>⏱ {{ p.delivery }}</span><span>🔒 Secure checkout by Stripe</span><span>📧 Delivered by email</span></div>
-        <a class="cta" href="#packs">See prices from ${{ Math.min(...p.packs.map((k) => k.price)) }} →</a>
+        <div class="ctas">
+          <a class="cta" href="#packs">See prices from ${{ Math.min(...p.packs.map((k) => k.price)) }} →</a>
+          <a class="sample-dl" :href="p.sampleFile" download>⬇ Download a sample report</a>
+        </div>
       </div>
       <div class="sample" aria-label="Sample of what you receive">
         <p class="sample-h">Sample from a report</p>
         <dl>
           <div v-for="r in p.sample" :key="r.label"><dt>{{ r.label }}</dt><dd>{{ r.value }}</dd></div>
         </dl>
-        <p class="sample-f">Illustrative example. Your report uses real data.</p>
+        <p class="sample-f">Illustrative example. <a :href="p.sampleFile" download>Download a real sample (Excel)</a>, made from a public brand account.</p>
       </div>
     </header>
 
@@ -116,6 +119,10 @@ h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.08; letter-spacing: -0.03
 .intro { color: var(--muted); font-size: 16.5px; margin: 0 0 16px; }
 .meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 14px; margin: 0 0 20px; }
 .cta { display: inline-block; background: var(--accent); color: #fff; border-radius: 999px; padding: 14px 26px; text-decoration: none; font-weight: 700; box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 30%, transparent); }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; }
+.sample-dl { color: var(--accent); font-weight: 700; text-decoration: none; border: 1.5px solid var(--accent); border-radius: 999px; padding: 12px 20px; }
+.sample-dl:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.sample-f a { color: var(--accent); }
 .sample { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; box-shadow: 0 16px 40px rgba(180, 35, 111, 0.08); }
 .sample-h { margin: 0 0 10px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
 .sample dl { margin: 0; }

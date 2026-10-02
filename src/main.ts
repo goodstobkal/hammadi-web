@@ -5,6 +5,7 @@
  */
 import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
+import { KEPT_TOOLS } from './lib/site'
 import catalog from './catalog.json'
 import './style.css'
 import { initAnalytics, track } from './lib/analytics'
@@ -41,7 +42,7 @@ export const createApp = ViteSSG(App, { routes }, ({ router, isClient }) => {
 
 /** Which paths vite-ssg prerenders - every tool gets its own HTML file. */
 export function includedRoutes(): string[] {
-  const slugs = (catalog.tools as { slug: string }[]).map((t) => `/tools/${t.slug}`)
+  const slugs = (catalog.tools as { slug: string }[]).filter((t) => KEPT_TOOLS.has(t.slug)).map((t) => `/tools/${t.slug}`)
   // '/404' becomes dist/404.html, which nginx serves with a 404 status.
-  return ['/', '/services/influencer-lists', '/services/profile-pack', '/services/reel-analysis', '/tools', '/tools/bulk-profile-lookup', '/tools/download-instagram-profile', '/ai-agents-for-instagram', '/privacy', '/drop', '/404', ...slugs]
+  return ['/', '/services/influencer-lists', '/services/profile-pack', '/services/reel-analysis', '/tools', '/ai-agents-for-instagram', '/privacy', '/drop', '/404', ...slugs]
 }

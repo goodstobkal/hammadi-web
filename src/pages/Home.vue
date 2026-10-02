@@ -5,9 +5,9 @@ import catalog from '../catalog.json'
 import type { Tool } from '../lib/api'
 import ProductIcon from '../components/ProductIcon.vue'
 import { PRODUCTS } from '../lib/products'
-import { GUIDES_URL, SITE_NAME, SITE_URL, useSeo } from '../lib/site'
+import { GUIDES_URL, SITE_NAME, SITE_URL, useSeo, KEPT_TOOLS } from '../lib/site'
 
-const tools = catalog.tools as Tool[]
+const tools = (catalog.tools as Tool[]).filter((t) => KEPT_TOOLS.has(t.slug))
 const from = (packs: { price: number }[]) => Math.min(...packs.map((k) => k.price))
 
 // $1 one-off exports: Stripe Payment Links; the link is entered at checkout and
@@ -15,6 +15,8 @@ const from = (packs: { price: number }[]) => Math.min(...packs.map((k) => k.pric
 const EXPORTS = [
   { name: 'Full comments export', desc: 'Every comment and reply on a post or reel (up to 5,000), with usernames, likes, dates and sentiment.', to: 'https://buy.stripe.com/00w5kwcN6aebgXx9cHcbC0b' },
   { name: 'Full posts export', desc: 'Every post of a profile (up to 500) with likes, comments, views, captions and links.', to: 'https://buy.stripe.com/9B6cMY7sM9a7fTtex1cbC0c' },
+  { name: 'Full reels export', desc: 'Every reel of a profile (up to 500) with play counts, likes, comments and captions.', to: 'https://buy.stripe.com/00wcMYaEY5XVgXxex1cbC0d' },
+  { name: 'Full likers export', desc: 'The accounts that liked a post (up to 1,000), with names and profile links.', to: 'https://buy.stripe.com/4gM00cbJ20DB7mX74zcbC0e' },
 ]
 
 const FAQ: [string, string][] = [
