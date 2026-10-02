@@ -34,7 +34,7 @@ useSeo({
     <h1>Cheap Instagram tools</h1>
     <p class="lede">
       {{ tools.length }} browser tools for public Instagram data — each one runs live, shows a
-      sortable table and exports to Excel, CSV or JSON. A free account gets you 10 lookups a month, no card needed.
+      sortable table and exports to Excel, CSV or JSON. $1 per task gets you the full result, no subscription.
     </p>
 
     <section v-if="pinned.length">

@@ -346,7 +346,7 @@ function shortText(value: unknown) {
 
 <template>
   <section class="runner" id="try">
-    <form class="tool-form" @submit.prevent="submit">
+    <form class="tool-form" @submit.prevent="openCredits">
       <div v-if="mainField" class="main-field">
         <label :for="`f-${mainField.name}`">{{ mainField.label }}</label>
         <div class="main-row">
@@ -367,7 +367,7 @@ function shortText(value: unknown) {
           </div>
           <button type="submit" class="go" :disabled="loading">
             <span v-if="loading" class="spinner" aria-hidden="true"></span>
-            {{ loading ? 'Working…' : 'Run it — free →' }}
+            {{ loading ? 'Working…' : 'Get it all · $1 →' }}
           </button>
         </div>
         <div class="below">
@@ -398,10 +398,8 @@ function shortText(value: unknown) {
             :max="field.paid_max || field.max"
             :required="field.required"
           />
-          <small v-if="field.paid_max" class="cap" :class="{ over: Number(form[field.name]) > (field.max || 0) }">
-            Free: up to {{ field.max }} ·
-            <a href="/pricing">Paid plans: up to {{ field.paid_max.toLocaleString() }}</a>
-            <span v-if="Number(form[field.name]) > (field.max || 0)"> · uses {{ Math.ceil(Number(form[field.name]) / (field.per_lookup || 1)).toLocaleString() }} lookups · emailed to you as Excel 💌</span>
+          <small v-if="field.paid_max" class="cap">
+            $1 gets the full result: up to {{ field.paid_max.toLocaleString() }}, big runs emailed to you as Excel 💌
           </small>
           <small v-if="field.help">{{ field.help }}</small>
         </div>
@@ -409,14 +407,13 @@ function shortText(value: unknown) {
 
       <button v-if="!mainField" type="submit" class="go solo" :disabled="loading">
         <span v-if="loading" class="spinner" aria-hidden="true"></span>
-        {{ loading ? 'Working…' : 'Run it — free →' }}
+        {{ loading ? 'Working…' : 'Get it all · $1 →' }}
       </button>
 
       <p class="hint">
-        <span class="pill">✓ No login for your first runs</span>
-        <span class="pill">✓ Export Excel, CSV &amp; JSON</span>
-        <span class="pill"><a href="/signup">Free account</a>: 10 lookups/month</span>
-        <span class="more">Need more? <a href="/pricing">Upgrade</a> or <a :href="LISTING_URL" rel="noopener">use the API</a>.</span>
+        <span class="pill">✓ $1 per task, the full result</span>
+        <span class="pill">✓ Excel, CSV &amp; JSON</span>
+        <span class="pill">✓ No subscription, credits never expire</span>
       </p>
     </form>
 

@@ -23,8 +23,8 @@ const path = computed(() => `/tools/${route.params.slug}`)
 const faq = computed(() => [
   ...((tool.value?.faq || []) as { q: string; a: string }[]),
   {
-    q: `Is the ${(tool.value?.title || 'tool').toLowerCase()} free?`,
-    a: `Yes. Create a free account and you get 10 lookups a month, no card needed. Paid plans start at $2 a month, and the API is there for higher volume or your own code.`,
+    q: 'How much does it cost?',
+    a: '$1 per task, and you get the full result: every comment, post, reel or liker up to the tool\'s maximum. No subscription, and unused credits never expire. Big runs are emailed to you as Excel.',
   },
   {
     q: 'Do I need to log in to Instagram?',
@@ -40,8 +40,42 @@ const faq = computed(() => [
   },
 ])
 
+// Paid one-off exports: Stripe Payment Link, link entered at checkout, Excel by email.
+const PAY: Record<string, { title: string; sub: string; url: string; btn?: string; h1?: string }> = {
+  'export-instagram-comments': {
+    h1: 'Get all comments of any Instagram post for $1',
+    title: 'Get every comment by email · $1',
+    sub: 'All comments and replies (up to 5,000) with usernames, likes, dates and sentiment, as Excel. Paste the post link at checkout.',
+    url: 'https://buy.stripe.com/00w5kwcN6aebgXx9cHcbC0b',
+  },
+  'export-instagram-reels': {
+    h1: 'Get all reels of any Instagram profile for $1',
+    title: 'Get every reel by email · $1',
+    sub: 'All reels of a profile (up to 500) with play counts, likes, comments and captions, as Excel. Enter the profile at checkout.',
+    url: 'https://buy.stripe.com/00wcMYaEY5XVgXxex1cbC0d',
+  },
+  'instagram-likers': {
+    h1: 'Get all likers of any Instagram post for $1',
+    title: 'Get every liker by email · $1',
+    sub: 'The accounts that liked a post (up to 1,000) with names and profile links, as Excel. Paste the post link at checkout.',
+    url: 'https://buy.stripe.com/4gM00cbJ20DB7mX74zcbC0e',
+  },
+  'instagram-influencer-search': {
+    title: 'Get 100 matching influencers + emails · $29',
+    sub: 'Describe the influencers you want at checkout (niche, country, size) and get an Excel list with public emails, usually within the hour.',
+    url: 'https://buy.stripe.com/28EdR24gAeurbDdgF9cbC02',
+    btn: 'Buy · $29',
+  },
+  'instagram-posts': {
+    h1: 'Get all posts of any Instagram profile for $1',
+    title: 'Get every post by email · $1',
+    sub: 'All posts of a profile (up to 500) with likes, comments, views and captions, as Excel. Enter the profile at checkout.',
+    url: 'https://buy.stripe.com/9B6cMY7sM9a7fTtex1cbC0c',
+  },
+}
+
 useSeo({
-  title: tool.value ? `${tool.value.title} - Free, No Login | ${SITE_NAME}` : 'Tool not found',
+  title: tool.value ? `${PAY[tool.value.slug]?.h1 || tool.value.title} | ${SITE_NAME}` : 'Tool not found',
   description: tool.value?.description || 'That tool does not exist.',
   path: path.value,
   jsonld: [
@@ -54,7 +88,7 @@ useSeo({
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'Any',
       browserRequirements: 'Requires JavaScript',
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      offers: { '@type': 'Offer', price: '1', priceCurrency: 'USD' },
     },
     {
       '@context': 'https://schema.org',
@@ -72,35 +106,6 @@ useSeo({
   ],
 })
 
-// Paid one-off exports: Stripe Payment Link, link entered at checkout, Excel by email.
-const PAY: Record<string, { title: string; sub: string; url: string; btn?: string }> = {
-  'export-instagram-comments': {
-    title: 'Get every comment by email · $1',
-    sub: 'All comments and replies (up to 5,000) with usernames, likes, dates and sentiment, as Excel. Paste the post link at checkout.',
-    url: 'https://buy.stripe.com/00w5kwcN6aebgXx9cHcbC0b',
-  },
-  'export-instagram-reels': {
-    title: 'Get every reel by email · $1',
-    sub: 'All reels of a profile (up to 500) with play counts, likes, comments and captions, as Excel. Enter the profile at checkout.',
-    url: 'https://buy.stripe.com/00wcMYaEY5XVgXxex1cbC0d',
-  },
-  'instagram-likers': {
-    title: 'Get every liker by email · $1',
-    sub: 'The accounts that liked a post (up to 1,000) with names and profile links, as Excel. Paste the post link at checkout.',
-    url: 'https://buy.stripe.com/4gM00cbJ20DB7mX74zcbC0e',
-  },
-  'instagram-influencer-search': {
-    title: 'Get 100 matching influencers + emails · $29',
-    sub: 'Describe the influencers you want at checkout (niche, country, size) and get an Excel list with public emails, usually within the hour.',
-    url: 'https://buy.stripe.com/28EdR24gAeurbDdgF9cbC02',
-    btn: 'Buy · $29',
-  },
-  'instagram-posts': {
-    title: 'Get every post by email · $1',
-    sub: 'All posts of a profile (up to 500) with likes, comments, views and captions, as Excel. Enter the profile at checkout.',
-    url: 'https://buy.stripe.com/9B6cMY7sM9a7fTtex1cbC0c',
-  },
-}
 </script>
 
 <template>
@@ -113,14 +118,14 @@ const PAY: Record<string, { title: string; sub: string; url: string; btn?: strin
     <p class="eyebrow">
       <RouterLink to="/tools">Cheap tools</RouterLink> · {{ tool.category }}
     </p>
-    <h1>{{ tool.title }}</h1>
+    <h1>{{ PAY[tool.slug]?.h1 || tool.title }}</h1>
     <p class="lede">{{ tool.tagline }}</p>
 
     <a v-if="PAY[tool.slug]" class="paybox" :href="PAY[tool.slug].url" rel="noopener">
       <span><b>{{ PAY[tool.slug].title }}</b>{{ PAY[tool.slug].sub }}</span>
       <span class="paybtn">{{ PAY[tool.slug].btn || 'Buy · $1' }} →</span>
     </a>
-    <p v-if="PAY[tool.slug]" class="paynote">Or try a quick preview below.</p>
+    <p v-if="PAY[tool.slug]" class="paynote">Or run it right here with a $1 credit and see the full result on this page.</p>
     <ToolRunner :tool="tool" :limits="limits" />
 
     <h2>What this tool does</h2>
@@ -131,7 +136,7 @@ const PAY: Record<string, { title: string; sub: string; url: string; btn?: strin
       <li v-for="field in tool.fields.filter((f) => f.required)" :key="field.name">
         Enter the {{ field.label.toLowerCase() }}<span v-if="field.help"> — {{ field.help.toLowerCase() }}</span>.
       </li>
-      <li>Press <strong>Run it</strong> and wait a few seconds while the data is fetched live.</li>
+      <li>Press <strong>Get it all · $1</strong>, pay once with Stripe, and the full result is fetched live.</li>
       <li>Sort through the table, then export it to Excel, CSV or JSON.</li>
     </ol>
 
