@@ -7,8 +7,24 @@ const STORE = 'https://chromewebstore.google.com/detail/instagram-comment-post-e
 const FAQ: [string, string][] = [
   ['Is my data sent to a server?', 'No. The extension reads comments and posts inside your own Instagram or YouTube tab and builds the file in your browser. Only your plan (free or Pro) is checked with hammadi.dev.'],
   ['Is it free?', 'Your first export is free with a hammadi.dev account. Pro is $3 a month for unlimited exports, cancel any time.'],
-  ['Which sites does it support?', 'Instagram (comments of posts and reels, all posts of a profile, photos and videos) and YouTube (comments of videos and Shorts).'],
+  ['Which sites does it support?', 'Instagram (comments, profile posts, likers, followers, following, suggested accounts, photos and videos) and YouTube (comments of videos and Shorts, search results).'],
   ['Is it safe for my Instagram account?', 'It reads at a human pace (about one request a second) through your normal logged-in session, like scrolling the comments yourself.'],
+]
+const VIDEOS = [
+  { src: '/videos/extension-profile.mp4', title: 'Export a whole Instagram profile', sub: 'One button next to Follow: every post with likes, comments and views.' },
+  { src: '/videos/extension-youtube.mp4', title: 'YouTube comments in one click', sub: '500 comments of a video, straight from the page.' },
+  { src: '/videos/extension-plans.mp4', title: 'Comments of any reel', sub: 'First export free, then unlimited with Pro.' },
+]
+const FEATS = [
+  { i: '💬', t: 'Instagram comments', d: 'Every comment and reply of a post or reel: author, likes, date, profile link.' },
+  { i: '🖼', t: 'Profile posts', d: 'All posts of a profile with likes, comments, views and captions.' },
+  { i: '❤️', t: 'Likers', d: 'The accounts that liked a post.' },
+  { i: '👥', t: 'Followers & following', d: 'Follower and following lists (Instagram limits other accounts to ~50 followers).' },
+  { i: '✨', t: 'Suggested accounts', d: 'Accounts Instagram suggests as similar: great for finding competitors.' },
+  { i: '⬇', t: 'Photos & videos', d: 'Download every photo and video of a post or carousel.' },
+  { i: '▶', t: 'YouTube comments', d: 'Every comment of a video or Short with likes and replies.' },
+  { i: '🔎', t: 'YouTube search', d: 'All videos of a search: title, channel, views, date, link.' },
+  { i: '🤖', t: 'AI replies', d: 'Use your own OpenAI or Claude key to draft replies and ask questions about the comments.' },
 ]
 const path = '/extension'
 useSeo({
@@ -58,8 +74,9 @@ onMounted(() => {
 <template>
   <article class="ex">
     <div v-if="justPro" class="ok">✅ You're Pro: unlimited exports. Open the extension and export away.</div>
-    <h1>Export comments from Instagram & YouTube, in one click</h1>
-    <p class="lede">A Chrome extension that pulls every comment of a post, reel or video into CSV or JSON. It runs in your own tab, so nothing goes through a server.</p>
+    <p class="kicker">Chrome extension · Instagram & YouTube</p>
+    <h1>Export comments, posts and followers in one click</h1>
+    <p class="lede">A pink Export button right on Instagram and YouTube. Every comment, post, liker, follower or video into CSV or JSON. It runs in your own tab, so nothing goes through a server.</p>
     <div class="cta">
       <a class="btn" :href="STORE" target="_blank" rel="noopener">Add to Chrome, it's free →</a>
       <span class="sub">First export free · Pro $3/month</span>
@@ -81,13 +98,25 @@ onMounted(() => {
       </div>
     </div>
 
-    <h2>What it exports</h2>
-    <ul class="feat">
-      <li><b>Instagram comments</b>: every comment and reply of a post or reel, with author, likes, date and profile link.</li>
-      <li><b>Instagram posts</b>: a profile's posts with likes, comments, views and captions.</li>
-      <li><b>Instagram media</b>: the photos and videos of a post or carousel.</li>
-      <li><b>YouTube comments</b>: every comment of a video or Short, with author, likes and replies.</li>
-    </ul>
+    <h2>See it in action</h2>
+    <div class="vids">
+      <figure v-for="v in VIDEOS" :key="v.src" class="vid">
+        <video :src="v.src" :poster="v.src.replace('.mp4', '.jpg')" autoplay muted loop playsinline preload="metadata"></video>
+        <figcaption><b>{{ v.title }}</b>{{ v.sub }}</figcaption>
+      </figure>
+    </div>
+
+    <h2>Everything it exports</h2>
+    <div class="feats">
+      <div v-for="f in FEATS" :key="f.t" class="ft"><span class="fi">{{ f.i }}</span><b>{{ f.t }}</b><p>{{ f.d }}</p></div>
+    </div>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><b>Add to Chrome</b><span>Install from the Chrome Web Store and pin it.</span></li>
+      <li><b>Open a post, reel, profile or video</b><span>A pink Export button appears right on the page.</span></li>
+      <li><b>Click Export</b><span>Get a CSV or JSON in seconds. Your first export is free.</span></li>
+    </ol>
 
     <h2>Frequently asked questions</h2>
     <div v-for="[q, a] in FAQ" :key="q"><h3>{{ q }}</h3><p>{{ a }}</p></div>
@@ -96,6 +125,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.kicker { margin: 0 0 8px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
 h1 { font-size: clamp(28px, 4.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 12px; }
 .lede { font-size: 18px; color: var(--muted); margin: 0; }
 h2 { font-size: 21px; margin: 40px 0 10px; } h3 { font-size: 17px; margin: 22px 0 4px; }
@@ -112,6 +142,18 @@ h2 { font-size: 21px; margin: 40px 0 10px; } h3 { font-size: 17px; margin: 22px 
 .plan b { font-size: 18px; } .price { font-size: 36px; font-weight: 800; margin: 4px 0; } .price small { font-size: 15px; color: var(--muted); }
 .plan ul { padding-left: 18px; margin: 8px 0 14px; } .plan li { margin: 4px 0; }
 .state { color: var(--muted); font-weight: 700; } .err { color: #c0392b; }
-.feat { padding-left: 20px; } .feat li { margin: 8px 0; }
+.vids { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.vid { margin: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--card); }
+.vid video { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; background: #111; }
+.vid figcaption { padding: 10px 14px 14px; color: var(--muted); font-size: 14px; }
+.vid figcaption b { display: block; color: var(--fg); font-size: 15.5px; margin-bottom: 2px; }
+.feats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.ft { border: 1px solid var(--line); border-radius: 14px; background: var(--card); padding: 14px 16px; transition: transform .15s, border-color .15s; }
+.ft:hover { transform: translateY(-2px); border-color: var(--accent); }
+.fi { font-size: 22px; display: block; margin-bottom: 6px; } .ft b { display: block; } .ft p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; counter-reset: s; }
+.steps li { border: 1px solid var(--line); border-radius: 14px; background: var(--card); padding: 14px 16px; counter-increment: s; }
+.steps li::before { content: counter(s); display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; font-size: 13px; margin-bottom: 6px; }
+.steps b { display: block; } .steps span { color: var(--muted); font-size: 14px; }
 .fb { margin-top: 30px; }
 </style>
