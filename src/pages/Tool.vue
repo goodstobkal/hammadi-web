@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ToolRunner from '../components/ToolRunner.vue'
+import InfluencerOrder from '../components/InfluencerOrder.vue'
 import catalog from '../catalog.json'
 import type { Tool } from '../lib/api'
 import { GUIDES_URL, KEPT_TOOLS, LISTING_URL, SITE_NAME, SITE_URL, breadcrumbs, useSeo } from '../lib/site'
@@ -30,7 +31,9 @@ const faq = computed(() => [
   ] : []),
   {
     q: 'How much does it cost?',
-    a: 'One flat price per export ($1 for comments, posts, reels or likers), paid once with Stripe. You get the full result as an Excel file by email. No subscription.',
+    a: tool.value?.slug === 'instagram-influencer-search'
+      ? 'It depends on how many creators you take: 25 for $1, 100 for $3, 500 for $9, 1,000 for $15, 5,000 for $39. Paid once with Stripe, Excel by email, no subscription.'
+      : 'One flat price per export ($1 for comments, posts, reels or likers), paid once with Stripe. You get the full result as an Excel file by email. No subscription.',
   },
   {
     q: 'Do I need to log in to Instagram?',
@@ -77,14 +80,14 @@ const PAY: Record<string, Pay> = {
     url: 'https://buy.stripe.com/4gM00cbJ20DB7mX74zcbC0e',
   },
   'instagram-influencer-search': {
-    input: "your niche, country and audience size",
-    cols: ["Username", "Followers", "Engagement", "Country", "Category", "Email"],
-    rows: [["@glowbyleah", "48,200", "4.1%", "US", "Beauty", "hello@…"], ["@homewithnina", "112,900", "2.7%", "US", "Home decor", "collabs@…"]],
-    title: 'Get 100 matching influencers + emails · $29',
-    sub: 'Describe the influencers you want at checkout (niche, country, size) and get an Excel list with public emails, usually within the hour.',
+    input: "your filters and how many creators you want",
+    cols: ["Username", "Name", "Platform", "Country", "Followers", "Avg views", "Engagement %"],
+    rows: [["@glowbyleah", "Leah M.", "instagram", "US", "48,200", "12,400", "4.1"], ["@homewithnina", "Nina R.", "instagram", "US", "112,900", "30,150", "2.7"]],
+    h1: 'Find Instagram influencers by niche, country and size, from $1',
+    title: 'Influencer list from your filters',
+    sub: 'Pick a niche, country and follower range, see how many creators match, and choose how many you want.',
     url: 'https://buy.stripe.com/28EdR24gAeurbDdgF9cbC02',
-    btn: 'Buy · $29',
-    price: '$29',
+    price: '$1',
   },
   'instagram-posts': {
     input: "the profile username or link",
@@ -147,7 +150,8 @@ useSeo({
     <p class="lede">{{ tool.tagline }}</p>
 
     <template v-if="pay">
-      <div class="buy">
+      <InfluencerOrder v-if="tool.slug === 'instagram-influencer-search'" :tool="tool" />
+      <div v-else class="buy">
         <div class="buy-l">
           <p class="buy-price">{{ pay.price || '$1' }} <small>one-time</small></p>
           <p class="buy-what"><b>{{ pay.title.replace(/ · \$\d+$/, '') }}</b>{{ pay.sub }}</p>
@@ -159,7 +163,8 @@ useSeo({
         </div>
         <a class="buy-btn" :href="pay.url" rel="noopener">{{ pay.btn || 'Buy now · $1' }} →</a>
       </div>
-      <p class="secure">🔒 Secure checkout by Stripe · Full refund if we can't deliver</p>
+      <p v-if="tool.slug !== 'instagram-influencer-search'" class="secure">🔒 Secure checkout by Stripe · Full refund if we can't deliver</p>
+      <p v-else class="secure">25 for $1 · 100 for $3 · 500 for $9 · 1,000 for $15 · 5,000 for $39. Need their emails? <a href="/services/influencer-lists">Lists with emails →</a></p>
 
       <h2>What you get</h2>
       <div class="sheet" role="img" :aria-label="`Example of the Excel columns: ${pay.cols?.join(', ')}`">
@@ -177,7 +182,8 @@ useSeo({
 
       <h2>How it works</h2>
       <ol class="steps">
-        <li><b>Pay {{ pay.price || '$1' }}</b><span>Enter {{ pay.input }} and your email at checkout.</span></li>
+        <li v-if="tool.slug === 'instagram-influencer-search'"><b>Set filters, pay from $1</b><span>Choose {{ pay.input }}.</span></li>
+        <li v-else><b>Pay {{ pay.price || '$1' }}</b><span>Enter {{ pay.input }} and your email at checkout.</span></li>
         <li><b>We fetch everything</b><span>Live from Instagram, public data only.</span></li>
         <li><b>Get your Excel</b><span>Emailed to you, ready for Excel or Google Sheets.</span></li>
       </ol>
@@ -188,7 +194,7 @@ useSeo({
         <p>{{ item.a }}</p>
       </div>
 
-      <div class="buy buy-end">
+      <div v-if="tool.slug !== 'instagram-influencer-search'" class="buy buy-end">
         <p class="buy-what"><b>{{ pay.h1 || pay.title }}</b>Pay once, get the full file by email.</p>
         <a class="buy-btn" :href="pay.url" rel="noopener">{{ pay.btn || 'Buy now · $1' }} →</a>
       </div>
