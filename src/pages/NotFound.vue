@@ -12,7 +12,7 @@ useSeo({
   <div>
     <h1>Page not found</h1>
     <p>
-      That page doesn't exist. Try the <RouterLink to="/tools">free tools</RouterLink> instead.
+      That page doesn't exist. Try the <RouterLink to="/tools">cheap tools</RouterLink> instead.
     </p>
   </div>
 </template>

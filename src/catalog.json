@@ -42,7 +42,10 @@
           "default": 24,
           "min": 1,
           "max": 100,
-          "required": false
+          "required": false,
+          "paid_max": 500,
+          "async_over": 100,
+          "per_lookup": 20
         }
       ],
       "result_key": "posts",
@@ -84,6 +87,32 @@
         {
           "key": "owner.username",
           "label": "Author"
+        },
+        {
+          "key": "is_pinned",
+          "label": "Pinned",
+          "type": "bool"
+        },
+        {
+          "key": "collaborators",
+          "label": "Collaborators"
+        },
+        {
+          "key": "tagged_users",
+          "label": "Tagged users"
+        },
+        {
+          "key": "hashtags",
+          "label": "Hashtags"
+        },
+        {
+          "key": "audio.title",
+          "label": "Audio"
+        },
+        {
+          "key": "is_paid_partnership",
+          "label": "Paid partnership",
+          "type": "bool"
         },
         {
           "key": "image_url",
@@ -306,7 +335,10 @@
           "default": 25,
           "min": 1,
           "max": 100,
-          "required": false
+          "required": false,
+          "paid_max": 1000,
+          "async_over": 100,
+          "per_lookup": 100
         }
       ],
       "result_key": "results",
@@ -352,20 +384,24 @@
     },
     {
       "slug": "export-instagram-comments",
-      "title": "Instagram Comment Exporter - Get All Comments From a Post or Reel",
-      "tagline": "Export every comment and reply on a post or reel to Excel or CSV.",
-      "description": "Pulls the full comment thread of any public post or reel - text, author, timestamp, like count and replies - and hands it back as a table you can export. Most tools stop at the first 20-25 comments because Instagram's comment pane only loads when you scroll the pane itself; this one keeps going. Ready for sentiment analysis, giveaway draws or feedback mining.",
+      "title": "Instagram Comment Downloader & Exporter - Download All Comments From a Post or Reel",
+      "tagline": "Download and export every comment and reply on a post or reel to Excel or CSV.",
+      "description": "Download the full comment thread of any public post or reel - text, author, timestamp, like count and replies - and export it as a table (Excel, CSV or JSON). Most tools stop at the first 20-25 comments because Instagram's comment pane only loads when you scroll the pane itself; this comment downloader keeps going. Ready for sentiment analysis, giveaway draws or feedback mining.",
       "category": "Post",
       "pinned": true,
-      "guide": "export-instagram-comments-for-analysis",
+      "guide": "best-instagram-scraper-api",
       "faq": [
         {
-          "q": "How do I see all comments on an Instagram post?",
-          "a": "Paste the post or reel URL above and raise the count. The tool scrolls the comment thread for you and returns every comment it can reach, replies included, as one table."
+          "q": "How do I download all comments from an Instagram post?",
+          "a": "Paste the post or reel URL above and raise the count. The comment downloader scrolls the thread for you and returns every comment it can reach, replies included, as one table you can export to Excel, CSV or JSON."
         },
         {
           "q": "How do I get all the comments on an Instagram reel?",
           "a": "The same way as a post - paste the reel's URL. Reels and posts share one comment system, so a reel link works here exactly like a photo or carousel link, replies included."
+        },
+        {
+          "q": "Is this a free Instagram comment exporter with no limit?",
+          "a": "Yes - it's a free Instagram comment downloader and exporter. Paste a URL to collect and export all comments from a post or reel to Excel, CSV or JSON, with no per-comment fee. There's a generous free allowance; for high volume or to automate it, the same runs through the API."
         },
         {
           "q": "Can I read the comments on a competitor's post?",
@@ -377,7 +413,7 @@
         },
         {
           "q": "Can I export Instagram comments to Excel?",
-          "a": "Yes. Run the lookup and hit Export Excel for an .xlsx file, or CSV/JSON if you prefer. Nothing is installed and there's no sign-up."
+          "a": "Yes. Run the lookup and hit Export Excel for an .xlsx file, or CSV/JSON if you prefer. Nothing is installed; you just need a free account."
         },
         {
           "q": "Can I use this to pick a giveaway winner?",
@@ -400,7 +436,10 @@
           "default": 50,
           "min": 1,
           "max": 100,
-          "required": false
+          "required": false,
+          "paid_max": 5000,
+          "async_over": 100,
+          "per_lookup": 25
         }
       ],
       "result_key": "comments",
@@ -456,6 +495,10 @@
         {
           "q": "Can I search reels by creator or hashtag?",
           "a": "Yes - a creator's name or a hashtag is just another keyword. Combine them with a topic word to narrow a busy niche."
+        },
+        {
+          "q": "Can I search Instagram reels by date?",
+          "a": "Yes. Set a From and To date to see only reels published in that range, for example a launch week or last month. Results are sorted newest first."
         }
       ],
       "fields": [
@@ -474,6 +517,18 @@
           "min": 1,
           "max": 100,
           "required": false
+        },
+        {
+          "name": "date_from",
+          "label": "From",
+          "type": "date",
+          "required": false
+        },
+        {
+          "name": "date_to",
+          "label": "To",
+          "type": "date",
+          "required": false
         }
       ],
       "result_key": "results",
@@ -486,10 +541,6 @@
         {
           "key": "published_date",
           "label": "Published"
-        },
-        {
-          "key": "author",
-          "label": "Author"
         },
         {
           "key": "title",
@@ -550,7 +601,10 @@
           "default": 24,
           "min": 1,
           "max": 100,
-          "required": false
+          "required": false,
+          "paid_max": 500,
+          "async_over": 100,
+          "per_lookup": 20
         }
       ],
       "result_key": "posts",
@@ -592,6 +646,32 @@
         {
           "key": "owner.username",
           "label": "Author"
+        },
+        {
+          "key": "is_pinned",
+          "label": "Pinned",
+          "type": "bool"
+        },
+        {
+          "key": "collaborators",
+          "label": "Collaborators"
+        },
+        {
+          "key": "tagged_users",
+          "label": "Tagged users"
+        },
+        {
+          "key": "hashtags",
+          "label": "Hashtags"
+        },
+        {
+          "key": "audio.title",
+          "label": "Audio"
+        },
+        {
+          "key": "is_paid_partnership",
+          "label": "Paid partnership",
+          "type": "bool"
         },
         {
           "key": "image_url",
@@ -642,7 +722,10 @@
           "default": 24,
           "min": 1,
           "max": 100,
-          "required": false
+          "required": false,
+          "paid_max": 500,
+          "async_over": 100,
+          "per_lookup": 20
         }
       ],
       "result_key": "posts",
@@ -684,6 +767,32 @@
         {
           "key": "owner.username",
           "label": "Author"
+        },
+        {
+          "key": "is_pinned",
+          "label": "Pinned",
+          "type": "bool"
+        },
+        {
+          "key": "collaborators",
+          "label": "Collaborators"
+        },
+        {
+          "key": "tagged_users",
+          "label": "Tagged users"
+        },
+        {
+          "key": "hashtags",
+          "label": "Hashtags"
+        },
+        {
+          "key": "audio.title",
+          "label": "Audio"
+        },
+        {
+          "key": "is_paid_partnership",
+          "label": "Paid partnership",
+          "type": "bool"
         },
         {
           "key": "image_url",
@@ -915,7 +1024,10 @@
           "default": 50,
           "min": 1,
           "max": 100,
-          "required": false
+          "required": false,
+          "paid_max": 2000,
+          "async_over": 100,
+          "per_lookup": 50
         }
       ],
       "result_key": "following",
@@ -1020,6 +1132,88 @@
       ]
     },
     {
+      "slug": "instagram-comment-sentiment",
+      "title": "Instagram Comment Sentiment Analysis - Positive, Neutral & Negative",
+      "tagline": "Score every comment on a post as positive, neutral or negative with AI.",
+      "description": "Pulls a post's comments and replies and scores each one with a multilingual AI sentiment model trained on social media, so emoji, slang and mixed languages are understood. You get the positive / neutral / negative split, a net sentiment score and a table you can sort and export.",
+      "category": "Post",
+      "pinned": false,
+      "guide": "instagram-comment-sentiment-analysis",
+      "faq": [
+        {
+          "q": "How does the Instagram comment sentiment analysis work?",
+          "a": "Each comment is scored by cardiffnlp/twitter-xlm-roberta-base-sentiment, an open Hugging Face model trained on around 200 million social posts. It labels the comment positive, neutral or negative with a confidence score."
+        },
+        {
+          "q": "Does it understand emoji and other languages?",
+          "a": "Yes. It was trained on social media text in eight languages, including English, Spanish, French, German, Italian, Portuguese, Arabic and Hindi, and reads emoji as part of the meaning."
+        },
+        {
+          "q": "What is the net sentiment score?",
+          "a": "The share of positive comments minus the share of negative ones, from -100 to 100. Above 0 means the post is received more warmly than not."
+        },
+        {
+          "q": "Can I export the results?",
+          "a": "Yes. Every comment with its sentiment and confidence exports to Excel, CSV or JSON."
+        }
+      ],
+      "fields": [
+        {
+          "name": "post_url",
+          "label": "Post or reel URL",
+          "type": "text",
+          "placeholder": "https://www.instagram.com/reel/C2BiLKXLJdS/",
+          "help": "Post/reel URL or bare shortcode",
+          "required": true
+        },
+        {
+          "name": "count",
+          "label": "How many comments",
+          "type": "number",
+          "default": 100,
+          "min": 1,
+          "max": 100,
+          "required": false,
+          "paid_max": 5000,
+          "async_over": 300,
+          "per_lookup": 20
+        }
+      ],
+      "result_key": "comments",
+      "columns": [
+        {
+          "key": "sentiment",
+          "label": "Sentiment",
+          "type": "text"
+        },
+        {
+          "key": "text",
+          "label": "Comment",
+          "type": "text"
+        },
+        {
+          "key": "owner.username",
+          "label": "Author",
+          "type": "profile"
+        },
+        {
+          "key": "sentiment_score",
+          "label": "Confidence",
+          "type": "number"
+        },
+        {
+          "key": "like_count",
+          "label": "Likes",
+          "type": "number"
+        },
+        {
+          "key": "is_reply",
+          "label": "Reply",
+          "type": "bool"
+        }
+      ]
+    },
+    {
       "slug": "instagram-likers",
       "title": "Instagram Post Likers Viewer - See Who Liked a Post or Reel",
       "tagline": "See the accounts that liked a post.",
@@ -1061,7 +1255,10 @@
           "default": 50,
           "min": 1,
           "max": 100,
-          "required": false
+          "required": false,
+          "paid_max": 1000,
+          "async_over": 100,
+          "per_lookup": 200
         }
       ],
       "result_key": "likers",
@@ -1171,6 +1368,10 @@
         {
           "q": "What is it good for?",
           "a": "Watching what's being posted about a product, a competitor or a trend, without following anyone or having an account."
+        },
+        {
+          "q": "Can I use this for Instagram keyword research?",
+          "a": "Yes. Search any keyword to see which posts and reels Instagram surfaces for it and how much engagement they get - a quick way to do Instagram keyword research and gauge what content ranks for a term before you post."
         }
       ],
       "fields": [
@@ -1230,6 +1431,32 @@
         {
           "key": "owner.username",
           "label": "Author"
+        },
+        {
+          "key": "is_pinned",
+          "label": "Pinned",
+          "type": "bool"
+        },
+        {
+          "key": "collaborators",
+          "label": "Collaborators"
+        },
+        {
+          "key": "tagged_users",
+          "label": "Tagged users"
+        },
+        {
+          "key": "hashtags",
+          "label": "Hashtags"
+        },
+        {
+          "key": "audio.title",
+          "label": "Audio"
+        },
+        {
+          "key": "is_paid_partnership",
+          "label": "Paid partnership",
+          "type": "bool"
         },
         {
           "key": "image_url",
@@ -1364,7 +1591,10 @@
           "default": 24,
           "min": 1,
           "max": 100,
-          "required": false
+          "required": false,
+          "paid_max": 500,
+          "async_over": 100,
+          "per_lookup": 20
         }
       ],
       "result_key": "posts",
@@ -1406,6 +1636,32 @@
         {
           "key": "owner.username",
           "label": "Author"
+        },
+        {
+          "key": "is_pinned",
+          "label": "Pinned",
+          "type": "bool"
+        },
+        {
+          "key": "collaborators",
+          "label": "Collaborators"
+        },
+        {
+          "key": "tagged_users",
+          "label": "Tagged users"
+        },
+        {
+          "key": "hashtags",
+          "label": "Hashtags"
+        },
+        {
+          "key": "audio.title",
+          "label": "Audio"
+        },
+        {
+          "key": "is_paid_partnership",
+          "label": "Paid partnership",
+          "type": "bool"
         },
         {
           "key": "image_url",

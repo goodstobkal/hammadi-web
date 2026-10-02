@@ -27,6 +27,20 @@ body {
   background: var(--bg);
   color: var(--fg);
   font: 17px/1.65 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* Long unbreakable tokens (URLs, @handles, hashes) must wrap rather than
+     force the page wider than the phone and trigger sideways scroll. */
+  overflow-wrap: break-word;
+}
+/* Nothing should ever make the document itself scroll horizontally on a phone;
+   wide things (tables, code) get their own scroll container instead. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+/* Safety net: any <pre> that isn't already wrapped scrolls on its own. */
+pre {
+  overflow-x: auto;
 }
 a {
   color: var(--accent);

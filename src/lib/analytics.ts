@@ -16,7 +16,7 @@
 import { adsAllowed } from './ads'
 import { API_BASE } from './site'
 
-export type EventName = 'pageview' | 'tool_run' | 'tool_error' | 'export' | 'api_click' | 'recommend'
+export type EventName = 'pageview' | 'tool_run' | 'tool_error' | 'export' | 'api_click' | 'recommend' | 'feedback' | 'chat_launcher' | 'extension_click'
 
 type Payload = {
   path?: string

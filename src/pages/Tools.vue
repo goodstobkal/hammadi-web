@@ -9,13 +9,13 @@ const categories = [...new Set(tools.map((t) => t.category))]
 
 useSeo({
   title: `All Free Instagram Tools - ${tools.length} Viewers & Exporters | ${SITE_NAME}`,
-  description: `${tools.length} free tools for public Instagram data: posts, reels, tagged posts, stories, followers, comments, likers, media URLs, keyword and place search. CSV export, no login.`,
+  description: `${tools.length} cheap tools for public Instagram data: posts, reels, tagged posts, stories, followers, comments, likers, media URLs, keyword and place search. CSV export, no login.`,
   path: '/tools',
   jsonld: [
     {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: 'Free Instagram tools',
+      name: 'Cheap Instagram tools',
       numberOfItems: tools.length,
       itemListElement: tools.map((tool, i) => ({
         '@type': 'ListItem',
@@ -24,17 +24,17 @@ useSeo({
         url: `${SITE_URL}/tools/${tool.slug}`,
       })),
     },
-    breadcrumbs([{ name: 'Free tools', path: '/tools' }]),
+    breadcrumbs([{ name: 'Cheap tools', path: '/tools' }]),
   ],
 })
 </script>
 
 <template>
   <div>
-    <h1>Free Instagram tools</h1>
+    <h1>Cheap Instagram tools</h1>
     <p class="lede">
       {{ tools.length }} browser tools for public Instagram data — each one runs live, shows a
-      sortable table and exports to Excel, CSV or JSON. No login and no sign-up.
+      sortable table and exports to Excel, CSV or JSON. A free account gets you 10 lookups a month, no card needed.
     </p>
 
     <section v-if="pinned.length">
@@ -43,6 +43,20 @@ useSeo({
         <li v-for="tool in pinned" :key="tool.slug">
           <RouterLink :to="`/tools/${tool.slug}`">{{ tool.title }}</RouterLink>
           <span> — {{ tool.tagline }}</span>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Bulk</h2>
+      <ul class="list">
+        <li>
+          <RouterLink to="/tools/bulk-profile-lookup">Bulk Instagram profile lookup</RouterLink>
+          <span> — upload a list of profiles, get followers, bio, category and country for each as Excel</span>
+        </li>
+        <li>
+          <RouterLink to="/tools/download-instagram-profile">Download a full Instagram profile as ZIP</RouterLink>
+          <span> — every photo and video from a profile, plus captions and likes, emailed as a ZIP</span>
         </li>
       </ul>
     </section>

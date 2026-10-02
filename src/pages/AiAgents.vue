@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SupportBox from '../components/SupportBox.vue'
 import { LISTING_URL, SITE_NAME, SITE_URL, breadcrumbs, useSeo } from '../lib/site'
 
 const path = '/ai-agents-for-instagram'
@@ -88,8 +87,13 @@ useSeo({
     <p>
       A hosted agent, so you don't have to assemble the loop, the retries and the rate limits
       yourself. You describe an outcome; it plans the lookups, runs them against the same
-      infrastructure behind the free tools, and hands back a finished artefact — a shortlist, a
+      infrastructure behind the cheap tools, and hands back a finished artefact — a shortlist, a
       comment digest, a competitor brief.
+    </p>
+    <p>
+      Want an agent for any website, not just Instagram?
+      <a href="https://webhand.dev">WebHand</a> sets up a dedicated server with a live remote
+      browser, a terminal and Claude Code, ready for your own browser-automation tasks.
     </p>
     <ul class="uses">
       <li>
@@ -110,17 +114,14 @@ useSeo({
       <h2>Request early access</h2>
       <p class="muted">
         It isn't open to everyone yet — we're onboarding a few teams at a time so the workflows get
-        built around real problems. Tell us what you'd point it at and we'll be in touch when
+        built around real problems. Email us what you'd point an agent at and we'll be in touch when
         there's a slot.
       </p>
-      <SupportBox
-        inline
-        topic="AI agents early access"
-        title="Request early access"
-        blurb="Leave your email and what you'd use it for. No spam, and nothing is charged."
-        message-label="What would you point an agent at? (optional)"
-        :message-required="false"
-      />
+      <p>
+        <a class="email-cta" href="mailto:hello@hammadi.dev?subject=AI%20agents%20early%20access">
+          hello@hammadi.dev →
+        </a>
+      </p>
     </section>
 
     <h2>Frequently asked questions</h2>
@@ -130,7 +131,7 @@ useSeo({
     </div>
 
     <p class="outro">
-      In the meantime, the <RouterLink to="/tools">free tools</RouterLink> do the individual lookups
+      In the meantime, the <RouterLink to="/tools">cheap tools</RouterLink> do the individual lookups
       in your browser, and the <a :href="LISTING_URL" rel="noopener">API</a> does them in your code.
     </p>
   </article>
@@ -176,6 +177,16 @@ h3 {
   border-radius: 16px;
   padding: 4px 24px 24px;
   margin: 32px 0;
+}
+.email-cta {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.email-cta:hover {
+  text-decoration: underline;
 }
 .access {
   border-color: var(--accent);

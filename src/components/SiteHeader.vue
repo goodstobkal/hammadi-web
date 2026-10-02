@@ -1,9 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import BrandLogo from './BrandLogo.vue'
-import { GUIDES_URL, LISTING_URL, SITE_NAME } from '../lib/site'
+import { API_BASE, SITE_NAME } from '../lib/site'
 
 const open = ref(false)
+// Auth state, resolved client-side from the session cookie. null = signed out,
+// undefined = still loading (so the nav doesn't flash "Log in" for a logged-in
+// visitor on first paint).
+const me = ref<{ username: string | null; email: string } | undefined>(undefined)
+
+onMounted(async () => {
+  try {
+    const res = await fetch(`${API_BASE}/auth/me`, { credentials: 'same-origin' })
+    const data = await res.json()
+    me.value = data.user ? { username: data.user.username, email: data.user.email } : null
+  } catch {
+    me.value = null
+  }
+})
 </script>
 
 <template>
@@ -12,11 +26,16 @@ const open = ref(false)
       <RouterLink to="/" class="brand"><BrandLogo /> {{ SITE_NAME }}</RouterLink>
       <button class="burger" type="button" aria-label="Menu" @click="open = !open">☰</button>
       <nav :class="{ open }" @click="open = false">
-        <RouterLink to="/tools">Free tools</RouterLink>
-        <a href="/giveaway-winner-picker">Giveaway picker</a>
-        <a :href="GUIDES_URL">Guides</a>
-        <RouterLink to="/ai-agents-for-instagram">AI agents</RouterLink>
-        <a class="cta" :href="LISTING_URL" rel="noopener">Get the API</a>
+        <RouterLink to="/services/influencer-lists">Influencer lists</RouterLink>
+        <RouterLink to="/services/profile-pack">Profile pack</RouterLink>
+        <RouterLink to="/services/reel-analysis">Reel analysis</RouterLink>
+        <RouterLink to="/tools">Cheap tools</RouterLink>
+        <RouterLink class="cta" to="/#services">Order a report</RouterLink>
+        <!-- Auth-aware: username when signed in, else Log in. -->
+        <a v-if="me" href="/account" class="account">
+          <span class="uname">{{ me.username || me.email }}</span>
+        </a>
+        <a v-else-if="me === null" href="/login">Log in</a>
       </nav>
     </div>
   </header>
@@ -68,6 +87,25 @@ nav .cta {
   padding: 8px 14px;
   border-radius: 8px;
   font-weight: 600;
+}
+nav .account {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 6px 5px 12px;
+}
+nav .account:hover {
+  border-color: var(--accent);
+}
+nav .account .uname {
+  font-weight: 600;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .burger {
   display: none;

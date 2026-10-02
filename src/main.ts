@@ -13,7 +13,10 @@ import { initAds } from './lib/ads'
 const routes = [
   { path: '/', name: 'home', component: () => import('./pages/Home.vue') },
   { path: '/tools', name: 'tools', component: () => import('./pages/Tools.vue') },
+  { path: '/tools/bulk-profile-lookup', name: 'bulk', component: () => import('./pages/Bulk.vue') },
+  { path: '/tools/download-instagram-profile', name: 'profile-zip', component: () => import('./pages/ProfileZip.vue') },
   { path: '/tools/:slug', name: 'tool', component: () => import('./pages/Tool.vue') },
+  { path: '/services/:slug', name: 'product', component: () => import('./pages/Product.vue') },
   { path: '/privacy', name: 'privacy', component: () => import('./pages/Privacy.vue') },
   // A utility, not a landing page: prerendered so it loads, but kept out of
   // the nav and the sitemap, and robots disallows it.
@@ -40,5 +43,5 @@ export const createApp = ViteSSG(App, { routes }, ({ router, isClient }) => {
 export function includedRoutes(): string[] {
   const slugs = (catalog.tools as { slug: string }[]).map((t) => `/tools/${t.slug}`)
   // '/404' becomes dist/404.html, which nginx serves with a 404 status.
-  return ['/', '/tools', '/ai-agents-for-instagram', '/privacy', '/drop', '/404', ...slugs]
+  return ['/', '/services/influencer-lists', '/services/profile-pack', '/services/reel-analysis', '/tools', '/tools/bulk-profile-lookup', '/tools/download-instagram-profile', '/ai-agents-for-instagram', '/privacy', '/drop', '/404', ...slugs]
 }

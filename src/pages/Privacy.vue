@@ -108,7 +108,7 @@ useSeo({
     <h2>Terms of use</h2>
     <ul>
       <li>
-        The free tools are provided as-is, with no guarantee of availability or accuracy. Instagram
+        The cheap tools are provided as-is, with no guarantee of availability or accuracy. Instagram
         changes constantly and a lookup can fail or come back short; where it does, the result says
         so rather than pretending otherwise.
       </li>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GUIDES_URL, LISTING_URL, SITE_NAME } from '../lib/site'
+import { GUIDES_URL, SITE_NAME } from '../lib/site'
 import catalog from '../catalog.json'
 
 const tools = (catalog.tools as { slug: string; title: string }[]).slice(0, 8)
@@ -10,7 +10,7 @@ const tools = (catalog.tools as { slug: string; title: string }[]).slice(0, 8)
     <div class="wrap">
       <div class="cols">
         <div>
-          <h3>Free tools</h3>
+          <h3>Cheap tools</h3>
           <ul>
             <li v-for="tool in tools" :key="tool.slug">
               <RouterLink :to="`/tools/${tool.slug}`">{{ tool.title }}</RouterLink>
@@ -19,11 +19,20 @@ const tools = (catalog.tools as { slug: string; title: string }[]).slice(0, 8)
           </ul>
         </div>
         <div>
-          <h3>Build with it</h3>
+          <h3>Services</h3>
           <ul>
-            <li><a :href="GUIDES_URL">Tutorials &amp; guides</a></li>
+            <li><RouterLink to="/services/influencer-lists">Influencer lists</RouterLink></li>
+            <li><RouterLink to="/services/profile-pack">Full profile pack</RouterLink></li>
+            <li><RouterLink to="/services/reel-analysis">Reel analysis</RouterLink></li>
+            <li><a :href="GUIDES_URL">Guides</a></li>
             <li><RouterLink to="/privacy">Privacy &amp; terms</RouterLink></li>
-            <li><a :href="LISTING_URL" rel="noopener">Instagram Scraper API on RapidAPI</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <ul>
+            <li>Questions or an issue?</li>
+            <li><a href="mailto:hello@hammadi.dev">hello@hammadi.dev</a></li>
           </ul>
         </div>
       </div>

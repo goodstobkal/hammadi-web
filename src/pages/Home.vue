@@ -1,38 +1,45 @@
 <script setup lang="ts">
-import UseCaseBox from '../components/UseCaseBox.vue'
-import SupportBox from '../components/SupportBox.vue'
+/** Home page: the three done-for-you products (lib/products.ts). Cheap tools
+ * and guides stay live as their own pages and are linked at the bottom. */
 import catalog from '../catalog.json'
 import type { Tool } from '../lib/api'
-import { GUIDES_URL, LISTING_URL, SITE_NAME, SITE_URL, useSeo } from '../lib/site'
+import ProductIcon from '../components/ProductIcon.vue'
+import { PRODUCTS } from '../lib/products'
+import { GUIDES_URL, SITE_NAME, SITE_URL, useSeo } from '../lib/site'
 
 const tools = catalog.tools as Tool[]
-const limits = catalog.limits as { per_hour: number }
-const pinned = tools.filter((t) => t.pinned)
-const categories = [...new Set(tools.map((t) => t.category))]
+const from = (packs: { price: number }[]) => Math.min(...packs.map((k) => k.price))
+
+// $1 one-off exports: Stripe Payment Links; the link is entered at checkout and
+// the Excel file is emailed automatically (services.py "export").
+const EXPORTS = [
+  { name: 'Full comments export', desc: 'Every comment and reply on a post or reel (up to 5,000), with usernames, likes, dates and sentiment.', to: 'https://buy.stripe.com/00w5kwcN6aebgXx9cHcbC0b' },
+  { name: 'Full posts export', desc: 'Every post of a profile (up to 500) with likes, comments, views, captions and links.', to: 'https://buy.stripe.com/9B6cMY7sM9a7fTtex1cbC0c' },
+]
+
+const FAQ: [string, string][] = [
+  ['How fast do I get my report?', 'Reel analyses usually arrive within 30 minutes, profile packs within an hour, and influencer lists within 24 hours.'],
+  ['Do you need my Instagram password?', 'No. We only read public data. You never connect or share an account.'],
+  ['How do I pay?', 'One-time payment by card, Apple Pay or Google Pay through Stripe. No subscription.'],
+  ['What if I’m not happy?', 'Reply to the delivery email and tell us what’s missing. We’ll fix it or refund you.'],
+]
 
 useSeo({
-  title: `Free Instagram Data Tools - Posts, Reels, Comments & Followers | ${SITE_NAME}`,
+  title: `Instagram Influencer Lists, Profile & Reel Analysis - Done For You | ${SITE_NAME}`,
   description:
-    'Free browser tools to view and export public Instagram data: profile posts, reels with view counts, comments, tagged posts, followers, stories and keyword search. No login, instant results, Excel and CSV export.',
+    'Order a targeted influencer list with emails, a full Instagram profile pack with comment sentiment, or a reel analysis with transcript and comments. One-time price, delivered to your inbox.',
   path: '/',
   jsonld: [
     {
       '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: SITE_NAME,
-      url: SITE_URL,
-      description: 'Free Instagram data tools and API guides.',
+      '@type': 'ItemList',
+      name: `${SITE_NAME} services`,
+      itemListElement: PRODUCTS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: `${SITE_URL}/services/${p.slug}` })),
     },
     {
       '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      name: 'Free Instagram tools',
-      itemListElement: tools.map((tool, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        name: tool.title,
-        url: `${SITE_URL}/tools/${tool.slug}`,
-      })),
+      '@type': 'FAQPage',
+      mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
     },
   ],
 })
@@ -41,296 +48,141 @@ useSeo({
 <template>
   <div class="home">
     <section class="hero">
-      <h1>Free Instagram data tools</h1>
+      <span class="eyebrow">Done for you · delivered to your inbox</span>
+      <h1>Instagram research, <span class="grad">done for you.</span></h1>
       <p class="lede">
-        Look up any public Instagram profile, post or keyword and get the data as a table you can
-        sort and export. No login, no sign-up, no browser extension — {{ limits.per_hour }} free
-        lookups an hour.
+        Find the right influencers, understand any profile, and learn what viewers really think of a reel. Tell us what
+        you need, pay once, and get a clear report by email.
       </p>
-      <p>
-        <RouterLink class="cta" to="/tools">Browse the tools</RouterLink>
-        <a class="ghost" :href="LISTING_URL" rel="noopener">Or get the API →</a>
-      </p>
-    </section>
-
-    <section class="featured">
-      <h2>New tools</h2>
-      <ul class="cards">
-        <li>
-          <a href="/engagement-rate-calculator">
-            <h3>📊 Engagement rate calculator</h3>
-            <p>Any account's real engagement rate from recent posts, plus a sponsored-post price estimate.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/profile-analyzer">
-            <h3>🔬 Profile analyzer</h3>
-            <p>Average likes, comments and views, posting cadence, best day &amp; hour, and content mix.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/reels-finder">
-            <h3>🎬 Reels finder + player</h3>
-            <p>Search reels by keyword, then play and download any result in Instagram's own player.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/giveaway-winner-picker">
-            <h3>🎁 Giveaway winner picker</h3>
-            <p>Paste a post or reel and draw a fair, random comment winner — dedupe, keyword and tag rules.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/fake-follower-check">
-            <h3>🕵️ Fake follower check</h3>
-            <p>Sample an account's followers for a quick audience-quality score.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/hashtag-generator">
-            <h3># Hashtag generator</h3>
-            <p>The hashtags creators actually use on reels for your topic, ranked by frequency.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/instagram-video-downloader">
-            <h3>⬇ Video downloader</h3>
-            <p>Play any public reel or post in Instagram's player and download the video.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/instagram-email-finder">
-            <h3>📧 Email finder</h3>
-            <p>Get a creator's public contact email from their profile URL.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/instagram-audience-checker">
-            <h3>👥 Audience checker</h3>
-            <p>Sample an account's followers — verified/private breakdown and notable followers.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/instagram-profile-viewer">
-            <h3>🖼️ Profile viewer</h3>
-            <p>Open any public profile full-screen — bio, stats and a grid of recent posts.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/lookalike-audience-finder">
-            <h3>🎯 Lookalike audience finder</h3>
-            <p>Find the accounts that share a profile's audience — your best targets for outreach and collabs.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/instagram-influencers">
-            <h3>🌐 Influencers by category</h3>
-            <p>The top Instagram creators in thousands of niches — fashion, fitness, gaming and more — ranked by followers.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/chrome-extension">
-            <h3>🧩 Chrome extension</h3>
-            <p>Export all comments from a post/reel, or all posts from a profile, to CSV — right in your browser.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/deep-search/influencers">
-            <h3>🔎 Deep influencer search</h3>
-            <p>Search millions of creators by niche, country, size and engagement. Request early access.</p>
-          </a>
-        </li>
-        <li>
-          <a href="/deep-search/videos">
-            <h3>🎥 Deep video search</h3>
-            <p>Find top reels by keyword, newest-first, ranked by views. Request early access.</p>
-          </a>
-        </li>
+      <div class="ctas">
+        <a class="cta" href="#services">See the services →</a>
+      </div>
+      <ul class="trust">
+        <li>⚡ Most reports in <b>under an hour</b></li>
+        <li>🔒 No Instagram login needed</li>
+        <li>💳 One-time payment, <b>no subscription</b></li>
       </ul>
     </section>
 
-    <section v-if="pinned.length" class="pinned">
-      <h2>Most used</h2>
-      <ul class="cards">
-        <li v-for="tool in pinned" :key="tool.slug">
-          <RouterLink :to="`/tools/${tool.slug}`">
-            <h3>{{ tool.title }}</h3>
-            <p>{{ tool.tagline }}</p>
-          </RouterLink>
-        </li>
-      </ul>
+    <section id="services" class="services">
+      <RouterLink v-for="p in PRODUCTS" :key="p.slug" :to="`/services/${p.slug}`" class="svc">
+        <ProductIcon :slug="p.slug" class="svc-icon" />
+        <h2>{{ p.name }}</h2>
+        <p class="svc-tag">{{ p.tagline }}</p>
+        <ul><li v-for="g in p.youGet.slice(0, 4)" :key="g">{{ g }}</li></ul>
+        <div class="svc-foot">
+          <span class="svc-price">from <b>${{ from(p.packs) }}</b></span>
+          <span class="svc-go">Details &amp; order →</span>
+        </div>
+        <span class="svc-time">⏱ {{ p.delivery }}</span>
+      </RouterLink>
     </section>
 
-    <UseCaseBox />
-
-    <section class="custom" id="custom-solution">
-      <div class="custom-inner">
-        <span class="badge">Custom work</span>
-        <h2>Need a custom Instagram solution?</h2>
-        <p class="custom-lede">
-          Beyond the free tools and the API — bespoke scraping, automation, dashboards and data
-          pipelines built around your exact use case, at the scale you need. Tell us about your
-          project and we'll come back with how we can help and a quote.
-        </p>
-        <SupportBox
-          inline
-          ask-phone
-          topic="Custom Instagram solution"
-          title="Tell us about your project"
-          blurb="Share your name, email, phone and a short description of what you need. We'll reply by email, usually within a day."
-          message-label="Describe your project — what data, how much, how often, and where it needs to go"
-          :message-required="true"
-        />
+    <section class="one">
+      <div class="one-head">
+        <h2>One-off exports for <span class="grad">$1</span></h2>
+        <p>Need just one thing? Pay $1, paste the link at checkout, and get the complete data by email as Excel.</p>
+      </div>
+      <div class="one-grid">
+        <a v-for="e in EXPORTS" :key="e.to" :href="e.to" class="one-card" rel="noopener">
+          <span class="one-price">$1</span>
+          <b>{{ e.name }}</b>
+          <p>{{ e.desc }}</p>
+          <span class="one-go">Buy · $1 →</span>
+        </a>
       </div>
     </section>
 
-    <section v-for="category in categories" :key="category">
-      <h2>{{ category }} tools</h2>
-      <ul class="cards">
-        <li v-for="tool in tools.filter((t) => t.category === category)" :key="tool.slug">
-          <RouterLink :to="`/tools/${tool.slug}`">
-            <h3>{{ tool.title }}</h3>
-            <p>{{ tool.tagline }}</p>
-          </RouterLink>
-        </li>
+    <section class="how">
+      <h2>How it works</h2>
+      <ol>
+        <li><span>1</span><div><b>Pick a service</b><p>Influencer list, profile pack or reel analysis.</p></div></li>
+        <li><span>2</span><div><b>Tell us what you need</b><p>A profile, a reel link, or a short description of the influencers you want.</p></div></li>
+        <li><span>3</span><div><b>Get your report</b><p>A clear email report plus an Excel file you can sort and share.</p></div></li>
+      </ol>
+    </section>
+
+    <section class="who">
+      <h2>Who it's for</h2>
+      <div class="who-grid">
+        <div><b>Brands &amp; agencies</b><p>Shortlist creators with real engagement and a reachable email, then vet them before you pay.</p></div>
+        <div><b>Influencers</b><p>See what your audience loves, what they ask and what turns them off, straight from your comments.</p></div>
+        <div><b>Marketers</b><p>Study competitors' best posts and reels and the reactions they get.</p></div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <h2>Questions</h2>
+      <details v-for="([q, a], i) in FAQ" :key="q" :open="i === 0"><summary>{{ q }}</summary><p>{{ a }}</p></details>
+    </section>
+
+    <section class="more">
+      <h2>Cheap tools &amp; guides</h2>
+      <p>Want to look something up yourself first? Our cheap tools and <a :href="GUIDES_URL">guides</a> are still here.</p>
+      <ul class="links">
+        <li v-for="t in tools" :key="t.slug"><RouterLink :to="`/tools/${t.slug}`">{{ t.title.split(' - ')[0] }}</RouterLink></li>
       </ul>
-    </section>
-
-    <section>
-      <h2>Why these are free</h2>
-      <p>
-        They run on the same scraping infrastructure as the
-        <a :href="LISTING_URL" rel="noopener">Instagram Scraper API</a>, a paid API for developers.
-        The tools here are the free way to try that data before you write any code — and often all
-        you need for a one-off lookup. When you want it in your own app, on a schedule, or at
-        volume, the API is the same data as JSON without the hourly limit.
-      </p>
-      <p>
-        The <a :href="GUIDES_URL">guides</a> walk through the common jobs with copy-paste Python:
-        tracking reels performance, finding UGC, vetting influencers, exporting comments for
-        analysis and monitoring competitors.
-      </p>
-    </section>
-
-    <section>
-      <h2>Common questions</h2>
-      <h3>Do I need an Instagram account?</h3>
-      <p>No. Nothing here asks you to log in, and the account you look up is never notified.</p>
-      <h3>Can I export what I find?</h3>
-      <p>Yes — every result table exports to Excel (.xlsx), CSV or JSON.</p>
-      <h3>Does it work on private accounts?</h3>
-      <p>No. Only public profiles and posts are readable; private accounts return an error.</p>
-      <h3>Is there a limit?</h3>
-      <p>
-        {{ limits.per_hour }} lookups an hour per visitor, which is plenty for research and
-        one-offs. Use the API when you need more.
-      </p>
     </section>
   </div>
 </template>
 
 <style scoped>
-.hero {
-  padding: 40px 0 8px;
+.hero { position: relative; text-align: center; padding: 56px 0 8px; }
+.hero::before {
+  content: ''; position: absolute; inset: -24px -20px auto; height: 420px; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40% 60% at 25% 20%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(40% 60% at 80% 10%, color-mix(in srgb, #fb923c 14%, transparent), transparent 70%);
 }
-h1 {
-  font-size: clamp(32px, 6vw, 48px);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  margin: 0 0 14px;
-}
-.lede {
-  font-size: 19px;
-  color: var(--muted);
-  max-width: 46em;
-  margin: 0 0 24px;
-}
-.cta {
-  display: inline-block;
-  background: var(--accent);
-  color: #fff;
-  border-radius: 10px;
-  padding: 12px 22px;
-  text-decoration: none;
-  font-weight: 600;
-}
-.ghost {
-  margin-left: 16px;
-  color: var(--muted);
-  text-decoration: none;
-}
-.ghost:hover {
-  color: var(--fg);
-}
-h2 {
-  font-size: 22px;
-  margin: 48px 0 14px;
-}
-h3 {
-  font-size: 17px;
-  margin: 22px 0 4px;
-}
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.cards a {
-  display: block;
-  height: 100%;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 20px;
-  text-decoration: none;
-  color: inherit;
-}
-.cards a:hover {
-  border-color: var(--accent);
-}
-.pinned .cards a {
-  border-color: var(--accent);
-  border-width: 2px;
-}
-.cards h3 {
-  margin: 0 0 6px;
-  font-size: 17px;
-}
-.cards p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 15px;
-}
-.custom {
-  margin: 48px 0;
-  border: 1px solid var(--accent);
-  border-radius: 18px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, var(--card)), var(--card));
-  padding: 8px;
-}
-.custom-inner {
-  padding: 20px;
-}
-.custom .badge {
-  display: inline-block;
-  background: var(--accent);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  border-radius: 999px;
-  padding: 4px 12px;
-}
-.custom h2 {
-  margin: 14px 0 8px;
-}
-.custom-lede {
-  color: var(--muted);
-  font-size: 16px;
-  max-width: 48em;
-  margin: 0 0 8px;
-}
+.eyebrow { display: inline-block; font-size: 13px; font-weight: 600; color: var(--accent); background: var(--chip); border-radius: 999px; padding: 6px 14px; margin-bottom: 18px; }
+h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.06; letter-spacing: -0.03em; margin: 0 0 14px; }
+.grad { background: linear-gradient(90deg, var(--accent), #fb923c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lede { font-size: 19px; color: var(--muted); max-width: 38em; margin: 0 auto 26px; }
+.cta { display: inline-block; background: var(--accent); color: #fff; border-radius: 999px; padding: 14px 28px; text-decoration: none; font-weight: 700; box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 30%, transparent); }
+.trust { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px; list-style: none; padding: 0; margin: 24px 0 0; color: var(--muted); font-size: 14.5px; }
+.trust b { color: var(--fg); }
+
+.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 18px; margin: 48px 0 0; }
+.svc { position: relative; display: flex; flex-direction: column; padding: 26px 22px 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--card); color: inherit; text-decoration: none; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s; }
+.svc:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 16px 36px rgba(180, 35, 111, 0.12); }
+.svc-icon { flex: none; }
+.svc h2 { font-size: 22px; margin: 10px 0 6px; }
+.svc-tag { margin: 0 0 12px; color: var(--muted); }
+.svc ul { margin: 0 0 18px; padding-left: 18px; flex: 1; }
+.svc li { margin: 0 0 6px; font-size: 14.5px; }
+.svc-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.svc-price { color: var(--muted); }
+.svc-price b { font-size: 26px; color: var(--fg); }
+.svc-go { background: var(--accent); color: #fff; font-weight: 700; border-radius: 999px; padding: 9px 16px; font-size: 14px; }
+.svc-time { margin-top: 12px; font-size: 13px; color: #16a34a; font-weight: 600; }
+
+h2 { letter-spacing: -0.01em; }
+.one { margin: 40px 0 0; padding: 26px; border-radius: 22px; border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 8%, var(--card)), var(--card)); }
+.one-head h2 { font-size: 26px; margin: 0 0 6px; }
+.one-head p { margin: 0 0 18px; color: var(--muted); }
+.one-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.one-card { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 18px 18px 16px; border-radius: 16px; background: var(--card);
+  border: 1px solid var(--line); color: inherit; text-decoration: none; transition: transform 0.15s, border-color 0.15s; }
+.one-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.one-card b { font-size: 18px; padding-right: 60px; }
+.one-card p { margin: 0; color: var(--muted); font-size: 14.5px; flex: 1; }
+.one-price { position: absolute; top: 14px; right: 16px; font-size: 26px; font-weight: 800; color: var(--accent); }
+.one-go { margin-top: 8px; align-self: flex-start; background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; border-radius: 999px; padding: 8px 16px; }
+.how h2, .who h2, .faq h2, .more h2 { font-size: 26px; margin: 56px 0 16px; }
+.how ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.how li { display: flex; gap: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+.how span { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; }
+.how p, .who p { margin: 4px 0 0; color: var(--muted); font-size: 14.5px; }
+.who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.who-grid > div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+.faq details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; margin: 0 0 10px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { color: var(--muted); margin: 10px 0 2px; }
+.more p { color: var(--muted); }
+.more a { color: var(--accent); }
+.links { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 24px; }
+.links a { display: inline-block; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 6px 12px; font-size: 14px; text-decoration: none; color: var(--fg); }
+.links a:hover { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 760px) { .hero { padding: 28px 0 4px; } .lede { font-size: 17px; } .cta { width: 100%; text-align: center; } }
 </style>

@@ -11,6 +11,9 @@ export type Field = {
   default?: string | number
   min?: number
   max?: number
+  /** Higher count ceiling for paid plans (free runs stop at `max`). */
+  paid_max?: number
+  per_lookup?: number
   options?: { value: string; label: string }[]
 }
 
@@ -36,12 +39,39 @@ export type Tool = {
   columns: Column[]
 }
 
+export type Upsell = {
+  message: string
+  upgrade?: boolean
+  contact?: string | null
+  total?: number | null
+  paid_max?: number
+}
+
 export type RunResult = {
   tool: string
   params: Record<string, string | number>
   data: Record<string, unknown>
   cached: boolean
-  quota_remaining: number
+  quota_remaining: number | null
+  upsell?: Upsell | null
+  /** Set when a big run was handed to a background job instead. */
+  job?: string
+  total?: number
+}
+
+export type JobStatus = Partial<RunResult> & {
+  status: 'running' | 'done' | 'error'
+  progress: number
+  total: number
+  error?: string
+}
+
+/** Poll a background export. */
+export async function jobStatus(token: string): Promise<JobStatus> {
+  const res = await fetch(`${API_BASE}/public/v1/jobs/${encodeURIComponent(token)}`, { credentials: 'include' })
+  const body = await res.json().catch(() => ({}))
+  if (!res.ok) throw errorFrom(body, res.status, 'Could not check on your export.')
+  return body as JobStatus
 }
 
 export class ApiError extends Error {
@@ -106,6 +136,18 @@ export type SupportPayload = {
   page?: string
   /** Honeypot - hidden in the form, so anything here means a bot filled it. */
   website?: string
+}
+
+/** Re-send the email-verification link to the signed-in user. Same-origin, so
+ * the session cookie rides along automatically. */
+export async function resendVerification(): Promise<void> {
+  const res = await fetch(`${API_BASE}/auth/resend-verification`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+  })
+  if (res.ok || res.status === 202) return
+  const body = await res.json().catch(() => ({}))
+  throw errorFrom(body, res.status, "Couldn't send the link. Try again in a moment.")
 }
 
 /** Deliver a message to the site owner. Resolves only once it's actually sent. */

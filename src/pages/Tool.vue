@@ -24,7 +24,7 @@ const faq = computed(() => [
   ...((tool.value?.faq || []) as { q: string; a: string }[]),
   {
     q: `Is the ${(tool.value?.title || 'tool').toLowerCase()} free?`,
-    a: `Yes - ${limits.per_hour} lookups an hour with no account and no sign-up. For higher volume or to call it from your own code, use the API.`,
+    a: `Yes. Create a free account and you get 10 lookups a month, no card needed. Paid plans start at $2 a month, and the API is there for higher volume or your own code.`,
   },
   {
     q: 'Do I need to log in to Instagram?',
@@ -66,26 +66,45 @@ useSeo({
       })),
     },
     breadcrumbs([
-      { name: 'Free tools', path: '/tools' },
+      { name: 'Cheap tools', path: '/tools' },
       { name: tool.value?.title || 'Not found', path: path.value },
     ]),
   ],
 })
+
+// Paid one-off exports: Stripe Payment Link, link entered at checkout, Excel by email.
+const PAY: Record<string, { title: string; sub: string; url: string }> = {
+  'export-instagram-comments': {
+    title: 'Get every comment by email · $1',
+    sub: 'All comments and replies (up to 5,000) with usernames, likes, dates and sentiment, as Excel. Paste the post link at checkout.',
+    url: 'https://buy.stripe.com/00w5kwcN6aebgXx9cHcbC0b',
+  },
+  'instagram-posts': {
+    title: 'Get every post by email · $1',
+    sub: 'All posts of a profile (up to 500) with likes, comments, views and captions, as Excel. Enter the profile at checkout.',
+    url: 'https://buy.stripe.com/9B6cMY7sM9a7fTtex1cbC0c',
+  },
+}
 </script>
 
 <template>
   <div v-if="!tool">
     <h1>Tool not found</h1>
-    <p>That tool doesn't exist. See <RouterLink to="/tools">all free tools</RouterLink>.</p>
+    <p>That tool doesn't exist. See <RouterLink to="/tools">all cheap tools</RouterLink>.</p>
   </div>
 
   <article v-else class="tool">
     <p class="eyebrow">
-      <RouterLink to="/tools">Free tools</RouterLink> · {{ tool.category }}
+      <RouterLink to="/tools">Cheap tools</RouterLink> · {{ tool.category }}
     </p>
     <h1>{{ tool.title }}</h1>
     <p class="lede">{{ tool.tagline }}</p>
 
+    <a v-if="PAY[tool.slug]" class="paybox" :href="PAY[tool.slug].url" rel="noopener">
+      <span><b>{{ PAY[tool.slug].title }}</b>{{ PAY[tool.slug].sub }}</span>
+      <span class="paybtn">Buy · $1 →</span>
+    </a>
+    <p v-if="PAY[tool.slug]" class="paynote">Or try a quick preview below.</p>
     <ToolRunner :tool="tool" :limits="limits" />
 
     <h2>What this tool does</h2>
@@ -168,4 +187,12 @@ ol,
 li {
   margin: 8px 0;
 }
+.paybox { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin: 18px 0 6px; padding: 18px 20px;
+  border-radius: 18px; text-decoration: none; color: inherit; border: 2px solid var(--accent);
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 10%, var(--card)), var(--card)); }
+.paybox b { display: block; font-size: 19px; margin-bottom: 4px; }
+.paybox span:first-child { flex: 1 1 320px; color: var(--muted); font-size: 14.5px; }
+.paybox b { color: var(--fg); }
+.paybtn { white-space: nowrap; background: linear-gradient(135deg, #f58529, #dd2a7b 55%, #8134af); color: #fff; font-weight: 800; border-radius: 999px; padding: 12px 22px; }
+.paynote { margin: 4px 0 14px; color: var(--muted); font-size: 13.5px; }
 </style>
