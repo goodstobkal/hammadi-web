@@ -146,6 +146,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Buyers only', note: 'Just the list of people who want to buy', price: 5, url: 'https://buy.stripe.com/5kQbIU4gA9a7bDd3SncbC0g' },
     ],
     faq: [
+      ['Can I see a real example?', 'Yes: see real reports on product launch reels from Huda Beauty, Sincerely Yours and Danessa Myricks at hammadi.dev/report/examples.'],
       ['Is there a free version?', 'Yes: the free reel comment checker at hammadi.dev/reel-comment-checker shows how many people want to buy and the comment sentiment for any reel.'],
       ['Can I analyse someone else’s reel?', 'Yes, any public reel. It works for competitor research as well as your own content.'],
       ['What languages are supported?', 'Transcription and sentiment work in most major languages, including English, Spanish, French, Arabic and Hindi.'],

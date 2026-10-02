@@ -56,6 +56,7 @@ useSeo({
         <div class="meta"><span>⏱ {{ p.delivery }}</span><span>🔒 Secure checkout by Stripe</span><span>📧 Delivered by email</span></div>
         <div class="ctas">
           <a class="cta" href="#packs">See prices from ${{ Math.min(...p.packs.map((k) => k.price)) }} →</a>
+          <a v-if="p.slug === 'reel-analysis'" class="sample-dl" href="/report/examples">📊 See real example reports</a>
           <a class="sample-dl" :href="p.sampleFile" download>⬇ Download a sample report</a>
         </div>
       </div>
