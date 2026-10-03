@@ -146,6 +146,14 @@ const pv = reactive({
 })
 const canPreview = computed(() => !!mainField.value && tool.value?.slug !== 'instagram-influencer-search')
 
+function scrollToPreview() {
+  const el = document.getElementById('preview')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    ;(el.querySelector('input') as HTMLInputElement | null)?.focus()
+  }
+}
+
 function pvAuthUrl(dest: 'signup' | 'login'): string {
   const next = `${window.location.pathname}?preview=${encodeURIComponent(pv.input)}`
   return `/${dest}?next=${encodeURIComponent(next)}`
@@ -258,12 +266,15 @@ useSeo({
             <li>No account, no subscription</li>
           </ul>
         </div>
-        <a class="buy-btn" :href="pay.url" rel="noopener">{{ pay.btn || 'Buy now · $1' }} →</a>
+        <div class="buy-r">
+          <a class="buy-btn" :href="pay.url" rel="noopener">{{ pay.btn || 'Buy now · $1' }} →</a>
+          <a v-if="canPreview" class="buy-preview" href="#preview" @click.prevent="scrollToPreview">👀 or see a free preview first</a>
+        </div>
       </div>
       <p v-if="tool.slug !== 'instagram-influencer-search'" class="secure">🔒 Secure checkout by Stripe · Full refund if we can't deliver · Need several? <RouterLink to="/services/bundle">5 exports for $4 →</RouterLink></p>
       <p v-else class="secure">25 for $1 · 100 for $3 · 500 for $9 · 1,000 for $15 · 5,000 for $39. Need their emails? <a href="/services/influencer-lists">Lists with emails →</a></p>
 
-      <div v-if="canPreview" class="pvbox">
+      <div v-if="canPreview" id="preview" class="pvbox">
         <p class="pvbox-h">👀 Not sure yet? <b>See a free preview</b> — the first few rows, free with an account.</p>
         <div class="pvbox-form">
           <input v-model="pv.input" type="text" :placeholder="mainField?.placeholder || pay?.input || 'Paste a link or @handle'" @keydown.enter="runPreview" />
@@ -428,6 +439,9 @@ li {
 .buy-btn:hover { filter: brightness(1.06); }
 .buy-end { margin-top: 40px; }
 .secure { margin: 6px 0 0; color: var(--muted); font-size: 13.5px; }
+.buy-r { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.buy-preview { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.buy-preview:hover { text-decoration: underline; }
 .pvbox { margin: 18px 0 0; padding: 16px; border: 1px dashed #e3b9cf; border-radius: 16px; background: #fffafc; }
 .pvbox-h { margin: 0 0 10px; font-size: 14.5px; }
 .pvbox-form { display: flex; gap: 8px; flex-wrap: wrap; }
