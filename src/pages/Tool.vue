@@ -14,7 +14,7 @@ const limits = catalog.limits as { per_hour: number; per_day: number; max_count:
 // A slug that isn't in the catalog can only be reached by client-side
 // navigation (nginx 404s the URL), but the page must not blow up on it.
 const tool = computed(() => tools.find((t) => t.slug === route.params.slug) as Tool | undefined)
-const PAY_SLUGS = new Set(['export-instagram-comments', 'export-instagram-reels', 'instagram-likers', 'instagram-influencer-search', 'instagram-posts'])
+const PAY_SLUGS = new Set(['export-instagram-comments', 'export-instagram-reels', 'instagram-likers', 'instagram-influencer-search', 'instagram-posts', 'instagram-profile-info', 'instagram-following', 'instagram-followers'])
 const related = computed(() =>
   tools.filter((t) => t.slug !== tool.value?.slug && KEPT_TOOLS.has(t.slug)).slice(0, 4),
 )
@@ -88,6 +88,33 @@ const PAY: Record<string, Pay> = {
     sub: 'Pick a niche, country and follower range, see how many creators match, and choose how many you want.',
     url: 'https://buy.stripe.com/28EdR24gAeurbDdgF9cbC02',
     price: '$1',
+  },
+  'instagram-profile-info': {
+    h1: 'Get the full profile of any Instagram account for $1',
+    title: 'Full profile export by email · $1',
+    sub: 'Bio, followers, following, category, website, account country and date joined, engagement rate, plus every post (up to 500) with likes, comments and views, in Excel.',
+    url: 'https://buy.stripe.com/cNi5kw9AU5XV8r14WrcbC0l',
+    input: 'the username or profile link',
+    cols: ['Field', 'Value'],
+    rows: [['Followers', '48,200'], ['Engagement rate', '3.4%'], ['Account based in', 'United States'], ['Posts per week', '4.5'], ['Top hashtags', '#skincare #glow']],
+  },
+  'instagram-following': {
+    h1: 'See everyone an Instagram account follows, for $1',
+    title: 'Following list by email · $1',
+    sub: 'Every account a public profile follows (up to 2,000) with username, name, verified and private flags and profile link, in Excel.',
+    url: 'https://buy.stripe.com/9B6bIU8wQgCz8r1ex1cbC0m',
+    input: 'the username or profile link',
+    cols: ['Username', 'Name', 'Verified', 'Private', 'Profile'],
+    rows: [['@glowbyleah', 'Leah M.', 'no', 'no', 'instagram.com/glowbyleah'], ['@brandofficial', 'Brand', 'yes', 'no', 'instagram.com/brandofficial']],
+  },
+  'instagram-followers': {
+    h1: 'Export the followers of any Instagram account for $1',
+    title: 'Followers list by email · $1',
+    sub: 'Followers of a public profile (up to 2,000, as many as Instagram exposes) with username, name and profile link, in Excel.',
+    url: 'https://buy.stripe.com/6oU28keVebif5eP2OjcbC0n',
+    input: 'the username or profile link',
+    cols: ['Username', 'Name', 'Verified', 'Private', 'Profile'],
+    rows: [['@sara.k', 'Sara K.', 'no', 'no', 'instagram.com/sara.k'], ['@fitwithjo', 'Jo Martin', 'yes', 'no', 'instagram.com/fitwithjo']],
   },
   'instagram-posts': {
     input: "the profile username or link",
