@@ -11,6 +11,9 @@ const FAQ: [string, string][] = [
   ['Is it safe for my Instagram account?', 'It reads at a human pace (about one request a second) through your normal logged-in session, like scrolling the comments yourself.'],
 ]
 const VIDEOS = [
+  { src: '/videos/extension-top.mp4', title: 'Top posts & creator score', sub: 'Sort any profile by likes or comments, spot 🔥 viral posts, and see engagement rate and an estimated price per post.' },
+  { src: '/videos/extension-influencers.mp4', title: 'Find influencers from our database', sub: 'Niche, country and size: see how many match, then get the list from $1.' },
+  { src: '/videos/extension-transcript.mp4', title: 'YouTube transcripts', sub: 'Every line with its timestamp, as TXT, SRT or CSV.' },
   { src: '/videos/extension-bulk.mp4', title: 'Download a whole Instagram profile', sub: 'One "Download all" button: posts, reels, stories and highlights into a folder. Next time, only the new ones.' },
   { src: '/videos/extension-search.mp4', title: 'Search inside comments (AI)', sub: 'Instagram has no comment search. Type a word, or let AI find comments that mean it ("where can I buy it").' },
   { src: '/videos/extension-download.mp4', title: 'Download any reel in one click', sub: 'A download icon right next to Like, Comment and Share.' },
@@ -34,6 +37,9 @@ const FEATS = [
   { i: '⏩', t: 'Reel controls & DM replies', d: 'Speed, ±5s and loop on reels. Saved replies and AI drafts in your DMs.' },
   { i: '▶', t: 'YouTube comments', d: 'Every comment of a video or Short with likes and replies.' },
   { i: '🔎', t: 'YouTube search', d: 'All videos of a search: title, channel, views, date, link.' },
+  { i: '📊', t: 'Top posts & creator score', d: 'Sort a profile by likes or comments, see engagement rate, posting rhythm and an estimated price per post.' },
+  { i: '🧲', t: 'Find influencers', d: 'Search our influencer database by niche, country and followers, right in the extension.' },
+  { i: '📝', t: 'YouTube transcripts', d: 'Export any video transcript with timestamps to TXT, SRT or CSV.' },
   { i: '🤖', t: 'AI replies', d: 'Use your own OpenAI or Claude key to draft replies and ask questions about the comments.' },
 ]
 const path = '/extension'
