@@ -182,6 +182,13 @@ function cell(row: Record<string, unknown>, col: Col): string {
 // blocks) still look tidy.
 const AVATAR_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" fill="%23efe7ed"/><circle cx="40" cy="32" r="15" fill="%23cbb8c6"/><rect x="16" y="52" width="48" height="26" rx="13" fill="%23cbb8c6"/></svg>')
 function onImgError(e: Event) { (e.target as HTMLImageElement).src = AVATAR_FALLBACK }
+// Instagram CDN blocks hotlinked images, so route them through our proxy so the
+// avatar/thumbnail actually renders.
+function proxied(url: string): string {
+  if (!url) return AVATAR_FALLBACK
+  if (/cdninstagram\.com|fbcdn\.net/.test(url)) return `${API_BASE}/public/v1/img?u=${encodeURIComponent(url)}`
+  return url
+}
 
 function scrollToPreview() {
   const el = document.getElementById('preview')
@@ -362,7 +369,7 @@ useSeo({
           <!-- Instagram-style: avatar + username rows (comments, likers, followers) -->
           <div v-if="pv.layout === 'people'" class="ig-people">
             <div v-for="(r, i) in pv.rows" :key="i" class="ig-row">
-              <img class="ig-av" :src="str(r, pv.keys.avatar) || AVATAR_FALLBACK" loading="lazy" referrerpolicy="no-referrer" alt="" @error="onImgError" />
+              <img class="ig-av" :src="proxied(str(r, pv.keys.avatar))" loading="lazy" referrerpolicy="no-referrer" alt="" @error="onImgError" />
               <div class="ig-main">
                 <div class="ig-top">
                   <b>{{ str(r, pv.keys.username) }}</b>
@@ -378,7 +385,7 @@ useSeo({
           <!-- Instagram-style: thumbnail grid (posts, reels) -->
           <div v-else-if="pv.layout === 'media'" class="ig-grid">
             <div v-for="(r, i) in pv.rows" :key="i" class="ig-cell">
-              <div class="ig-thumb"><img :src="str(r, pv.keys.thumb) || AVATAR_FALLBACK" loading="lazy" referrerpolicy="no-referrer" alt="" @error="onImgError" />
+              <div class="ig-thumb"><img :src="proxied(str(r, pv.keys.thumb))" loading="lazy" referrerpolicy="no-referrer" alt="" @error="onImgError" />
                 <span v-if="pv.keys.type && str(r, pv.keys.type)" class="ig-badge">{{ str(r, pv.keys.type) }}</span>
               </div>
               <div class="ig-stats">♥ {{ num(r, 'like_count') }} · 💬 {{ num(r, 'comment_count') }}<template v-if="raw(r, 'view_count')"> · ▶ {{ num(r, 'view_count') }}</template></div>
