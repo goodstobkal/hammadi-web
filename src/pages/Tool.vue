@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ToolRunner from '../components/ToolRunner.vue'
 import InfluencerOrder from '../components/InfluencerOrder.vue'
 import catalog from '../catalog.json'
 import type { Tool } from '../lib/api'
-import { GUIDES_URL, KEPT_TOOLS, LISTING_URL, SITE_NAME, SITE_URL, breadcrumbs, useSeo } from '../lib/site'
+import { API_BASE, GUIDES_URL, KEPT_TOOLS, LISTING_URL, SITE_NAME, SITE_URL, breadcrumbs, useSeo } from '../lib/site'
 
 const route = useRoute()
 const tools = catalog.tools as Tool[]
@@ -129,6 +129,75 @@ const PAY: Record<string, Pay> = {
 
 const pay = computed(() => (tool.value ? PAY[tool.value.slug] : undefined))
 
+// --- Free basic preview (behind a free account) --------------------------------
+// A small taste of the result so visitors see value before paying $1. Anonymous
+// visitors get a friendly sign-up card; logged-in free accounts get a few rows.
+const mainField = computed(() => tool.value?.fields?.find((f) => f.type === 'text') || null)
+const pv = reactive({
+  input: '',
+  busy: false,
+  gate: false,
+  error: '',
+  rows: [] as Record<string, unknown>[],
+  cols: [] as string[],
+  total: 0,
+  shown: 0,
+  done: false,
+})
+const canPreview = computed(() => !!mainField.value && tool.value?.slug !== 'instagram-influencer-search')
+
+function pvAuthUrl(dest: 'signup' | 'login'): string {
+  const next = `${window.location.pathname}?preview=${encodeURIComponent(pv.input)}`
+  return `/${dest}?next=${encodeURIComponent(next)}`
+}
+
+async function runPreview() {
+  if (!tool.value || !mainField.value) return
+  const val = pv.input.trim()
+  if (!val) { pv.error = `Enter ${pay.value?.input || 'a value'} first.`; return }
+  pv.busy = true
+  pv.error = ''
+  pv.gate = false
+  pv.done = false
+  try {
+    const q = new URLSearchParams({ [mainField.value.name]: val })
+    const res = await fetch(`${API_BASE}/public/v1/preview/${tool.value.slug}?${q}`, { credentials: 'include' })
+    const body = await res.json().catch(() => ({}))
+    if (!res.ok) {
+      const code = body?.detail?.code || body?.code
+      if (code === 'login_required') { pv.gate = true; return }
+      pv.error = body?.detail?.error || body?.error || 'Preview failed — try again.'
+      return
+    }
+    const key = body.result_key
+    const data = body.data || {}
+    const list = key && Array.isArray(data[key]) ? (data[key] as Record<string, unknown>[]) : []
+    if (list.length) {
+      pv.cols = Object.keys(list[0]).slice(0, 5)
+      pv.rows = list
+    } else if (data && typeof data === 'object') {
+      // Single-object tools (profile info): show a few public header fields.
+      const entries = Object.entries(data).filter(([, v]) => v != null && typeof v !== 'object').slice(0, 6)
+      pv.cols = ['field', 'value']
+      pv.rows = entries.map(([k, v]) => ({ field: k, value: v }))
+    }
+    pv.total = body.rows_shown != null && list.length ? body.rows_shown : pv.rows.length
+    pv.shown = pv.rows.length
+    pv.done = true
+  } catch {
+    pv.error = 'Network error — try again.'
+  } finally {
+    pv.busy = false
+  }
+}
+
+// Resume a preview after signup/login (?preview=<value>).
+if (typeof window !== 'undefined') {
+  const qp = new URLSearchParams(window.location.search)
+  const pr = qp.get('preview')
+  if (pr) { pv.input = pr; setTimeout(runPreview, 50) }
+}
+
 useSeo({
   title: tool.value ? `${PAY[tool.value.slug]?.h1 || tool.value.title} | ${SITE_NAME}` : 'Tool not found',
   description: tool.value?.description || 'That tool does not exist.',
@@ -192,6 +261,43 @@ useSeo({
       </div>
       <p v-if="tool.slug !== 'instagram-influencer-search'" class="secure">🔒 Secure checkout by Stripe · Full refund if we can't deliver · Need several? <RouterLink to="/services/bundle">5 exports for $4 →</RouterLink></p>
       <p v-else class="secure">25 for $1 · 100 for $3 · 500 for $9 · 1,000 for $15 · 5,000 for $39. Need their emails? <a href="/services/influencer-lists">Lists with emails →</a></p>
+
+      <div v-if="canPreview" class="pvbox">
+        <p class="pvbox-h">👀 Not sure yet? <b>See a free preview</b> — the first few rows, free with an account.</p>
+        <div class="pvbox-form">
+          <input v-model="pv.input" type="text" :placeholder="mainField?.placeholder || pay?.input || 'Paste a link or @handle'" @keydown.enter="runPreview" />
+          <button type="button" :disabled="pv.busy" @click="runPreview">{{ pv.busy ? 'Loading…' : 'See free preview →' }}</button>
+        </div>
+
+        <div v-if="pv.gate" class="pvgate">
+          <b>Create a free account to see your preview</b>
+          <p>Free, no card. You'll come right back to this preview.</p>
+          <div class="pvgate-cta">
+            <a :href="pvAuthUrl('signup')" class="pvgate-primary">Create free account →</a>
+            <a :href="pvAuthUrl('login')" class="pvgate-secondary">Log in</a>
+          </div>
+        </div>
+
+        <p v-if="pv.error" class="pverr">{{ pv.error }}</p>
+
+        <div v-if="pv.done && pv.rows.length" class="pvresult">
+          <div class="sheet">
+            <div class="sheet-scroll">
+              <table>
+                <thead><tr><th v-for="c in pv.cols" :key="c">{{ c }}</th></tr></thead>
+                <tbody>
+                  <tr v-for="(r, i) in pv.rows" :key="i"><td v-for="c in pv.cols" :key="c">{{ r[c] }}</td></tr>
+                  <tr class="fade"><td v-for="c in pv.cols" :key="c">…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="pvcta">
+            <p>That's a free preview. Get the <b>complete file</b> (all rows, every column, as Excel) for {{ pay?.price || '$1' }}.</p>
+            <a class="buy-btn" :href="pay?.url" rel="noopener">{{ pay?.btn || 'Get the full file · $1' }} →</a>
+          </div>
+        </div>
+      </div>
 
       <h2>What you get</h2>
       <div class="sheet" role="img" :aria-label="`Example of the Excel columns: ${pay.cols?.join(', ')}`">
@@ -321,6 +427,22 @@ li {
 .buy-btn:hover { filter: brightness(1.06); }
 .buy-end { margin-top: 40px; }
 .secure { margin: 6px 0 0; color: var(--muted); font-size: 13.5px; }
+.pvbox { margin: 18px 0 0; padding: 16px; border: 1px dashed #e3b9cf; border-radius: 16px; background: #fffafc; }
+.pvbox-h { margin: 0 0 10px; font-size: 14.5px; }
+.pvbox-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.pvbox-form input { flex: 1 1 220px; min-width: 0; padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px; font: inherit; font-size: 15px; }
+.pvbox-form button { white-space: nowrap; border: 0; border-radius: 10px; padding: 11px 18px; font-weight: 700; font-size: 15px; color: #fff; cursor: pointer; background: linear-gradient(135deg, #f58529, #dd2a7b 60%, #8134af); }
+.pvbox-form button:disabled { opacity: 0.6; cursor: progress; }
+.pvgate { margin: 14px 0 0; padding: 16px; text-align: center; border-radius: 14px; background: linear-gradient(160deg, #fff5eb, #fdeef6 60%, #f3ebff); border: 1px solid #f6d3e3; }
+.pvgate b { font-size: 16px; color: #2b1a24; }
+.pvgate p { margin: 4px 0 12px; font-size: 13.5px; color: #6b5260; }
+.pvgate-cta { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.pvgate-primary { background: linear-gradient(135deg, #f58529, #d6337a 60%, #8134af); color: #fff; text-decoration: none; font-weight: 800; padding: 12px 26px; border-radius: 999px; box-shadow: 0 6px 18px rgba(214, 51, 122, 0.28); }
+.pvgate-secondary { color: #8a4a6a; text-decoration: none; font-weight: 600; font-size: 13.5px; }
+.pverr { margin: 12px 0 0; color: #c0356b; font-size: 13.5px; }
+.pvresult { margin: 14px 0 0; }
+.pvcta { margin: 12px 0 0; text-align: center; }
+.pvcta p { margin: 0 0 10px; font-size: 14px; }
 .sheet { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card); }
 .sheet-bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-bottom: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
 .sheet-bar span { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
