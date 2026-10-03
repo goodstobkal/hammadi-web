@@ -133,32 +133,55 @@ const pay = computed(() => (tool.value ? PAY[tool.value.slug] : undefined))
 // A small taste of the result so visitors see value before paying $1. Anonymous
 // visitors get a friendly sign-up card; logged-in free accounts get a few rows.
 const mainField = computed(() => tool.value?.fields?.find((f) => f.type === 'text') || null)
+type Col = { key: string; label: string; type?: string }
 const pv = reactive({
   input: '',
   busy: false,
   gate: false,
   error: '',
   rows: [] as Record<string, unknown>[],
-  cols: [] as { key: string; label: string }[],
+  cols: [] as Col[],
+  layout: 'table' as 'table' | 'people' | 'media',
+  keys: {} as { avatar?: string; username?: string; verified?: string; text?: string; name?: string; thumb?: string; url?: string; type?: string; stats?: Col[] },
   total: 0,
   shown: 0,
   done: false,
 })
 const canPreview = computed(() => !!mainField.value && tool.value?.slug !== 'instagram-influencer-search')
 
-// Read a possibly-dotted key (e.g. "owner.username") from a row, formatted by
-// the column type (timestamps -> dates, booleans -> yes/no).
-function cell(row: Record<string, unknown>, col: { key: string; label?: string; type?: string }): string {
-  const v = col.key.split('.').reduce<unknown>((o, k) => (o && typeof o === 'object' ? (o as Record<string, unknown>)[k] : undefined), row)
+// Raw (unformatted) value at a possibly-dotted key.
+function raw(row: Record<string, unknown>, key?: string): unknown {
+  if (!key) return undefined
+  return key.split('.').reduce<unknown>((o, k) => (o && typeof o === 'object' ? (o as Record<string, unknown>)[k] : undefined), row)
+}
+function str(row: Record<string, unknown>, key?: string): string {
+  const v = raw(row, key)
+  return v == null ? '' : String(v)
+}
+function num(row: Record<string, unknown>, key?: string): string {
+  const n = Number(raw(row, key))
+  if (!n) return '0'
+  return n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'K' : String(n)
+}
+function when(row: Record<string, unknown>, key?: string): string {
+  const n = Number(raw(row, key))
+  return n ? new Date(n * (n < 1e12 ? 1000 : 1)).toLocaleDateString() : ''
+}
+
+// Read a possibly-dotted key, formatted by the column type (for the table layout).
+function cell(row: Record<string, unknown>, col: Col): string {
+  const v = raw(row, col.key)
   if (v == null || v === '') return ''
-  if (col.type === 'timestamp') {
-    const n = Number(v)
-    if (n) return new Date(n * (n < 1e12 ? 1000 : 1)).toLocaleDateString()
-  }
+  if (col.type === 'timestamp') { const n = Number(v); if (n) return new Date(n * (n < 1e12 ? 1000 : 1)).toLocaleDateString() }
   if (col.type === 'bool' || typeof v === 'boolean') return v ? 'Yes' : 'No'
   const s = String(v)
   return s.length > 80 ? s.slice(0, 80) + '…' : s
 }
+
+// A tiny inline placeholder avatar/thumb so broken Instagram CDN images (hotlink
+// blocks) still look tidy.
+const AVATAR_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" fill="%23efe7ed"/><circle cx="40" cy="32" r="15" fill="%23cbb8c6"/><rect x="16" y="52" width="48" height="26" rx="13" fill="%23cbb8c6"/></svg>')
+function onImgError(e: Event) { (e.target as HTMLImageElement).src = AVATAR_FALLBACK }
 
 function scrollToPreview() {
   const el = document.getElementById('preview')
@@ -194,10 +217,31 @@ async function runPreview() {
     const key = body.result_key
     const data = body.data || {}
     const list = key && Array.isArray(data[key]) ? (data[key] as Record<string, unknown>[]) : []
-    const cols: { key: string; label: string }[] = Array.isArray(body.columns) ? body.columns : []
+    const cols: Col[] = Array.isArray(body.columns) ? body.columns : []
+    pv.layout = 'table'
+    pv.keys = {}
     if (list.length) {
-      // Use the tool's real columns (labels + dot-paths like owner.username) when
-      // provided, so the preview matches the paid export exactly.
+      const find = (p: (c: Col) => boolean) => cols.find(p)?.key
+      const avatar = find((c) => c.key.endsWith('profile_pic_url'))
+      const thumb = find((c) => c.key === 'image_url' || c.key.endsWith('thumbnail') || c.key === 'thumb')
+      const username = find((c) => c.key === 'username' || c.key.endsWith('.username'))
+      if (thumb) {
+        // Posts / reels -> Instagram-style thumbnail grid.
+        pv.layout = 'media'
+        pv.keys = {
+          thumb, username, url: find((c) => c.key === 'url'), type: find((c) => c.key === 'type'),
+          stats: cols.filter((c) => ['like_count', 'comment_count', 'view_count'].includes(c.key)),
+        }
+      } else if (avatar) {
+        // Comments / likers / followers / following -> avatar + username rows.
+        pv.layout = 'people'
+        pv.keys = {
+          avatar, username, verified: find((c) => c.key.endsWith('is_verified')),
+          name: find((c) => c.key.endsWith('full_name')),
+          text: find((c) => c.key === 'text' || c.key === 'comment'),
+          stats: cols.filter((c) => ['like_count', 'reply_count'].includes(c.key)),
+        }
+      }
       pv.cols = cols.length ? cols.slice(0, 6) : Object.keys(list[0]).slice(0, 5).map((k) => ({ key: k, label: k }))
       pv.rows = list
     } else if (data && typeof data === 'object') {
@@ -315,7 +359,34 @@ useSeo({
             <template v-if="tool.slug === 'export-instagram-comments'"> comments</template>
             <template v-else> rows</template> — the full file has them all.
           </p>
-          <div class="sheet">
+          <!-- Instagram-style: avatar + username rows (comments, likers, followers) -->
+          <div v-if="pv.layout === 'people'" class="ig-people">
+            <div v-for="(r, i) in pv.rows" :key="i" class="ig-row">
+              <img class="ig-av" :src="str(r, pv.keys.avatar) || AVATAR_FALLBACK" loading="lazy" referrerpolicy="no-referrer" alt="" @error="onImgError" />
+              <div class="ig-main">
+                <div class="ig-top">
+                  <b>{{ str(r, pv.keys.username) }}</b>
+                  <span v-if="pv.keys.verified && raw(r, pv.keys.verified)" class="ig-verif">✔</span>
+                  <span v-if="pv.keys.name && str(r, pv.keys.name)" class="ig-name">{{ str(r, pv.keys.name) }}</span>
+                </div>
+                <div v-if="pv.keys.text && str(r, pv.keys.text)" class="ig-text">{{ str(r, pv.keys.text) }}</div>
+              </div>
+              <div v-if="pv.keys.text" class="ig-likes">♥ {{ num(r, 'like_count') }}</div>
+            </div>
+          </div>
+
+          <!-- Instagram-style: thumbnail grid (posts, reels) -->
+          <div v-else-if="pv.layout === 'media'" class="ig-grid">
+            <div v-for="(r, i) in pv.rows" :key="i" class="ig-cell">
+              <div class="ig-thumb"><img :src="str(r, pv.keys.thumb) || AVATAR_FALLBACK" loading="lazy" referrerpolicy="no-referrer" alt="" @error="onImgError" />
+                <span v-if="pv.keys.type && str(r, pv.keys.type)" class="ig-badge">{{ str(r, pv.keys.type) }}</span>
+              </div>
+              <div class="ig-stats">♥ {{ num(r, 'like_count') }} · 💬 {{ num(r, 'comment_count') }}<template v-if="raw(r, 'view_count')"> · ▶ {{ num(r, 'view_count') }}</template></div>
+            </div>
+          </div>
+
+          <!-- Fallback table for anything else -->
+          <div v-else class="sheet">
             <div class="sheet-scroll">
               <table>
                 <thead><tr><th v-for="c in pv.cols" :key="c.key">{{ c.label }}</th></tr></thead>
@@ -482,6 +553,24 @@ li {
 .pverr { margin: 12px 0 0; color: #c0356b; font-size: 13.5px; }
 .pvresult { margin: 14px 0 0; }
 .pvtotal { margin: 0 0 10px; font-size: 13.5px; color: var(--fg); }
+.ig-people { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card); }
+.ig-row { display: flex; align-items: flex-start; gap: 11px; padding: 11px 13px; border-bottom: 1px solid var(--line); }
+.ig-row:last-child { border-bottom: 0; }
+.ig-av { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--bg2); }
+.ig-main { flex: 1; min-width: 0; }
+.ig-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ig-top b { font-size: 14px; }
+.ig-verif { color: #3897f0; font-size: 11px; }
+.ig-name { color: var(--muted); font-size: 12.5px; }
+.ig-text { font-size: 13.5px; color: var(--fg); margin-top: 2px; word-break: break-word; }
+.ig-likes { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+.ig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+.ig-cell { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--card); }
+.ig-thumb { position: relative; aspect-ratio: 1 / 1; background: var(--bg2); }
+.ig-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ig-badge { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,.6); color: #fff; font-size: 10.5px; padding: 1px 7px; border-radius: 999px; text-transform: capitalize; }
+.ig-stats { font-size: 12px; font-weight: 600; padding: 7px 9px; color: var(--fg); }
+
 .pvcta { margin: 12px 0 0; text-align: center; }
 .pvcta p { margin: 0 0 10px; font-size: 14px; }
 .sheet { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card); }
