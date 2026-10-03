@@ -7,10 +7,14 @@ const STORE = 'https://chromewebstore.google.com/detail/instagram-comment-post-e
 const FAQ: [string, string][] = [
   ['Is my data sent to a server?', 'No. The extension reads comments and posts inside your own Instagram or YouTube tab and builds the file in your browser. Only your plan (free or Pro) is checked with hammadi.dev.'],
   ['Is it free?', 'Your first export is free with a hammadi.dev account. Pro is $3 a month for unlimited exports, cancel any time.'],
-  ['Which sites does it support?', 'Instagram (comments, profile posts, likers, followers, following, suggested accounts, photos and videos) and YouTube (comments of videos and Shorts, search results).'],
+  ['Which sites does it support?', 'Instagram (comments, profile posts, likers, followers, following, suggested accounts, hashtags, unfollowers, and downloads of posts, reels, stories and highlights) and YouTube (comments of videos and Shorts, search results).'],
   ['Is it safe for my Instagram account?', 'It reads at a human pace (about one request a second) through your normal logged-in session, like scrolling the comments yourself.'],
 ]
 const VIDEOS = [
+  { src: '/videos/extension-bulk.mp4', title: 'Download a whole Instagram profile', sub: 'One "Download all" button: posts, reels, stories and highlights into a folder. Next time, only the new ones.' },
+  { src: '/videos/extension-search.mp4', title: 'Search inside comments (AI)', sub: 'Instagram has no comment search. Type a word, or let AI find comments that mean it ("where can I buy it").' },
+  { src: '/videos/extension-download.mp4', title: 'Download any reel in one click', sub: 'A download icon right next to Like, Comment and Share.' },
+  { src: '/videos/extension-tools.mp4', title: 'Reel speed controls + quick DM replies', sub: 'Speed, ±5s and loop on every reel. Saved replies and AI drafts in your DMs.' },
   { src: '/videos/extension-colors.mp4', title: 'Comments colored by sentiment', sub: 'Green, grey or red, with 🛒 buyer and ❓ question tags, right on Instagram.' },
   { src: '/videos/extension-youtube.mp4', title: 'YouTube comments in one click', sub: '500 comments of a video while you scroll.' },
   { src: '/videos/extension-profile.mp4', title: 'Export a whole Instagram profile', sub: 'One button next to Follow: every post with likes, comments and views.' },
@@ -23,7 +27,11 @@ const FEATS = [
   { i: '❤️', t: 'Likers', d: 'The accounts that liked a post.' },
   { i: '👥', t: 'Followers & following', d: 'Follower and following lists (Instagram limits other accounts to ~50 followers).' },
   { i: '✨', t: 'Suggested accounts', d: 'Accounts Instagram suggests as similar: great for finding competitors.' },
-  { i: '⬇', t: 'Photos & videos', d: 'Download every photo and video of a post or carousel.' },
+  { i: '⬇', t: 'Download a whole profile', d: 'Posts, reels, stories and highlights in one click, or only what is new since last time. Or paste a list of links.' },
+  { i: '🔎', t: 'Comment search with AI', d: 'Find comments by word or by meaning, highlighted on the page.' },
+  { i: '#️⃣', t: 'Hashtag top posts', d: 'Top posts and reels of any hashtag with likes, comments and views.' },
+  { i: '👋', t: 'Unfollowers', d: 'Who does not follow you back, and who unfollowed you since your last check.' },
+  { i: '⏩', t: 'Reel controls & DM replies', d: 'Speed, ±5s and loop on reels. Saved replies and AI drafts in your DMs.' },
   { i: '▶', t: 'YouTube comments', d: 'Every comment of a video or Short with likes and replies.' },
   { i: '🔎', t: 'YouTube search', d: 'All videos of a search: title, channel, views, date, link.' },
   { i: '🤖', t: 'AI replies', d: 'Use your own OpenAI or Claude key to draft replies and ask questions about the comments.' },
