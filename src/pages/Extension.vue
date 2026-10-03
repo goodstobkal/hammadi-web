@@ -122,7 +122,7 @@ onMounted(() => {
       </div>
       <div class="plan hot">
         <b>Pro</b><p class="price">$3<small>/month</small></p>
-        <ul><li>Unlimited exports</li><li>Up to 5,000 comments per post</li><li>All profile posts, photos & videos</li><li>Cancel any time</li></ul>
+        <ul><li>Unlimited exports</li><li>Up to 5,000 comments per post</li><li>All profile posts, photos & videos</li><li><b>Request any custom export</b> on Instagram, YouTube or TikTok, including public emails</li><li>Cancel any time</li></ul>
         <p v-if="st?.pro" class="state">✓ You're Pro</p>
         <button v-else class="btn" type="button" :disabled="busy" @click="goPro">{{ busy ? 'Opening checkout…' : 'Go Pro · $3/month →' }}</button>
         <p v-if="err" class="err">{{ err }}</p>
