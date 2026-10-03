@@ -31,6 +31,7 @@ onMounted(async () => {
         <RouterLink to="/services/reel-analysis">Reel analysis</RouterLink>
         <RouterLink to="/tools">Cheap tools</RouterLink>
         <RouterLink to="/shop">Shop</RouterLink>
+        <a href="/trending">Trending</a>
         <RouterLink to="/orders">My orders</RouterLink>
         <RouterLink class="cta" to="/home#services">Order a report</RouterLink>
         <!-- Auth-aware: username when signed in, else Log in. -->
