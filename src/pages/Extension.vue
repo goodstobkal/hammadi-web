@@ -11,9 +11,9 @@ const FAQ: [string, string][] = [
   ['Is it safe for my Instagram account?', 'It reads at a human pace (about one request a second) through your normal logged-in session, like scrolling the comments yourself.'],
 ]
 const VIDEOS = [
+  { src: '/videos/extension-youtube.mp4', title: 'YouTube comments in one click', sub: '500 comments of a video while you scroll.' },
   { src: '/videos/extension-profile.mp4', title: 'Export a whole Instagram profile', sub: 'One button next to Follow: every post with likes, comments and views.' },
-  { src: '/videos/extension-youtube.mp4', title: 'YouTube comments in one click', sub: '500 comments of a video, straight from the page.' },
-  { src: '/videos/extension-plans.mp4', title: 'Comments of any reel', sub: 'First export free, then unlimited with Pro.' },
+  { src: '/videos/extension-giveaway.mp4', title: 'Giveaway picker + comment insights', sub: 'Sentiment, top words and emoji, then a fair random winner.' },
 ]
 const FEATS = [
   { i: '💬', t: 'Instagram comments', d: 'Every comment and reply of a post or reel: author, likes, date, profile link.' },
@@ -74,29 +74,21 @@ onMounted(() => {
 <template>
   <article class="ex">
     <div v-if="justPro" class="ok">✅ You're Pro: unlimited exports. Open the extension and export away.</div>
-    <p class="kicker">Chrome extension · Instagram & YouTube</p>
-    <h1>Export comments, posts and followers in one click</h1>
-    <p class="lede">A pink Export button right on Instagram and YouTube. Every comment, post, liker, follower or video into CSV or JSON. It runs in your own tab, so nothing goes through a server.</p>
-    <div class="cta">
-      <a class="btn" :href="STORE" target="_blank" rel="noopener">Add to Chrome, it's free →</a>
-      <span class="sub">First export free · Pro $3/month</span>
-    </div>
-
-    <div class="plans">
-      <div class="plan">
-        <b>Free</b><p class="price">$0</p>
-        <ul><li>1 export with a free hammadi.dev account</li><li>Instagram & YouTube</li><li>CSV and JSON</li></ul>
-        <a v-if="st && !st.logged_in" class="btn ghost" href="/signup?next=/extension">Create account</a>
-        <p v-else-if="st && st.logged_in && !st.pro" class="state">{{ st.free_left ? '1 free export available' : 'Free export used' }}</p>
+    <section class="hero">
+      <div class="hero-l">
+        <p class="kicker">Chrome extension · Instagram & YouTube</p>
+        <h1>Export every comment, post and follower in one click</h1>
+        <p class="lede">A pink Export button right on Instagram and YouTube. Comments, posts, likers, followers or videos into CSV or JSON, plus a giveaway picker and AI insights. It runs in your own tab, so nothing goes through a server.</p>
+        <div class="cta">
+          <a class="btn big" :href="STORE" target="_blank" rel="noopener">Add to Chrome, it's free →</a>
+        </div>
+        <p class="trust">✓ First export free &nbsp; ✓ Pro $3/month &nbsp; ✓ No data leaves your browser</p>
       </div>
-      <div class="plan hot">
-        <b>Pro</b><p class="price">$3<small>/month</small></p>
-        <ul><li>Unlimited exports</li><li>Up to 5,000 comments per post</li><li>All profile posts, photos & videos</li><li>Cancel any time</li></ul>
-        <p v-if="st?.pro" class="state">✓ You're Pro</p>
-        <button v-else class="btn" type="button" :disabled="busy" @click="goPro">{{ busy ? 'Opening checkout…' : 'Go Pro · $3/month →' }}</button>
-        <p v-if="err" class="err">{{ err }}</p>
+      <div class="hero-v">
+        <video src="/videos/extension-instagram.mp4" poster="/videos/extension-instagram.jpg" autoplay muted loop playsinline preload="metadata"></video>
+        <span class="live">● Exporting 500 comments</span>
       </div>
-    </div>
+    </section>
 
     <h2>See it in action</h2>
     <div class="vids">
@@ -118,6 +110,24 @@ onMounted(() => {
       <li><b>Click Export</b><span>Get a CSV or JSON in seconds. Your first export is free.</span></li>
     </ol>
 
+    <h2>Simple pricing</h2>
+    <div class="plans">
+      <div class="plan">
+        <b>Free</b><p class="price">$0</p>
+        <ul><li>1 export with a free hammadi.dev account</li><li>Instagram & YouTube</li><li>CSV and JSON</li></ul>
+        <a v-if="st && !st.logged_in" class="btn ghost" href="/signup?next=/extension">Create account</a>
+        <p v-else-if="st && st.logged_in && !st.pro" class="state">{{ st.free_left ? '1 free export available' : 'Free export used' }}</p>
+      </div>
+      <div class="plan hot">
+        <b>Pro</b><p class="price">$3<small>/month</small></p>
+        <ul><li>Unlimited exports</li><li>Up to 5,000 comments per post</li><li>All profile posts, photos & videos</li><li>Cancel any time</li></ul>
+        <p v-if="st?.pro" class="state">✓ You're Pro</p>
+        <button v-else class="btn" type="button" :disabled="busy" @click="goPro">{{ busy ? 'Opening checkout…' : 'Go Pro · $3/month →' }}</button>
+        <p v-if="err" class="err">{{ err }}</p>
+      </div>
+    </div>
+
+
     <h2>Frequently asked questions</h2>
     <div v-for="[q, a] in FAQ" :key="q"><h3>{{ q }}</h3><p>{{ a }}</p></div>
     <p class="fb">Ideas or problems? <a href="/feedback?from=extension">Share feedback →</a></p>
@@ -125,6 +135,13 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 28px; align-items: center; margin-bottom: 8px; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; } }
+.hero-v { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 20px 50px rgba(129, 52, 175, .18); background: #111; }
+.hero-v video { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: right top; }
+.live { position: absolute; left: 12px; top: 12px; background: rgba(0,0,0,.65); color: #fff; font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px; }
+.btn.big { font-size: 17px; padding: 15px 28px; box-shadow: 0 10px 26px rgba(221,42,123,.3); }
+.trust { color: var(--muted); font-size: 13.5px; margin: 12px 0 0; }
 .kicker { margin: 0 0 8px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
 h1 { font-size: clamp(28px, 4.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 12px; }
 .lede { font-size: 18px; color: var(--muted); margin: 0; }
