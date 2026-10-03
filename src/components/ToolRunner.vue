@@ -217,13 +217,39 @@ function runFull() {
   submit(true)
 }
 onMounted(() => {
-  // Back from Stripe: restore the form and run the full task right away.
   const q = new URLSearchParams(window.location.search)
-  if (q.get('resume') !== 'full') return
-  for (const [k, v] of q.entries()) if (k.startsWith('f_') && k.slice(2) in form) form[k.slice(2)] = v
-  if (q.get('credits') === 'added') submit(true)
-  else openCredits()
+  // Back from Stripe: restore the form and run the full task right away.
+  if (q.get('resume') === 'full') {
+    for (const [k, v] of q.entries()) if (k.startsWith('f_') && k.slice(2) in form) form[k.slice(2)] = v
+    if (q.get('credits') === 'added') submit(true)
+    else openCredits()
+    return
+  }
+  // Back from signup/login (the gate below sent them): restore their input and
+  // run the lookup immediately, so logging in feels like it just worked.
+  if (q.get('resume') === 'login') {
+    for (const [k, v] of q.entries()) if (k.startsWith('f_') && k.slice(2) in form) form[k.slice(2)] = v
+    if (!requiredMissing()) submit()
+  }
 })
+
+/** The current page plus the filled form, so after signup/login we return here
+ * and re-run the lookup automatically (reuses the ?resume= mechanism above). */
+function resumeNext(): string {
+  const p = new URLSearchParams({ resume: 'login' })
+  for (const f of props.tool.fields) {
+    const v = String(form[f.name] ?? '').trim()
+    if (v) p.set('f_' + f.name, v)
+  }
+  return `${window.location.pathname}?${p.toString()}`
+}
+function authUrl(dest: 'signup' | 'login'): string {
+  return `/${dest}?next=${encodeURIComponent(resumeNext())}`
+}
+function requiredMissing(): boolean {
+  const f = mainField.value
+  return !f || !String(form[f.name] ?? '').trim()
+}
 
 async function submit(fullArg: unknown = false) {
   // Called from the form with an Event: only an explicit `true` spends a credit.
@@ -438,15 +464,20 @@ function shortText(value: unknown) {
       <p class="progress-sub">Scraping live — keep this tab open.</p>
     </div>
 
-    <p v-if="error" class="error">
+    <div v-if="error && error.code === 'login_required'" class="gate">
+      <div class="gate-badge">🔓</div>
+      <h3>Your result is ready — create a free account to see it</h3>
+      <p class="gate-sub">Your first lookup is <b>free</b>, no card needed. Takes 10 seconds and you keep access to all the tools.</p>
+      <div class="gate-cta">
+        <a :href="authUrl('signup')" class="gate-primary">Create free account →</a>
+        <a :href="authUrl('login')" class="gate-secondary">I already have one · Log in</a>
+      </div>
+      <p class="gate-trust">✓ We never ask for your Instagram password · ✓ Public data only · ✓ Cancel anytime</p>
+    </div>
+
+    <p v-else-if="error" class="error">
       {{ error.message }}
-      <a v-if="error.code === 'login_required'" href="/signup">
-        Create a free account →
-      </a>
-      <a v-if="error.code === 'login_required'" href="/login" class="secondary-link">
-        or log in
-      </a>
-      <template v-else-if="error.code === 'email_unverified'">
+      <template v-if="error.code === 'email_unverified'">
         <button
           v-if="resendState !== 'sent'"
           type="button"
@@ -987,6 +1018,72 @@ small {
   border-radius: 10px;
   background: var(--chip);
   color: var(--fg);
+}
+.gate {
+  margin: 18px 0 0;
+  padding: 26px 22px;
+  border-radius: 18px;
+  text-align: center;
+  background: linear-gradient(160deg, #fff5eb, #fdeef6 55%, #f3ebff);
+  border: 1px solid #f6d3e3;
+  box-shadow: 0 10px 32px rgba(214, 51, 122, 0.12);
+}
+.gate-badge {
+  font-size: 30px;
+  width: 58px;
+  height: 58px;
+  line-height: 58px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(214, 51, 122, 0.18);
+}
+.gate h3 {
+  margin: 0 0 6px;
+  font-size: 19px;
+  color: #2b1a24;
+}
+.gate-sub {
+  margin: 0 auto 16px;
+  max-width: 420px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #6b5260;
+}
+.gate-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.gate-primary {
+  display: inline-block;
+  background: linear-gradient(135deg, #f58529, #d6337a 60%, #8134af);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 16px;
+  padding: 13px 30px;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(214, 51, 122, 0.3);
+}
+.gate-primary:hover {
+  filter: brightness(1.05);
+}
+.gate-secondary {
+  color: #8a4a6a;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.gate-secondary:hover {
+  text-decoration: underline;
+}
+.gate-trust {
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: #a07e8f;
+  line-height: 1.7;
 }
 .link-btn {
   background: none;
