@@ -146,7 +146,7 @@ export function initEngagement() {
   })
   window.addEventListener('pagehide', flushPageTime)
   document.addEventListener('click', (e) => {
-    const a = (e.target as HTMLElement | null)?.closest?.('a[href*="buy.stripe.com"], a[href*="checkout.stripe.com"], button.pay, .buy-btn, .paybtn') as HTMLElement | null
+    const a = (e.target as HTMLElement | null)?.closest?.('a[href*="buy.stripe.com"], a[href*="checkout.stripe.com"], a[href*="chromewebstore.google.com"], button.pay, .buy-btn, .paybtn') as HTMLElement | null
     if (!a) return
     const href = a.getAttribute('href') || ''
     track('buy_click', { meta: { label: (a.textContent || '').trim().slice(0, 60), href: href.slice(0, 120) } })
