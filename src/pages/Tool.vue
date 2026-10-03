@@ -139,12 +139,26 @@ const pv = reactive({
   gate: false,
   error: '',
   rows: [] as Record<string, unknown>[],
-  cols: [] as string[],
+  cols: [] as { key: string; label: string }[],
   total: 0,
   shown: 0,
   done: false,
 })
 const canPreview = computed(() => !!mainField.value && tool.value?.slug !== 'instagram-influencer-search')
+
+// Read a possibly-dotted key (e.g. "owner.username") from a row, formatted by
+// the column type (timestamps -> dates, booleans -> yes/no).
+function cell(row: Record<string, unknown>, col: { key: string; label?: string; type?: string }): string {
+  const v = col.key.split('.').reduce<unknown>((o, k) => (o && typeof o === 'object' ? (o as Record<string, unknown>)[k] : undefined), row)
+  if (v == null || v === '') return ''
+  if (col.type === 'timestamp') {
+    const n = Number(v)
+    if (n) return new Date(n * (n < 1e12 ? 1000 : 1)).toLocaleDateString()
+  }
+  if (col.type === 'bool' || typeof v === 'boolean') return v ? 'Yes' : 'No'
+  const s = String(v)
+  return s.length > 80 ? s.slice(0, 80) + '…' : s
+}
 
 function scrollToPreview() {
   const el = document.getElementById('preview')
@@ -180,17 +194,20 @@ async function runPreview() {
     const key = body.result_key
     const data = body.data || {}
     const list = key && Array.isArray(data[key]) ? (data[key] as Record<string, unknown>[]) : []
+    const cols: { key: string; label: string }[] = Array.isArray(body.columns) ? body.columns : []
     if (list.length) {
-      pv.cols = Object.keys(list[0]).slice(0, 5)
+      // Use the tool's real columns (labels + dot-paths like owner.username) when
+      // provided, so the preview matches the paid export exactly.
+      pv.cols = cols.length ? cols.slice(0, 6) : Object.keys(list[0]).slice(0, 5).map((k) => ({ key: k, label: k }))
       pv.rows = list
     } else if (data && typeof data === 'object') {
       // Single-object tools (profile info): show a few public header fields.
       const entries = Object.entries(data).filter(([, v]) => v != null && typeof v !== 'object').slice(0, 6)
-      pv.cols = ['field', 'value']
+      pv.cols = [{ key: 'field', label: 'field' }, { key: 'value', label: 'value' }]
       pv.rows = entries.map(([k, v]) => ({ field: k, value: v }))
     }
-    pv.total = body.rows_shown != null && list.length ? body.rows_shown : pv.rows.length
-    pv.shown = pv.rows.length
+    pv.shown = list.length ? Math.min(list.length, pv.rows.length) : pv.rows.length
+    pv.total = typeof body.total === 'number' ? body.total : pv.shown
     pv.done = true
   } catch {
     pv.error = 'Network error — try again.'
@@ -293,19 +310,27 @@ useSeo({
         <p v-if="pv.error" class="pverr">{{ pv.error }}</p>
 
         <div v-if="pv.done && pv.rows.length" class="pvresult">
+          <p class="pvtotal">
+            Showing <b>{{ pv.shown }}</b><template v-if="pv.total > pv.shown"> of <b>{{ pv.total.toLocaleString() }}</b></template>
+            <template v-if="tool.slug === 'export-instagram-comments'"> comments</template>
+            <template v-else> rows</template> — the full file has them all.
+          </p>
           <div class="sheet">
             <div class="sheet-scroll">
               <table>
-                <thead><tr><th v-for="c in pv.cols" :key="c">{{ c }}</th></tr></thead>
+                <thead><tr><th v-for="c in pv.cols" :key="c.key">{{ c.label }}</th></tr></thead>
                 <tbody>
-                  <tr v-for="(r, i) in pv.rows" :key="i"><td v-for="c in pv.cols" :key="c">{{ r[c] }}</td></tr>
-                  <tr class="fade"><td v-for="c in pv.cols" :key="c">…</td></tr>
+                  <tr v-for="(r, i) in pv.rows" :key="i"><td v-for="c in pv.cols" :key="c.key">{{ cell(r, c) }}</td></tr>
+                  <tr class="fade"><td v-for="c in pv.cols" :key="c.key">…</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
           <div class="pvcta">
-            <p>That's a free preview. Get the <b>complete file</b> (all rows, every column, as Excel) for {{ pay?.price || '$1' }}.</p>
+            <p>That's a free preview.
+              <template v-if="pv.total > pv.shown">Get <b>all {{ pv.total.toLocaleString() }}</b> rows</template>
+              <template v-else>Get the <b>complete file</b></template>
+              (every column, as Excel) for {{ pay?.price || '$1' }}.</p>
             <a class="buy-btn" :href="pay?.url" rel="noopener">{{ pay?.btn || 'Get the full file · $1' }} →</a>
           </div>
         </div>
@@ -456,6 +481,7 @@ li {
 .pvgate-secondary { color: #8a4a6a; text-decoration: none; font-weight: 600; font-size: 13.5px; }
 .pverr { margin: 12px 0 0; color: #c0356b; font-size: 13.5px; }
 .pvresult { margin: 14px 0 0; }
+.pvtotal { margin: 0 0 10px; font-size: 13.5px; color: var(--fg); }
 .pvcta { margin: 12px 0 0; text-align: center; }
 .pvcta p { margin: 0 0 10px; font-size: 14px; }
 .sheet { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card); }
