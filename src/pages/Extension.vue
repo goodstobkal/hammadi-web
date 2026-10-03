@@ -49,6 +49,7 @@ useSeo({
   path,
   jsonld: [
     { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Instagram & YouTube Comment Exporter', applicationCategory: 'BrowserApplication',
+      image: `${SITE_URL}/logo.png`,
       operatingSystem: 'Chrome', url: `${SITE_URL}${path}`, offers: [{ '@type': 'Offer', price: '0', priceCurrency: 'USD', name: 'Free export' },
         { '@type': 'Offer', price: '3', priceCurrency: 'USD', name: 'Pro (monthly)' }] },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },

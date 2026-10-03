@@ -208,6 +208,7 @@ useSeo({
       '@type': 'WebApplication',
       name: tool.value?.title,
       url: `${SITE_URL}${path.value}`,
+      image: `${SITE_URL}/logo.png`,
       description: tool.value?.description,
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'Any',

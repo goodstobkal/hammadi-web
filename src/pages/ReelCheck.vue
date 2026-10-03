@@ -19,6 +19,7 @@ useSeo({
   path,
   jsonld: [
     { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Instagram Reel Comment Checker', url: `${SITE_URL}${path}`,
+      image: `${SITE_URL}/logo.png`,
       applicationCategory: 'BusinessApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' } },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
     breadcrumbs([{ name: 'Tools', path: '/tools' }, { name: 'Reel comment checker', path }]),
