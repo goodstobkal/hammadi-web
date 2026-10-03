@@ -28,6 +28,7 @@ useSeo({
       '@context': 'https://schema.org',
       '@type': 'Product',
       name: 'Instagram account country check',
+      image: `${SITE_URL}/logo.png`,
       brand: { '@type': 'Brand', name: SITE_NAME },
       url: `${SITE_URL}${path}`,
       offers: TIERS.map((t) => ({ '@type': 'Offer', name: t.label, price: String(t.price), priceCurrency: 'USD', availability: 'https://schema.org/InStock' })),

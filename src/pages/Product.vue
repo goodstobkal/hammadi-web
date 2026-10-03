@@ -23,6 +23,7 @@ useSeo({
       '@type': 'Product',
       name: p.value.name,
       description: p.value.seoDescription,
+      image: `${SITE_URL}/logo.png`,
       brand: { '@type': 'Brand', name: SITE_NAME },
       url: `${SITE_URL}${path.value}`,
       offers: p.value.packs.map((k) => ({

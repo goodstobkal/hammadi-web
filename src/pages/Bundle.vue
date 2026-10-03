@@ -23,7 +23,7 @@ useSeo({
   description: 'Bundle up to 5 Instagram exports (every comment, post, reel or liker) for $4. One payment, each Excel file emailed to you.',
   path,
   jsonld: [
-    { '@context': 'https://schema.org', '@type': 'Product', name: '5 Instagram exports bundle', brand: { '@type': 'Brand', name: SITE_NAME },
+    { '@context': 'https://schema.org', '@type': 'Product', name: '5 Instagram exports bundle', image: `${SITE_URL}/logo.png`, brand: { '@type': 'Brand', name: SITE_NAME },
       url: `${SITE_URL}${path}`, offers: { '@type': 'Offer', price: '4', priceCurrency: 'USD', availability: 'https://schema.org/InStock' } },
     breadcrumbs([{ name: 'Services', path: '/' }, { name: '5 exports for $4', path }]),
   ],
