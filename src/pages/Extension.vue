@@ -11,9 +11,11 @@ const FAQ: [string, string][] = [
   ['Is it safe for my Instagram account?', 'It reads at a human pace (about one request a second) through your normal logged-in session, like scrolling the comments yourself.'],
 ]
 const VIDEOS = [
+  { src: '/videos/extension-colors.mp4', title: 'Comments colored by sentiment', sub: 'Green, grey or red, with 🛒 buyer and ❓ question tags, right on Instagram.' },
   { src: '/videos/extension-youtube.mp4', title: 'YouTube comments in one click', sub: '500 comments of a video while you scroll.' },
   { src: '/videos/extension-profile.mp4', title: 'Export a whole Instagram profile', sub: 'One button next to Follow: every post with likes, comments and views.' },
   { src: '/videos/extension-giveaway.mp4', title: 'Giveaway picker + comment insights', sub: 'Sentiment, top words and emoji, then a fair random winner.' },
+  { src: '/videos/extension-signup.mp4', title: 'Free account in 5 seconds', sub: 'Sign up inside the extension, first export free, Pro opens Stripe directly.' },
 ]
 const FEATS = [
   { i: '💬', t: 'Instagram comments', d: 'Every comment and reply of a post or reel: author, likes, date, profile link.' },
