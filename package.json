@@ -5,9 +5,8 @@
   "description": "Free Instagram data tools and guides - the marketing site for the Instagram Scraper API",
   "type": "module",
   "scripts": {
-    "catalog": "node scripts/fetch-catalog.mjs",
-    "dev": "vite",
-    "build": "npm run catalog && vite-ssg build",
+    "dev": "node api.js && vite",
+    "build": "node api.js && vite-ssg build",
     "preview": "vite preview --port 5173"
   },
   "dependencies": {
