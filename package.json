@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "catalog": "node scripts/fetch-catalog.mjs",
-    "dev": "vite",
-    "build": "npm run catalog && vite-ssg build",
+    "dev": "node api.js && vite",
+    "build": "node api.js && npm run catalog && vite-ssg build",
     "preview": "vite preview --port 5173"
   },
   "dependencies": {
