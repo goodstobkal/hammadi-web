@@ -9,15 +9,7 @@ const open = ref(false)
 // visitor on first paint).
 const me = ref<{ username: string | null; email: string } | undefined>(undefined)
 
-onMounted(async () => {
-  try {
-    const res = await fetch(`${API_BASE}/auth/me`, { credentials: 'same-origin' })
-    const data = await res.json()
-    me.value = data.user ? { username: data.user.username, email: data.user.email } : null
-  } catch {
-    me.value = null
-  }
-})
+void me // static site: no auth/backend
 </script>
 
 <template>
@@ -26,19 +18,7 @@ onMounted(async () => {
       <RouterLink to="/" class="brand"><BrandLogo /> {{ SITE_NAME }}</RouterLink>
       <button class="burger" type="button" aria-label="Menu" @click="open = !open">☰</button>
       <nav :class="{ open }" @click="open = false">
-        <RouterLink to="/services/influencer-lists">Influencer lists</RouterLink>
-        <RouterLink to="/services/profile-pack">Profile pack</RouterLink>
-        <RouterLink to="/services/reel-analysis">Reel analysis</RouterLink>
-        <RouterLink to="/tools">Cheap tools</RouterLink>
-        <RouterLink to="/shop">Shop</RouterLink>
-        <a href="/trending">Trending</a>
-        <RouterLink to="/orders">My orders</RouterLink>
-        <RouterLink class="cta" to="/home#services">Order a report</RouterLink>
-        <!-- Auth-aware: username when signed in, else Log in. -->
-        <a v-if="me" href="/account" class="account">
-          <span class="uname">{{ me.username || me.email }}</span>
-        </a>
-        <a v-else-if="me === null" href="/login">Log in</a>
+        <a class="cta" href="https://chromewebstore.google.com/detail/instagram-comment-post-ex/ejjfocklfpidcfenanddaedohidmmjba" target="_blank" rel="noopener">Add to Chrome</a>
       </nav>
     </div>
   </header>

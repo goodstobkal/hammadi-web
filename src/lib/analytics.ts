@@ -92,6 +92,7 @@ export function track(name: EventName, payload: Payload = {}) {
     screen_h: window.screen?.height ?? 0,
     click_id: clickId,
   })
+  return // static site: no backend
   const url = `${API_BASE}/public/v1/event`
   try {
     // sendBeacon survives the page being closed, which a fetch() may not.
@@ -131,6 +132,7 @@ export function startPage(path: string) {
   visibleSince = document.visibilityState === 'visible' ? Date.now() : 0
 }
 function ping() {
+  return // static site: no backend
   if (document.visibilityState !== 'visible') return
   try {
     void fetch(`${API_BASE}/public/v1/ping`, { method: 'POST', headers: { 'content-type': 'application/json' },
