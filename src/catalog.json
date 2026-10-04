@@ -389,7 +389,7 @@
       "description": "Download the full comment thread of any public post or reel - text, author, timestamp, like count and replies - and export it as a table (Excel, CSV or JSON). Most tools stop at the first 20-25 comments because Instagram's comment pane only loads when you scroll the pane itself; this comment downloader keeps going. Ready for sentiment analysis, giveaway draws or feedback mining.",
       "category": "Post",
       "pinned": true,
-      "guide": "best-instagram-scraper-api",
+      "guide": "chrome-extension-export-instagram-youtube-comments",
       "faq": [
         {
           "q": "How do I download all comments from an Instagram post?",
