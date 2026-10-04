@@ -1,0 +1,16 @@
+# Hammadi.dev
+
+> Free Chrome extensions that run entirely in your own browser tab — no account,
+> no server, no subscription. Built for creators, marketers and sellers.
+
+## Extensions
+
+- [Comment Exporter for Instagram & YouTube](https://hammadi.dev/extensions/instagram-youtube-comment-exporter): Export comments, posts, followers, likers and reels to CSV; download reels and whole profiles; optional AI replies with your own OpenAI/Claude key. Live on the Chrome Web Store.
+- [Lead Scraper for Google Maps](https://hammadi.dev/extensions/google-maps-lead-scraper): Turn any Google Maps search into a lead list (name, phone, website, rating, address) exported to CSV; scan a whole city. Launching soon — join the waitlist.
+- [Reply Assistant for Etsy Sellers](https://hammadi.dev/extensions/etsy-reply-assistant): AI reply suggestions on Etsy Messages using your own OpenAI/Claude key; you always press send. Launching soon — join the waitlist.
+
+## About
+
+- Everything runs client-side in the browser; the extensions read only the public page you already have open.
+- This website is static. No analytics cookies, no trackers, no personal data collected.
+- [Privacy & terms](https://hammadi.dev/privacy)
