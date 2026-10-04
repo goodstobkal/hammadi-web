@@ -1,15 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import BrandLogo from './BrandLogo.vue'
-import { API_BASE, SITE_NAME } from '../lib/site'
+import { SITE_NAME } from '../lib/site'
 
 const open = ref(false)
-// Auth state, resolved client-side from the session cookie. null = signed out,
-// undefined = still loading (so the nav doesn't flash "Log in" for a logged-in
-// visitor on first paint).
-const me = ref<{ username: string | null; email: string } | undefined>(undefined)
-
-void me // static site: no auth/backend
 </script>
 
 <template>

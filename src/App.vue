@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import SiteFooter from './components/SiteFooter.vue'
 import SiteHeader from './components/SiteHeader.vue'
-import ConsentBanner from './components/ConsentBanner.vue'
-import FeedbackPopup from './components/FeedbackPopup.vue'
-import ChatLauncher from './components/ChatLauncher.vue'
 </script>
 
 <template>
@@ -12,9 +9,6 @@ import ChatLauncher from './components/ChatLauncher.vue'
     <RouterView />
   </main>
   <SiteFooter />
-  <ConsentBanner />
-  <FeedbackPopup />
-  <ChatLauncher />
 </template>
 
 <style scoped>

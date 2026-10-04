@@ -3,13 +3,18 @@ import { useHead } from '@unhead/vue'
 
 export const SITE_NAME = 'Hammadi.dev'
 export const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://hammadi.dev'
-/** Empty in production: Caddy proxies /public/v1/* on this domain to the API,
- * so calls are same-origin. Dev sets it to the absolute API URL (.env.development). */
-export const API_BASE = import.meta.env.VITE_API_BASE ?? ''
-export const LISTING_URL =
-  'https://rapidapi.com/goodstobkal-goodstobkal-default/api/instagram-scraper57'
-/** Guides are rendered by the API and proxied onto this domain at /spotlights. */
-export const GUIDES_URL = '/spotlights'
+
+/**
+ * Waitlist delivery. The site is static (no backend), so signups POST to a
+ * form service. Using Web3Forms: create a free access key at https://web3forms.com
+ * (just enter the email you want signups sent to) and paste it below.
+ * Until `accessKey` is set, the form confirms to the visitor but nothing is
+ * delivered, so set it before relying on collected emails.
+ */
+export const WAITLIST = {
+  endpoint: 'https://api.web3forms.com/submit',
+  accessKey: '', // TODO: paste Web3Forms access key
+}
 
 type Meta = {
   title: string
@@ -40,18 +45,3 @@ export function useSeo({ title, description, path, jsonld = [] }: Meta) {
   })
 }
 
-export function breadcrumbs(trail: { name: string; path: string }[]) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: trail.map((item, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      name: item.name,
-      item: `${SITE_URL}${item.path}`,
-    })),
-  }
-}
-
-/** Tools still offered (each sells a $1 export or leads to a product); the rest 301 to products. */
-export const KEPT_TOOLS = new Set(['export-instagram-comments', 'instagram-posts', 'export-instagram-reels', 'instagram-likers', 'instagram-influencer-search', 'instagram-profile-info', 'instagram-following', 'instagram-followers'])
